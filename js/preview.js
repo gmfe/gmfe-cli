@@ -31,7 +31,6 @@ function preview() {
 
     
     sh.exec('git push origin master:deploy/preview');
-
 }
 
 module.exports = {

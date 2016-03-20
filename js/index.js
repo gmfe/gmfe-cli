@@ -16,3 +16,5 @@ if(argv._[0] !== 'publish' || !argv.u){
 
 
 Preview.preview();
+
+console.log(1);
