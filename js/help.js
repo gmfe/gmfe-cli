@@ -1,9 +1,11 @@
 var yargs = require('yargs');
 
 var argv = yargs.usage('Usage: gmfe publish [options]')
+    .locale('en')
     .command('publish', 'published project')
     .option('u', {
         alias: 'user',
+        demand: true,
         describe: 'name who published',
         type: 'string'
     })

@@ -1,13 +1,18 @@
 require('./help');
-var Preview = require('./preview');
 var argv = require('yargs').argv;
 var sh = require("shelljs");
 
-if(process.argv.length === 2){
+var Preview = require('./preview');
+
+if(argv._.length === 0){
     sh.exec('./bin/gmfe.sh -h');
     return;
 }
 
-console.log('1');
+if(argv._[0] !== 'publish' || !argv.u){
+    sh.exec('./bin/gmfe.sh -h');
+    return;
+}
+
 
 Preview.preview();
