@@ -5,7 +5,7 @@ var argv = yargs.usage('Usage: gmfe publish [options]')
     .command('publish', 'published project')
     .option('u', {
         alias: 'user',
-        demand: true,
+        demand: false,
         describe: 'name who published',
         type: 'string'
     })

@@ -4,7 +4,7 @@ var Log = require('./log');
 function preview() {
     var diff = sh.exec('git diff', {silent: true});
     if (diff.stdout !== '') {
-        Log.warn('dirty work directory, please confirm not forgetting git commit');
+        Log.warn('Dirty , please make sure your working directory clean');
         return false;
     }
 
@@ -14,6 +14,13 @@ function preview() {
         return false;
     }
 
+    sh.exec('git fetch');
+    
+    var diff = sh.exec('git diff master origin/master', {silent: true});
+    if (diff.stdout !== '') {
+        Log.warn('Dirty , please make sure your working directory clean');
+        return false;
+    }
 
 }
 
