@@ -1,2 +1,4 @@
 require('./help');
-require('./preview');
+var Preview = require('./preview');
+
+Preview.preview();

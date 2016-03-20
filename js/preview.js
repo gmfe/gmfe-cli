@@ -1,3 +1,18 @@
-require("shelljs/global");
+var sh = require("shelljs");
 
-console.log(exec('git diff'));
+function preview() {
+    var diff = sh.exec('git diff');
+    if (diff.code === 0) {
+        if (diff.stdout !== '') {
+            console.warn('Warning: dirty work directory, please confirm not forgetting git commit');
+        }else{
+            console.log('gif diff ok');
+        }
+    } else {
+        console.log(diff.stderr);
+    }
+}
+
+module.exports = {
+    preview: preview
+};
