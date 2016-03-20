@@ -1,7 +1,7 @@
 var sh = require("shelljs");
 
 function preview() {
-    var diff = sh.exec('git diff');
+    var diff = sh.exec('git diff', {silent: true});
     if (diff.code === 0) {
         if (diff.stdout !== '') {
             console.warn('Warning: dirty work directory, please confirm not forgetting git commit');
