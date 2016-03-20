@@ -3,6 +3,7 @@ const sh = require("shelljs");
 const Util = require('./util');
 
 const Preview = require('./preview');
+const Online = require('./online');
 const Log = Util.Log,
     confirmOnline = Util.confirmOnline;
 
@@ -44,8 +45,7 @@ if (argv._[0] !== 'publish' || !argv.u) {
 
 
 confirmOnline().then(() => {
-    console.log('yes');
+    Online.online();
 }, () => {
-    console.log('no');
     process.exit(0);
 });

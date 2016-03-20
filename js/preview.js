@@ -14,7 +14,7 @@ function preview() {
         return false;
     }
 
-    sh.exec('git pull');
+    sh.exec('git fetch');
 
     var mDiff = sh.exec('git diff master origin/master', {silent: true});
     if (mDiff.stdout !== '') {
