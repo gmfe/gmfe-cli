@@ -8,22 +8,26 @@ function preview() {
         return false;
     }
 
-    var branch = sh.exec('git branch');
-    if(branch.stdout !== '* master\n'){
+    var branch = sh.exec('git branch', {silent: true});
+    if (branch.stdout !== '* master\n') {
         Log.warn('Make sure your branch is master');
         return false;
     }
 
     sh.exec('git fetch');
-    
+
     var mDiff = sh.exec('git diff master origin/master', {silent: true});
     if (mDiff.stdout !== '') {
         Log.warn('Your master branch is different from origin/master.');
         return false;
     }
 
-    
-
+    var shortlog = sh.exec('git shortlog origin/deploy/preview..HEAD');
+    if(shortlog.stdout !== ''){
+        Log.log('adf');
+    }else{
+        Log.log('111');
+    }
 }
 
 module.exports = {
