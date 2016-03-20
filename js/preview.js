@@ -16,11 +16,13 @@ function preview() {
 
     sh.exec('git fetch');
     
-    var diff = sh.exec('git diff master origin/master', {silent: true});
-    if (diff.stdout !== '') {
-        Log.warn('Dirty , please make sure your working directory clean');
+    var mDiff = sh.exec('git diff master origin/master', {silent: true});
+    if (mDiff.stdout !== '') {
+        Log.warn('Your master branch is different from origin/master.');
         return false;
     }
+
+    
 
 }
 
