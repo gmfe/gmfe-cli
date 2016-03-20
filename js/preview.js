@@ -1,10 +1,10 @@
 var sh = require('shelljs');
-var Log = require('./log');
+var Log = require('./util').Log;
 
 function preview() {
     var diff = sh.exec('git diff', {silent: true});
     if (diff.stdout !== '') {
-        Log.warn('Dirty , please make sure your working directory clean');
+        Log.warn('Dirty, please make sure your working directory clean');
         return false;
     }
 
@@ -21,18 +21,10 @@ function preview() {
         Log.warn('Your master branch is different from origin/master. Maybe you forgot git push!');
         return false;
     }
-
-    // var shortlog = sh.exec('git shortlog origin/deploy/preview..HEAD');
-    // if(shortlog.stdout !== ''){
-    //     Log.log('adf');
-    // }else{
-    //     Log.log('111');
-    // }
-
     
     sh.exec('git push origin master:deploy/preview');
 }
 
 module.exports = {
-    preview: preview
+    preview
 };
