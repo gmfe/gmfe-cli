@@ -14,20 +14,24 @@ function preview() {
         return false;
     }
 
-    sh.exec('git fetch');
+    sh.exec('git pull');
 
     var mDiff = sh.exec('git diff master origin/master', {silent: true});
     if (mDiff.stdout !== '') {
-        Log.warn('Your master branch is different from origin/master.');
+        Log.warn('Your master branch is different from origin/master. Maybe you forgot git push!');
         return false;
     }
 
-    var shortlog = sh.exec('git shortlog origin/deploy/preview..HEAD');
-    if(shortlog.stdout !== ''){
-        Log.log('adf');
-    }else{
-        Log.log('111');
-    }
+    // var shortlog = sh.exec('git shortlog origin/deploy/preview..HEAD');
+    // if(shortlog.stdout !== ''){
+    //     Log.log('adf');
+    // }else{
+    //     Log.log('111');
+    // }
+
+    
+    sh.exec('git push origin master:deploy/preview');
+
 }
 
 module.exports = {
