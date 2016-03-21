@@ -14,13 +14,13 @@ function preview() {
         return false;
     }
 
-    sh.exec('git fetch');
+    sh.exec('git fetch; git reset --hard origin/master');
 
-    var mDiff = sh.exec('git diff master origin/master', {silent: true});
-    if (mDiff.stdout !== '') {
-        Log.warn('Your master branch is different from origin/master. Maybe you forgot git push!');
-        return false;
-    }
+    // var mDiff = sh.exec('git diff master origin/master', {silent: true});
+    // if (mDiff.stdout !== '') {
+    //     Log.warn('Your master branch is different from origin/master. Maybe you forgot git push!');
+    //     return false;
+    // }
     
     sh.exec('git push origin master:deploy/preview');
 }
