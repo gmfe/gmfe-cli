@@ -28,15 +28,15 @@ var argv = yargs.usage('Usage: gmfe publish [options]')
     .argv;
 
 
-if (argv._.length === 0) {
-    sh.exec('./bin/gmfe.sh -h');
-    process.exit(0);
-}
-
-if (argv._[0] !== 'publish' || !argv.u) {
-    sh.exec('./bin/gmfe.sh -h');
-    process.exit(0);
-}
+// if (argv._.length === 0) {
+//     sh.exec('./bin/gmfe.sh -h');
+//     process.exit(0);
+// }
+//
+// if (argv._[0] !== 'publish' || !argv.u) {
+//     sh.exec('./bin/gmfe.sh -h');
+//     process.exit(0);
+// }
 
 
 // if(Preview.preview() === false){
@@ -44,8 +44,13 @@ if (argv._[0] !== 'publish' || !argv.u) {
 // };
 
 
-confirmOnline().then(() => {
-    Online.online();
-}, () => {
-    process.exit(0);
-});
+// confirmOnline().then(() => {
+//     Online.online();
+// }, () => {
+//     process.exit(0);
+// });
+
+
+var online_hosts = sh.cat('./deploy/online_hostas.conf');
+console.log(online_hosts);
+

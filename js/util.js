@@ -1,3 +1,4 @@
+const sh = require("shelljs");
 const colors = require('colors');
 const _ = require('underscore');
 
@@ -45,7 +46,21 @@ const confirmOnline = ()=> {
     });
 };
 
+const getOnlineHosts = () => {
+    let hosts = sh.cat('./deploy/online_hostas.conf') || '';
+    hosts = _.map(hosts.split('\n'), value => {
+        return value.trim();
+    });
+    return _.map(hosts, value => {
+        return {
+            host: value.split(':')[0],
+            directory: value.split(':')[1]
+        }
+    });
+};
+
 module.exports = {
     Log,
-    confirmOnline
+    confirmOnline,
+    getOnlineHosts
 };
