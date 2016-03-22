@@ -1,6 +1,7 @@
 const yargs = require('yargs');
 const sh = require("shelljs");
 const Util = require('./util');
+const SSH = require('simple-ssh');
 
 const Preview = require('./preview');
 const Online = require('./online');
@@ -28,6 +29,16 @@ var argv = yargs.usage('Usage: gmfe publish [options]')
     .argv;
 
 
+// 前往工程的父目录
+const projectPath = Util.getProjectPath();
+if (projectPath === false) {
+    process.exit(1);
+}
+sh.cd(projectPath);
+// sh.exec('pwd');
+
+
+
 // if (argv._.length === 0) {
 //     sh.exec('./bin/gmfe.sh -h');
 //     process.exit(0);
@@ -50,7 +61,22 @@ var argv = yargs.usage('Usage: gmfe publish [options]')
 //     process.exit(0);
 // });
 
+const hosts = Util.getOnlineHosts();
+console.log(hosts);
 
-var online_hosts = sh.cat('./deploy/online_hostas.conf');
-console.log(online_hosts);
+const ssh = new SSH({
+    host: 'guanmai.cn',
+    user: 'liyatang'
+});
+ssh.exec('pwd', {
+    out: (stdout) => {
+        console.log(stdout);
+    },
+    err: (stderr) => {
+        console.log(stderr);
+    }
+}).start();
 
+// sh.exec('ssh -oConnectTimeout=3 -oStrictHostKeyChecking=no liyatang@guanmai.cn', (code, stdout, stderr) => {
+//     console.log(code);
+// });

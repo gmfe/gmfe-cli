@@ -1,3 +1,5 @@
+'use strict';
+
 const sh = require("shelljs");
 const colors = require('colors');
 const _ = require('underscore');
@@ -47,9 +49,12 @@ const confirmOnline = ()=> {
 };
 
 const getOnlineHosts = () => {
-    let hosts = sh.cat('./deploy/online_hostas.conf') || '';
+    let hosts = sh.cat('./deploy/online_hosts.conf') || '';
     hosts = _.map(hosts.split('\n'), value => {
         return value.trim();
+    });
+    hosts = _.filter(hosts, value => {
+        return !value.startsWith('#') && value !== '';
     });
     return _.map(hosts, value => {
         return {
@@ -59,8 +64,22 @@ const getOnlineHosts = () => {
     });
 };
 
+const getProjectPath = () => {
+    const dir = sh.exec('git rev-parse --git-dir', {silent: true});
+    if (dir.code === 0) {
+        if (dir.stdout === '.git\n') {
+            return sh.pwd();
+        } else {
+            return dir.stdout.replace('/.git', '').replace('\n', '');
+        }
+    } else {
+        return false;
+    }
+};
+
 module.exports = {
     Log,
     confirmOnline,
-    getOnlineHosts
+    getOnlineHosts,
+    getProjectPath
 };
