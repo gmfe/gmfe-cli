@@ -17,8 +17,8 @@ function preview() {
     }
 
     // 拉最新代码
-    sh.exec('git fetch; git reset --hard origin/master');
-
+    sh.exec('git fetch');
+    sh.exec('git reset --hard origin/master');
     // 推送到deploy/preview。预发布环境，目前没有什么用。
     sh.exec('git push origin HEAD:deploy/preview');
 }
