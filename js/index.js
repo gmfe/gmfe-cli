@@ -44,7 +44,7 @@ if (Preview.preview() === false) {
 
 // online
 Online.confirmOnline().then(() => {
-    Online.online();
+    Online.online(argv.u, argv.m);
 }, () => {
     process.exit(0);
 });

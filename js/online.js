@@ -2,9 +2,12 @@ var sh = require('shelljs');
 var Log = require('./util').Log;
 var readline = require('readline');
 var moment = require('moment');
-
+var Util = require('./util');
+var _ = require('underscore');
 
 function confirmOnline() {
+    Log.info('Step2: 确认是否执行发布');
+
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
@@ -31,17 +34,32 @@ function confirmOnline() {
     });
 }
 
-function online() {
+function hostTag(host) {
+    return '[' + host.host + '] ';
+}
+
+function online(u, m) {
+    Log.info('Step3: 执行发布');
+
+    var tag = 'online_' + moment().format('YYYY_MM_DD_hh_mm') + '_' + u;
+    if (m) {
+        tag += '_' + m;
+    }
     var git = [
-        'git fetch',
-        'git reset --hard origin/deploy/preview',
         'git push origin HEAD:deploy/online',
-        'git tag online_' + moment().format('YYYY_MM_DD_hh_mm'),
+        'git tag ' + tag,
         'git push --tags'
     ];
+    Log.step('推送到deploy/online, 打tag:' + tag);
     sh.exec(git.join(';'));
 
     var hosts = Util.getOnlineHosts();
+
+    Log.step('登录发布机器:\n');
+    Log.log(_.map(hosts, function (value) {
+        return value.origin;
+    }).join('\n'));
+
     var connects = [];
     _.each(hosts, function (value) {
         var commands = [
@@ -52,13 +70,14 @@ function online() {
             './deploy/after_online.sh',
         ];
 
+        Log.step(hostTag(value), '拉最新代码 and 执行 before_online.sh after_online.sh');
         connects.push(Connect.connect(value, commands, function (promise) {
             promise.then(() => {
-                console.log('suc');
-            }, () => {
-                console.log('err');
+                Log.info(hostTag(value), 'success');
+            }, (reason) => {
+                Log.error(hostTag(value), reason);
             }, data => {
-                console.log(data);
+                Log.log(hostTag(value), data);
             });
         }));
     });

@@ -22,7 +22,6 @@ function connect(onlineHost, commands, getPromise) {
                 if (err) throw err;
                 stream.on('close', function (code) {
                     conn.end();
-
                     clearInterval(timer);
                     if (dataBuffer.length > 0) {
                         notify(dataBuffer.join(''));
