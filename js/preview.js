@@ -21,7 +21,9 @@ function preview() {
 
     // 比较远端代码
     var oDiff = sh.exec('git diff master origin/master');
-    
+    if (oDiff.stdout === '') {
+        console.log('yes');
+    }
 
     // 推送到deploy/preview。预发布环境，目前没有什么用。
     sh.exec('git push origin HEAD:deploy/preview');
