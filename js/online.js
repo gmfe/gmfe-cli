@@ -4,6 +4,7 @@ var readline = require('readline');
 var moment = require('moment');
 var Util = require('./util');
 var _ = require('underscore');
+var Connect = require('./connect');
 
 function confirmOnline() {
     Log.info('Step2: 确认是否执行发布');

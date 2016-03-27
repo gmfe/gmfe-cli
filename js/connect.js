@@ -12,13 +12,10 @@ function connect(onlineHost, commands, getPromise) {
         username = onlineHost.username;
 
     var promise = when.promise((resolve, reject, notify) => {
-
         var dataBuffer = [];
         var timer;
 
         conn.on('ready', function () {
-            console.log('ready');
-            
             conn.exec(commands.join('\n'), function (err, stream) {
                 if (err) {
                     throw err;
@@ -26,23 +23,17 @@ function connect(onlineHost, commands, getPromise) {
 
                 stream.on('close', function (code) {
                     conn.end();
-
-                    console.log('asfasfasdf');
-
                     clearInterval(timer);
                     if (dataBuffer.length > 0) {
                         notify(dataBuffer.join(''));
                         dataBuffer = [];
                     }
-
                     if (code === 0) {
                         resolve();
                     } else {
                         reject();
                     }
                 }).on('data', function (data) {
-                    console.log('data:', data);
-
                     dataBuffer.push('' + data);
                 }).stderr.on('data', function (data) {
                     dataBuffer.push('' + data);
