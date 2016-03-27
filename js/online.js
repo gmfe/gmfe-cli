@@ -99,7 +99,7 @@ function online(u, m) {
 
     timer = setInterval(function () {
         Log.step(now.toNow());
-    }, 5000);
+    }, 500);
 }
 
 module.exports = {
