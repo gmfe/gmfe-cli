@@ -1,11 +1,12 @@
-const yargs = require('yargs');
-const sh = require("shelljs");
-const Util = require('./util');
-const SSH = require('simple-ssh');
-
-const Preview = require('./preview');
-const Online = require('./online');
-const Log = Util.Log,
+var yargs = require('yargs');
+var sh = require("shelljs");
+var Util = require('./util');
+var path = require('path');
+var fs = require('fs');
+var Preview = require('./preview');
+var Online = require('./online');
+var Connect = require('./connect');
+var Log = Util.Log,
     confirmOnline = Util.confirmOnline;
 
 var argv = yargs.usage('Usage: gmfe publish [options]')
@@ -30,7 +31,7 @@ var argv = yargs.usage('Usage: gmfe publish [options]')
 
 
 // 前往工程的父目录
-const projectPath = Util.getProjectPath();
+var projectPath = Util.getProjectPath();
 if (projectPath === false) {
     process.exit(1);
 }
@@ -60,52 +61,30 @@ sh.cd(projectPath);
 //     process.exit(0);
 // });
 
-const hosts = Util.getOnlineHosts();
+var hosts = Util.getOnlineHosts();
 console.log(hosts);
 
-// const ssh = new SSH({
-//     host: 'guanmai.cn',
-//     user: 'liyatang'
-// });
-// ssh.exec('echo $PATH', {
-//     out(stdout) {
-//         console.log('out');
-//         console.log(stdout);
-//     },
-//     err(stderr){
-//         console.log(stderr);
-//     },
-//     exit(code){
-//         console.log(code)
-//     }
-// }).start();
+var commands = [
+    'cd ' + directory,
+];
+if (fs.existSync(path.resolve(directory, '/deploy/before_online.sh'))) {
+    commands.push('./deploy/before_online.sh')
+}
+if (fs.existSync(path.resolve(directory, '/deploy/after_online.sh'))) {
+    commands.push('./deploy/after_online.sh')
+}
 
-// // sh.exec('ssh -tt -oConnectTimeout=3 -oStrictHostKeyChecking=no liyatang@guanmai.cn; pwd; exit;', (code, stdout, stderr) => {
-// //     console.log(code, stdout, stderr);
-// });
-
-var Client = require('ssh2').Client;
-
-var conn = new Client();
-conn.on('ready', function () {
-    console.log('Client :: ready');
-    conn.shell(function (err, stream) {
-        if (err) throw err;
-        stream.on('close', function () {
-            console.log('Stream :: close');
-            conn.end();
-        }).on('data', function (data) {
-            console.log('STDOUT: ' + data);
-        }).stderr.on('data', function (data) {
-            console.log('STDERR: ' + data);
-        });
-        stream.end('ls -l\nexit\n');
+var connects = [];
+connects.push(Connect.connect(hosts[0], commands, function (promise) {
+    promise.then(() => {
+        console.log('suc');
+    }, () => {
+        console.log('err');
+    }, data => {
+        console.log(data);
     });
-}).connect({
-    host: 'guanmai.cn',
-    port: 22,
-    username: 'liyatang',
-    // password: 'lyt2015',
-    // privateKey: require('fs').readFileSync('/Users/liyatang/.ssh/id_rsa')
-    privateKey: require('fs').readFileSync('/Users/liyatang/gm/git/gmfe/js/id_rsa')
+}));
+
+process.on('exit', function () {
+    console.log('gmfe exit');
 });

@@ -58,7 +58,8 @@ const getOnlineHosts = () => {
     });
     return _.map(hosts, value => {
         return {
-            host: value.split(':')[0],
+            host: value.split(':')[0].split('@')[1],
+            username: value.split(':')[0].split('@')[0],
             directory: value.split(':')[1]
         }
     });
