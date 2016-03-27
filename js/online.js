@@ -7,7 +7,7 @@ var _ = require('underscore');
 var Connect = require('./connect');
 
 function confirmOnline() {
-    Log.info('Step2: 确认是否执行发布');
+    Log.info('>>>>>>>>>> 确认是否执行发布');
 
     const rl = readline.createInterface({
         input: process.stdin,
@@ -40,7 +40,7 @@ function hostTag(host) {
 }
 
 function online(u, m) {
-    Log.info('Step3: 执行发布');
+    Log.info('>>>>>>>>>> 执行发布');
 
     var tag = 'online_' + moment().format('YYYY_MM_DD_hh_mm') + '_' + u;
     if (m) {
@@ -61,12 +61,19 @@ function online(u, m) {
         return value.origin;
     }).join('\n'));
 
+    var count = 0;
+    var check = function () {
+        if (count === hosts.length) {
+            Log.info('DONE');
+        }
+    };
+
     var connects = [];
     _.each(hosts, function (value) {
         var commands = [
             'cd ' + value.directory,
-            // 'git fetch',
-            // 'git reset --hard origin/deploy/online',
+            'git fetch',
+            'git reset --hard origin/deploy/online',
             './deploy/before_online.sh',
             './deploy/after_online.sh',
         ];
@@ -74,8 +81,12 @@ function online(u, m) {
         Log.step(hostTag(value), '拉最新代码and执行before_online.sh after_online.sh');
         connects.push(Connect.connect(value, commands, function (promise) {
             promise.then(() => {
+                count++;
+                check();
                 Log.info(hostTag(value), 'success');
             }, (reason) => {
+                count++;
+                check();
                 Log.error(hostTag(value), reason);
             }, data => {
                 Log.log(hostTag(value), data);

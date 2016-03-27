@@ -2,7 +2,7 @@ var sh = require('shelljs');
 var Log = require('./util').Log;
 
 function preview() {
-    Log.info('Step1: 发布前检测');
+    Log.info('>>>>>>>>>> 发布前检测');
 
     Log.step('检测本地代码');
     var diff = sh.exec('git diff', {silent: true});
