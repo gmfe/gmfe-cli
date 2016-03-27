@@ -3,6 +3,34 @@ var Log = require('./util').Log;
 var readline = require('readline');
 var moment = require('moment');
 
+
+function confirmOnline() {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    const question = (callback)=> {
+        rl.question('Are you sure to online?(yes|no) ', (answer) => {
+            if (answer === 'yes' || answer === 'no') {
+                rl.close();
+                callback(answer)
+            } else {
+                question(callback);
+            }
+        });
+    };
+    return new Promise((resolve, reject) => {
+        question(function (answer) {
+            if (answer === 'yes') {
+                resolve();
+            } else {
+                reject();
+            }
+        });
+    });
+}
+
 function online() {
     var git = [
         'git fetch',
@@ -36,34 +64,7 @@ function online() {
     });
 }
 
-function confirmOnline() {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-
-    const question = (callback)=> {
-        rl.question('Are you sure to online?(yes|no) ', (answer) => {
-            if (answer === 'yes' || answer === 'no') {
-                rl.close();
-                callback(answer)
-            } else {
-                question(callback);
-            }
-        });
-    };
-    return new Promise((resolve, reject) => {
-        question(function (answer) {
-            if (answer === 'yes') {
-                resolve();
-            } else {
-                reject();
-            }
-        });
-    });
-}
-
 module.exports = {
-    online,
-    confirmOnline
+    confirmOnline,
+    online
 };

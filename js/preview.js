@@ -28,8 +28,12 @@ function preview() {
     }
 
     // deploy/preview预发布环境，目前没有什么用。
-    Log.step('推送到deploy/preview');
+    Log.step('推送到deploy/preview...');
     sh.exec('git push origin HEAD:deploy/preview');
+
+    Log.info('preview done');
+
+    return true;
 }
 
 module.exports = {
