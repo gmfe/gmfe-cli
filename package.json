@@ -16,6 +16,7 @@
     "url": "https://github.com/gmfe/gmfe/issues"
   },
   "homepage": "https://github.com/gmfe/gmfe#readme",
+  "bin": "bin/gmfe.sh",
   "dependencies": {
     "colors": "^1.1.2",
     "gm-jsonconf": "^1.0.2",

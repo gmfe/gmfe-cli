@@ -51,7 +51,7 @@ function online(u, m) {
         'git tag ' + tag,
         'git push --tags'
     ];
-    Log.step('推送到deploy/online, 打tag:' + tag);
+    Log.step('推送到发布环境deploy/online, 打版本tag:' + tag);
     sh.exec(git.join(';'));
 
     var hosts = Util.getOnlineHosts();
@@ -62,11 +62,11 @@ function online(u, m) {
     }).join('\n'));
 
     var timer;
-    var now = moment();
+    var now = new Date();
     var count = 0;
     var check = function () {
         if (count === hosts.length) {
-            clearInterval(now);
+            clearInterval(timer);
             Log.info('DONE');
         }
     };
@@ -77,8 +77,8 @@ function online(u, m) {
             'cd ' + value.directory,
             'git fetch',
             'git reset --hard origin/deploy/online',
-            './deploy/before_online.sh',
-            './deploy/after_online.sh',
+            './deploy/before_online.sh ' + (m ? m : ''),
+            './deploy/after_online.sh ' + (m ? m : ''),
         ];
 
         Log.step(hostTag(value), '拉最新代码and执行before_online.sh after_online.sh');
@@ -98,8 +98,8 @@ function online(u, m) {
     });
 
     timer = setInterval(function () {
-        Log.step(now.toNow());
-    }, 500);
+        Log.step(Util.toNow(now));
+    }, 2000);
 }
 
 module.exports = {

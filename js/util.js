@@ -1,10 +1,11 @@
 'use strict';
 
-const sh = require("shelljs");
-const colors = require('colors');
-const _ = require('underscore');
+var sh = require("shelljs");
+var colors = require('colors');
+var _ = require('underscore');
+var moment = require('moment');
 
-const Log = {
+var Log = {
     log() {
         console.log.call(this, _.values(arguments).join(' '));
     },
@@ -23,7 +24,7 @@ const Log = {
 };
 
 
-const getOnlineHosts = () => {
+var getOnlineHosts = () => {
     let hosts = sh.cat('./deploy/online_hosts.conf') || '';
     hosts = _.map(hosts.split('\n'), value => {
         return value.trim();
@@ -41,8 +42,8 @@ const getOnlineHosts = () => {
     });
 };
 
-const getProjectPath = () => {
-    const dir = sh.exec('git rev-parse --git-dir', {silent: true});
+var getProjectPath = () => {
+    var dir = sh.exec('git rev-parse --git-dir', {silent: true});
     if (dir.code === 0) {
         if (dir.stdout === '.git\n') {
             return sh.pwd();
@@ -54,8 +55,15 @@ const getProjectPath = () => {
     }
 };
 
+var toNow = (date) => {
+    var diff = new Date() - date;
+    diff = Math.floor(diff / 1000);
+    return Math.floor(diff / 60) + 'm ' + diff % 60 + 's';
+};
+
 module.exports = {
     Log,
     getOnlineHosts,
-    getProjectPath
+    getProjectPath,
+    toNow
 };
