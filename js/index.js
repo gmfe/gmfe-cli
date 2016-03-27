@@ -70,17 +70,10 @@ var connects = [];
 _.each(hosts, function (value) {
     var commands = [
         'cd ' + value.directory,
-        'pwd'
+        './deploy/before_online.sh',
+        './deploy/after_online.sh',
     ];
-    if (fs.existsSync(path.resolve(value.directory, './deploy/before_online.sh'))) {
-        commands.push('./deploy/before_online.sh')
-    }
-    if (fs.existsSync(path.resolve(value.directory, './deploy/after_online.sh'))) {
-        commands.push('./deploy/after_online.sh')
-    }
 
-    console.log(path.resolve(value.directory, './deploy/before_online.sh'));
-    console.log(commands);
     connects.push(Connect.connect(value, commands, function (promise) {
         promise.then(() => {
             console.log('suc');
