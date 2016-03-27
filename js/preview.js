@@ -20,7 +20,7 @@ function preview() {
     Log.step('拉远端代码...');
     sh.exec('git pull');
 
-    Log.step('比较远端代码');
+    Log.step('比较远端代码...');
     var oDiff = sh.exec('git diff master origin/master', {silent: true});
     if (oDiff.stdout !== '') {
         Log.warn('master不同于origin/master。是否忘记git push?');
