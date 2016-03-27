@@ -36,7 +36,7 @@ function confirmOnline() {
 }
 
 function hostTag(host) {
-    return '[' + host.host + '] ';
+    return '[' + host.username + '@' + host.host + '] ';
 }
 
 function online(u, m) {
@@ -61,9 +61,12 @@ function online(u, m) {
         return value.origin;
     }).join('\n'));
 
+    var timer;
+    var now = moment();
     var count = 0;
     var check = function () {
         if (count === hosts.length) {
+            clearInterval(now);
             Log.info('DONE');
         }
     };
@@ -81,9 +84,9 @@ function online(u, m) {
         Log.step(hostTag(value), '拉最新代码and执行before_online.sh after_online.sh');
         connects.push(Connect.connect(value, commands, function (promise) {
             promise.then(() => {
+                Log.info(hostTag(value), 'success');
                 count++;
                 check();
-                Log.info(hostTag(value), 'success');
             }, (reason) => {
                 count++;
                 check();
@@ -93,6 +96,10 @@ function online(u, m) {
             });
         }));
     });
+
+    timer = setInterval(function () {
+        Log.step(now.toNow());
+    }, 5000);
 }
 
 module.exports = {
