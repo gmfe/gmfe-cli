@@ -16,9 +16,11 @@ const Log = {
     },
     error() {
         console.log.call(this, colors.red('[Error] ' + _.values(arguments).join(' ')));
+    },
+    step(){
+        console.log.call(this, colors.cyan('- ' + _.values(arguments).join(' ')));
     }
 };
-
 
 
 const getOnlineHosts = () => {

@@ -4,6 +4,7 @@ var Log = require('./util').Log;
 function preview() {
     Log.info('Step1: preview');
 
+    Log.step('检查本地代码...');
     var diff = sh.exec('git diff', {silent: true});
     if (diff.stdout !== '') {
         Log.warn('Dirty！确保你本地代码是干净的。');
@@ -16,16 +17,18 @@ function preview() {
         return false;
     }
 
-    // 拉最新代码
+    Log.step('拉远端代码...');
     sh.exec('git pull');
 
-    // 比较远端代码
-    var oDiff = sh.exec('git diff master origin/master');
-    if (oDiff.stdout === '') {
-        console.log('yes');
+    Log.step('比较远端代码');
+    var oDiff = sh.exec('git diff master origin/master', {silent: true});
+    if (oDiff.stdout !== '') {
+        Log.warn('master不同于origin/master。是否忘记git push?');
+        return false;
     }
 
-    // 推送到deploy/preview。预发布环境，目前没有什么用。
+    // deploy/preview预发布环境，目前没有什么用。
+    Log.step('推送到deploy/preview');
     sh.exec('git push origin HEAD:deploy/preview');
 }
 
