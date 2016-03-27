@@ -6,6 +6,7 @@ var fs = require('fs');
 var Preview = require('./preview');
 var Online = require('./online');
 var Connect = require('./connect');
+var _ = require('underscore');
 var Log = Util.Log,
     confirmOnline = Util.confirmOnline;
 
@@ -64,26 +65,33 @@ sh.cd(projectPath);
 var hosts = Util.getOnlineHosts();
 console.log(hosts);
 
-var commands = [
-    'cd ' + directory,
-];
-if (fs.existSync(path.resolve(directory, '/deploy/before_online.sh'))) {
-    commands.push('./deploy/before_online.sh')
-}
-if (fs.existSync(path.resolve(directory, '/deploy/after_online.sh'))) {
-    commands.push('./deploy/after_online.sh')
-}
 
 var connects = [];
-connects.push(Connect.connect(hosts[0], commands, function (promise) {
-    promise.then(() => {
-        console.log('suc');
-    }, () => {
-        console.log('err');
-    }, data => {
-        console.log(data);
-    });
-}));
+_.each(hosts, function (value) {
+    var commands = [
+        'cd ' + value.directory,
+        'pwd'
+    ];
+    if (fs.existsSync(path.resolve(value.directory, './deploy/before_online.sh'))) {
+        commands.push('./deploy/before_online.sh')
+    }
+    if (fs.existsSync(path.resolve(value.directory, './deploy/after_online.sh'))) {
+        commands.push('./deploy/after_online.sh')
+    }
+
+    console.log(path.resolve(value.directory, './deploy/before_online.sh'));
+    console.log(commands);
+    connects.push(Connect.connect(value, commands, function (promise) {
+        promise.then(() => {
+            console.log('suc');
+        }, () => {
+            console.log('err');
+        }, data => {
+            console.log(data);
+        });
+    }));
+
+});
 
 process.on('exit', function () {
     console.log('gmfe exit');
