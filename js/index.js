@@ -55,7 +55,6 @@ if (argv._[0] !== 'publish' || !argv.u) {
 if (Preview.preview() === false) {
     process.exit(1);
 }
-;
 
 
 // online

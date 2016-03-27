@@ -53,7 +53,6 @@ const getProjectPath = () => {
 
 module.exports = {
     Log,
-    confirmOnline,
     getOnlineHosts,
     getProjectPath
 };
