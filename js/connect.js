@@ -17,11 +17,13 @@ function connect(onlineHost, commands, getPromise) {
         var timer;
 
         conn.on('ready', function () {
+            console.log('ready');
+            
             conn.exec(commands.join('\n'), function (err, stream) {
                 if (err) {
                     throw err;
                 }
-                
+
                 stream.on('close', function (code) {
                     conn.end();
 
@@ -39,6 +41,8 @@ function connect(onlineHost, commands, getPromise) {
                         reject();
                     }
                 }).on('data', function (data) {
+                    console.log('data:', data);
+
                     dataBuffer.push('' + data);
                 }).stderr.on('data', function (data) {
                     dataBuffer.push('' + data);

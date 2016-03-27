@@ -70,7 +70,7 @@ function online(u, m) {
             './deploy/after_online.sh',
         ];
 
-        Log.step(hostTag(value), '拉最新代码 and 执行 before_online.sh after_online.sh');
+        Log.step(hostTag(value), '拉最新代码and执行before_online.sh after_online.sh');
         connects.push(Connect.connect(value, commands, function (promise) {
             promise.then(() => {
                 Log.info(hostTag(value), 'success');
