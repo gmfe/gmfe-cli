@@ -55,7 +55,7 @@ function online(u, m) {
 
     var hosts = Util.getOnlineHosts();
 
-    Log.step('登录发布机器:\n');
+    Log.step('登录发布机器:');
     Log.log(_.map(hosts, function (value) {
         return value.origin;
     }).join('\n'));
