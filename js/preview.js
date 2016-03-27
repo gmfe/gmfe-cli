@@ -22,7 +22,7 @@ function preview() {
     //     return false;
     // }
     
-    sh.exec('git push origin master:deploy/preview');
+    sh.exec('git push origin HEAD:deploy/preview');
 }
 
 module.exports = {

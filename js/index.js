@@ -7,9 +7,10 @@ var Preview = require('./preview');
 var Online = require('./online');
 var Connect = require('./connect');
 var _ = require('underscore');
-var Log = Util.Log,
-    confirmOnline = Util.confirmOnline;
+var Log = Util.Log;
 
+
+// help 信息
 var argv = yargs.usage('Usage: gmfe publish [options]')
     .locale('en')
     .command('publish', 'published project')
@@ -37,55 +38,35 @@ if (projectPath === false) {
     process.exit(1);
 }
 sh.cd(projectPath);
-// sh.exec('pwd');
+
+// 参数校验
+if (argv._.length === 0) {
+    sh.exec('./bin/gmfe.sh -h');
+    process.exit(0);
+}
+
+if (argv._[0] !== 'publish' || !argv.u) {
+    sh.exec('./bin/gmfe.sh -h');
+    process.exit(0);
+}
 
 
-// if (argv._.length === 0) {
-//     sh.exec('./bin/gmfe.sh -h');
-//     process.exit(0);
-// }
-//
-// if (argv._[0] !== 'publish' || !argv.u) {
-//     sh.exec('./bin/gmfe.sh -h');
-//     process.exit(0);
-// }
+// preview
+if (Preview.preview() === false) {
+    process.exit(1);
+}
+;
 
 
-// if(Preview.preview() === false){
-//     process.exit(1);
-// };
-
-
-// confirmOnline().then(() => {
-//     Online.online();
-// }, () => {
-//     process.exit(0);
-// });
-
-var hosts = Util.getOnlineHosts();
-console.log(hosts);
-
-
-var connects = [];
-_.each(hosts, function (value) {
-    var commands = [
-        'cd ' + value.directory,
-        './deploy/before_online.sh',
-        './deploy/after_online.sh',
-    ];
-
-    connects.push(Connect.connect(value, commands, function (promise) {
-        promise.then(() => {
-            console.log('suc');
-        }, () => {
-            console.log('err');
-        }, data => {
-            console.log(data);
-        });
-    }));
-
+// online
+Online.confirmOnline().then(() => {
+    Online.online();
+}, () => {
+    process.exit(0);
 });
 
+
+// event
 process.on('exit', function () {
     console.log('gmfe exit');
 });

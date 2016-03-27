@@ -19,34 +19,7 @@ const Log = {
     }
 };
 
-const confirmOnline = ()=> {
-    const readline = require('readline');
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
 
-
-    const question = (callback)=> {
-        rl.question('Are you sure to online?(yes|no) ', (answer) => {
-            if (answer === 'yes' || answer === 'no') {
-                rl.close();
-                callback(answer)
-            } else {
-                question(callback);
-            }
-        });
-    };
-    return new Promise((resolve, reject) => {
-        question(function (answer) {
-            if (answer === 'yes') {
-                resolve();
-            } else {
-                reject();
-            }
-        });
-    });
-};
 
 const getOnlineHosts = () => {
     let hosts = sh.cat('./deploy/online_hosts.conf') || '';
