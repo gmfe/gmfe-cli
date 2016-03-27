@@ -14,13 +14,12 @@ function online() {
     sh.exec(git.join(';'));
 
     var hosts = Util.getOnlineHosts();
-    console.log(hosts);
-
-
     var connects = [];
     _.each(hosts, function (value) {
         var commands = [
             'cd ' + value.directory,
+            'git fetch',
+            'git reset --hard origin/deploy/online',
             './deploy/before_online.sh',
             './deploy/after_online.sh',
         ];
