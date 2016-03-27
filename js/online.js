@@ -64,8 +64,8 @@ function online(u, m) {
     _.each(hosts, function (value) {
         var commands = [
             'cd ' + value.directory,
-            'git fetch',
-            'git reset --hard origin/deploy/online',
+            // 'git fetch',
+            // 'git reset --hard origin/deploy/online',
             './deploy/before_online.sh',
             './deploy/after_online.sh',
         ];

@@ -9,8 +9,7 @@ var config = jsonconf.parse(path.resolve(__dirname, '../config/deploy.json'));
 function connect(onlineHost, commands, getPromise) {
     var conn = new ssh2.Client();
     var host = onlineHost.host,
-        username = onlineHost.username,
-        directory = onlineHost.directory;
+        username = onlineHost.username;
 
     var promise = when.promise((resolve, reject, notify) => {
 
@@ -19,9 +18,15 @@ function connect(onlineHost, commands, getPromise) {
 
         conn.on('ready', function () {
             conn.exec(commands.join('\n'), function (err, stream) {
-                if (err) throw err;
+                if (err) {
+                    throw err;
+                }
+                
                 stream.on('close', function (code) {
                     conn.end();
+
+                    console.log('asfasfasdf');
+
                     clearInterval(timer);
                     if (dataBuffer.length > 0) {
                         notify(dataBuffer.join(''));
