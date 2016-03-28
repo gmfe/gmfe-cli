@@ -63,7 +63,7 @@ function online(u, m) {
 
     var timer;
     var now = new Date();
-    var buf = '';
+    var buf = [];
 
     var count = 0;
     var check = function () {
