@@ -63,6 +63,8 @@ function online(u, m) {
 
     var timer;
     var now = new Date();
+    var buf = '';
+
     var count = 0;
     var check = function () {
         if (count === hosts.length) {
@@ -92,13 +94,15 @@ function online(u, m) {
                 check();
                 Log.error(hostTag(value), reason);
             }, data => {
-                Log.log(hostTag(value), data);
+                buf.push(hostTag(value) + ' ' + data);
             });
         }));
     });
 
     timer = setInterval(function () {
         Log.step(Util.toNow(now));
+        Log.log(buf.join(' '));
+        buf = [];
     }, 2000);
 }
 

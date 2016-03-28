@@ -12,9 +12,6 @@ function connect(onlineHost, commands, getPromise) {
         username = onlineHost.username;
 
     var promise = when.promise((resolve, reject, notify) => {
-        var dataBuffer = [];
-        var timer;
-
         conn.on('ready', function () {
             conn.exec(commands.join('\n'), function (err, stream) {
                 if (err) {
@@ -23,28 +20,17 @@ function connect(onlineHost, commands, getPromise) {
 
                 stream.on('close', function (code) {
                     conn.end();
-                    clearInterval(timer);
-                    if (dataBuffer.length > 0) {
-                        notify(dataBuffer.join(''));
-                        dataBuffer = [];
-                    }
                     if (code === 0) {
                         resolve();
                     } else {
                         reject();
                     }
                 }).on('data', function (data) {
-                    dataBuffer.push('' + data);
+                    notify('' + data);
                 }).stderr.on('data', function (data) {
-                    dataBuffer.push('' + data);
+                    notify('' + data);
                 });
             });
-            timer = setInterval(function () {
-                if (dataBuffer.length > 0) {
-                    notify(dataBuffer.join(''));
-                    dataBuffer = [];
-                }
-            }, 2000);
         }).on('error', function () {
             reject('链接', host, '出错');
         }).connect({

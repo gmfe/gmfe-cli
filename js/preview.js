@@ -4,10 +4,10 @@ var Log = require('./util').Log;
 function preview() {
     Log.info('>>>>>>>>>> 发布前检测');
 
-    Log.step('检测本地代码');
+    Log.step('检测本地代码状态');
     var diff = sh.exec('git diff', {silent: true});
     if (diff.stdout !== '') {
-        Log.warn('Dirty！确保你本地代码是干净的。');
+        Log.warn('Dirty！确保你本地代码是干净的');
         return false;
     }
 
