@@ -14,8 +14,8 @@ function confirmOnline() {
         output: process.stdout
     });
 
-    var question = (callback)=> {
-        rl.question('Are you sure to online?(yes|no) ', (answer) => {
+    var question = function (callback) {
+        rl.question('Are you sure to online?(yes|no) ', function (answer) {
             if (answer === 'yes' || answer === 'no') {
                 rl.close();
                 callback(answer)
@@ -24,7 +24,7 @@ function confirmOnline() {
             }
         });
     };
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
         question(function (answer) {
             if (answer === 'yes') {
                 resolve();
@@ -84,26 +84,26 @@ function online_exec(u, m) {
     _.each(hosts, function (value) {
         var commands = [
             'cd ' + value.directory,
-            // 'git fetch',
-            // 'git reset --hard origin/deploy/online',
+            'git fetch',
+            'git reset --hard origin/deploy/online',
             './deploy/before_online.sh ' + (m ? m : ''),
             './deploy/after_online.sh ' + (m ? m : ''),
         ];
 
         Log.step(hostTag(value), '拉最新代码and执行before_online.sh after_online.sh');
         connects.push(Connect.connect(value, commands, function (promise) {
-            promise.then(() => {
+            promise.then(function () {
                 checkLog();
                 Log.info(hostTag(value), 'success');
                 count++;
                 check();
-            }, (reason) => {
+            }, function (reason) {
                 checkLog();
                 Log.info(hostTag(value), 'error');
                 count++;
                 check();
                 Log.error(hostTag(value), reason);
-            }, data => {
+            }, function (data) {
                 buf.push(hostTag(value) + ' ' + data);
             });
         }));
@@ -121,12 +121,12 @@ function online_exec(u, m) {
 function online(u, m) {
     Log.info('>>>>>>>>>> 执行发布');
 
-    // online_git(u, m);
+    online_git(u, m);
 
     online_exec(u, m);
 }
 
 module.exports = {
-    confirmOnline,
-    online
+    confirmOnline: confirmOnline,
+    online: online
 };

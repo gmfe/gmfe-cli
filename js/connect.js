@@ -11,7 +11,7 @@ function connect(onlineHost, commands, getPromise) {
     var host = onlineHost.host,
         username = onlineHost.username;
 
-    var promise = when.promise((resolve, reject, notify) => {
+    var promise = when.promise(function (resolve, reject, notify) {
         conn.on('ready', function () {
             conn.exec(commands.join('\n'), function (err, stream) {
                 if (err) {
@@ -47,5 +47,5 @@ function connect(onlineHost, commands, getPromise) {
 }
 
 module.exports = {
-    connect
+    connect: connect
 };

@@ -1,14 +1,9 @@
-var yargs = require('yargs');
 var sh = require("shelljs");
 var Util = require('./util');
-var path = require('path');
 var fs = require('fs');
 var Help = require('./help');
 var Preview = require('./preview');
 var Online = require('./online');
-var Connect = require('./connect');
-var _ = require('underscore');
-var Log = Util.Log;
 
 
 // help 信息
@@ -37,15 +32,15 @@ if (argv._[0] !== 'publish' || !argv.u) {
 
 // preview
 // 主要是对当前的工程检查一遍。 确认是clean 
-// if (Preview.preview() === false) {
-//     process.exit(1);
-// }
+if (Preview.preview() === false) {
+    process.exit(1);
+}
 
 
 // online
-Online.confirmOnline().then(() => {
+Online.confirmOnline().then(function () {
     Online.online(argv.u, argv.m);
-}, () => {
+}, function () {
     process.exit(0);
 });
 

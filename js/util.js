@@ -23,16 +23,15 @@ var Log = {
     }
 };
 
-
-var getOnlineHosts = () => {
-    let hosts = sh.cat('./deploy/online_hosts.conf') || '';
-    hosts = _.map(hosts.split('\n'), value => {
+var getOnlineHosts = function () {
+    var hosts = sh.cat('./deploy/online_hosts.conf') || '';
+    hosts = _.map(hosts.split('\n'), function (value) {
         return value.trim();
     });
-    hosts = _.filter(hosts, value => {
+    hosts = _.filter(hosts, function (value) {
         return !value.startsWith('#') && value !== '';
     });
-    return _.map(hosts, value => {
+    return _.map(hosts, function (value) {
         return {
             host: value.split(':')[0].split('@')[1],
             username: value.split(':')[0].split('@')[0],
@@ -42,7 +41,7 @@ var getOnlineHosts = () => {
     });
 };
 
-var getProjectPath = () => {
+var getProjectPath = function () {
     var dir = sh.exec('git rev-parse --git-dir', {silent: true});
     if (dir.code === 0) {
         if (dir.stdout === '.git\n') {
@@ -55,15 +54,15 @@ var getProjectPath = () => {
     }
 };
 
-var toNow = (date) => {
+var toNow = function (date) {
     var diff = new Date() - date;
     diff = Math.floor(diff / 1000);
     return Math.floor(diff / 60) + 'm ' + diff % 60 + 's';
 };
 
 module.exports = {
-    Log,
-    getOnlineHosts,
-    getProjectPath,
-    toNow
+    Log: Log,
+    getOnlineHosts: getOnlineHosts,
+    getProjectPath: getProjectPath,
+    toNow: toNow
 };

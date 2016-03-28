@@ -35,5 +35,5 @@ function preview() {
 }
 
 module.exports = {
-    preview
+    preview: preview
 };
