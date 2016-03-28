@@ -44,13 +44,11 @@ function online_git(u, m) {
     if (m) {
         tag += '_' + m;
     }
-    var git = [
-        'git push origin HEAD:deploy/online',
-        'git tag ' + tag,
-        'git push --tags'
-    ];
-    Log.step('推送到发布环境deploy/online, 打版本tag:' + tag);
-    sh.exec(git.join(';'));
+    Log.step('推送到发布环境deploy/online');
+    sh.exec('git push origin HEAD:deploy/online');
+
+    Log.step('打版本tag:' + tag);
+    sh.exec('git tag ' + tag + '; git push --tags');
 }
 
 function online_exec(u, m) {
