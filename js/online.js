@@ -84,11 +84,11 @@ function online_exec(u, m) {
             'cd ' + value.directory,
             'git fetch',
             'git reset --hard origin/deploy/online',
-            './deploy/before_online.sh ' + (m ? m : ''),
-            './deploy/after_online.sh ' + (m ? m : ''),
+            './deploy/before_online ' + (m ? m : ''),
+            './deploy/after_online ' + (m ? m : ''),
         ];
 
-        Log.step(hostTag(value), '拉最新代码and执行before_online.sh after_online.sh');
+        Log.step(hostTag(value), '拉最新代码and执行before_online after_online');
         connects.push(Connect.connect(value, commands, function (promise) {
             promise.then(function () {
                 checkLog();
