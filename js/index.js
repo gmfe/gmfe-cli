@@ -4,7 +4,7 @@ var fs = require('fs');
 var Help = require('./help');
 var Preview = require('./preview');
 var Online = require('./online');
-
+var Log = require('./util').Log;
 
 // help 信息
 var argv = Help.help();
@@ -13,6 +13,7 @@ var argv = Help.help();
 // 前往工程的父目录
 var projectPath = Util.getProjectPath();
 if (projectPath === false) {
+    Log.error('无法定位git工程');
     process.exit(1);
 }
 sh.cd(projectPath);
