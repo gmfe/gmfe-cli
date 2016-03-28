@@ -113,7 +113,7 @@ function online_exec(u, m) {
             Log.log(buf.join(' '));
             buf = [];
         }
-    }, 2000);
+    }, 5000);
 }
 
 function online(u, m) {
