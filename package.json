@@ -1,6 +1,6 @@
 {
   "name": "gmfe",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/gmfe/gmfe#readme",
   "bin": {
-    "gmfe": "./bin/gmfe.sh"
+    "gmfe": "./bin/gmfe.js"
   },
   "dependencies": {
     "colors": "^1.1.2",
