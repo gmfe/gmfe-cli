@@ -1,3 +1,6 @@
 {
-  "privateKey": "/Users/liyatang/.ssh/id_rsa"
+  "privateKey": "/data/home/superman/.ssh/id_rsa",
+  "include": [
+    "./local.json"
+  ]
 }
