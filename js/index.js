@@ -37,9 +37,9 @@ if (argv._[0] !== 'publish' || !argv.u) {
 
 // preview
 // 主要是对当前的工程检查一遍。 确认是clean 
-if (Preview.preview() === false) {
-    process.exit(1);
-}
+// if (Preview.preview() === false) {
+//     process.exit(1);
+// }
 
 
 // online

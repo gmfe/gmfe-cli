@@ -1,8 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 echo "run after_online"
 
-module_command = $1
+module_command=$1
+
 if [[ "x$module_command" = "x" ]]; then
   exit 0
 elif [[ "$module_command" = "web" ]]; then
@@ -12,5 +13,4 @@ else
   echo "unknown module command: $module_command"
   exit 0
 fi
-
 
