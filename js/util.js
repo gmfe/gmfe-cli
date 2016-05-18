@@ -3,7 +3,6 @@
 var sh = require("shelljs");
 var colors = require('colors');
 var _ = require('underscore');
-var moment = require('moment');
 
 var Log = {
     log() {

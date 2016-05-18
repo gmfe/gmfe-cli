@@ -40,7 +40,7 @@ function hostTag(host) {
 }
 
 function online_git(u, m) {
-    var tag = 'online_' + moment().format('YYYY_MM_DD_hh_mm') + '_' + u;
+    var tag = 'online_' + moment().format('YYYY_MM_DD_HH_mm_ss') + '_' + u;
     if (m) {
         tag += '_' + m;
     }
