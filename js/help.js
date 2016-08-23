@@ -1,27 +1,20 @@
 var yargs = require('yargs');
 
 function help() {
-    return yargs.usage('Usage: gmfe publish [options]')
+    return yargs.usage('gmfe publish [options]')
         .locale('en')
-        .command('publish', 'published project')
+        .command('publish', 'publish project')
         .option('u', {
             alias: 'user',
             demand: false,
-            describe: 'name who published',
+            describe: 'name who publish project',
             type: 'string'
         })
-        .option('m', {
-            alias: 'module',
-            demand: false,
-            describe: 'module which will run after published'
-        })
         .example('gmfe publish -u user')
-        .example('gmfe publish -u user -m module')
         .help('h')
         .alias('h', 'help')
+        .version()
         .argv;
 }
 
-module.exports = {
-    help: help
-};
+module.exports = help;

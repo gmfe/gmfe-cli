@@ -23,17 +23,19 @@ function preview() {
     Log.step('比较远端代码');
     var oDiff = sh.exec('git diff master origin/master', {silent: true});
     if (oDiff.stdout !== '') {
-        Log.warn('master不同于origin/master。是否忘记git push?');
+        Log.warn('master不同于origin/master。请检查！');
         return false;
     }
 
+    Log.step('最近2次提交');
+    var nCommit = sh.exec('git log -n 2', {silent: true});
+
+
     // deploy/preview预发布环境，目前没有什么用。
-    Log.step('推送到预发布环境deploy/preview');
-    sh.exec('git push origin HEAD:deploy/preview');
+    // Log.step('推送到预发布环境deploy/preview');
+    // sh.exec('git push origin HEAD:deploy/preview');
 
     return true;
 }
 
-module.exports = {
-    preview: preview
-};
+module.exports = preview;
