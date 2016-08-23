@@ -1,6 +1,0 @@
-{
-  "privateKey": "/data/home/superman/.ssh/id_rsa",
-  "include": [
-    "./local.json"
-  ]
-}
