@@ -43,6 +43,7 @@ if (preview() === false) {
 // online
 confirm().then(function () {
     online(argv.u);
+    Log.info('Done!');
 }, function () {
     process.exit(0);
 });

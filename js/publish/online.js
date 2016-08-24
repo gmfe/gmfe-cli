@@ -7,7 +7,7 @@ var _ = require('underscore');
 function online(u) {
     Log.info('>>>>>>>>>> 执行发布');
 
-    var tag = 'online_' + moment().format('YY_MM_DD_HH_mm') + '_' + u;
+    var tag = 'online_' + moment().format('YYYY_MM_DD_HH_mm') + '_' + u;
 
     Log.step('打版本tag ' + tag);
     sh.exec('git tag ' + tag + '; git push --tags');
