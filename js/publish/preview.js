@@ -27,8 +27,8 @@ function preview() {
         return false;
     }
 
-    Log.step('最近2次提交');
-    sh.exec('git log -n 2');
+    Log.step('最近5次提交');
+    sh.exec('git log -n 5');
 
     return true;
 }
