@@ -54,6 +54,7 @@ if (argv.t) {
         return confirm('上线').then(() => {
             online(argv.u);
             Log.info('上线完成!');
+            Log.info('❤ ❤ ❤ ❤ 棒棒哒，么么哒！❤ ❤ ❤ ❤');
         });
     }).catch(() => {
         process.exit(1);
