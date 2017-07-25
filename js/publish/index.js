@@ -14,13 +14,13 @@ const argv = help();
 
 // 参数校验
 if (argv._.length === 0) {
-    sh.exec('node ./bin/gmfe.js -h');
+    sh.exec('gmfe -h');
     process.exit(0);
 }
 
 // 目前只有publish一个模块
 if (!argv._.includes('publish') || !argv.u) {
-    sh.exec('node ./bin/gmfe.js -h');
+    sh.exec('gmfe -h');
     process.exit(0);
 }
 

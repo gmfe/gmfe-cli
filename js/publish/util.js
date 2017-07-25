@@ -16,7 +16,7 @@ const Log = {
         console.log.call(this, colors.red('[Error] ' + _.values(arguments).join(' ')));
     },
     step(){
-        console.log.call(this, colors.blue('' + _.values(arguments).join(' ')));
+        console.log.call(this, colors.cyan('  [step]' + _.values(arguments).join(' ')));
     }
 };
 
