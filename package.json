@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/gmfe.js"
+    "start": "node ./bin/gmfe.js",
+    "publishpatch": "sh deploy/publish.sh"
   },
   "repository": {
     "type": "git",
