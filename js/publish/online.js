@@ -12,9 +12,10 @@ function online(u) {
     Log.step('打版本tag ' + tag);
     sh.exec('git tag ' + tag + '; git push --tags');
 
-    sh.exec('mkdir -p bak');
-    Log.step(`备份 bak/bak${tag}`);
-    sh.exec(`tar zcvf ./bak/${tag}.tar.gz build`);
+    sh.exec('mkdir -p backup');
+    const fileName = `backup/${tag}.tar.gz`;
+    Log.step(`备份 ${fileName}`);
+    sh.exec(`tar zcvf ${fileName} build`);
 
     Log.step('执行后置上线脚本 ./deploy/after_online');
     sh.exec('./deploy/after_online');
