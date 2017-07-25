@@ -1,8 +1,8 @@
-var sh = require('shelljs');
-var colors = require('colors');
-var _ = require('underscore');
+const sh = require('shelljs');
+const colors = require('colors');
+const _ = require('underscore');
 
-var Log = {
+const Log = {
     log() {
         console.log.call(this, _.values(arguments).join(' '));
     },
@@ -16,12 +16,12 @@ var Log = {
         console.log.call(this, colors.red('[Error] ' + _.values(arguments).join(' ')));
     },
     step(){
-        console.log.call(this, colors.blue('' + _.values(arguments).join(' ')));
+        console.log.call(this, colors.cyan('  [step]' + _.values(arguments).join(' ')));
     }
 };
 
-var getProjectPath = function () {
-    var dir = sh.exec('git rev-parse --git-dir', {silent: true});
+const getProjectPath = function () {
+    const dir = sh.exec('git rev-parse --git-dir', {silent: true});
     if (dir.code === 0) {
         if (dir.stdout === '.git\n') {
             return sh.pwd();

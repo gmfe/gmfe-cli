@@ -1,4 +1,4 @@
-var yargs = require('yargs');
+const yargs = require('yargs');
 
 function help() {
     return yargs.usage('gmfe publish [options]')
@@ -8,6 +8,12 @@ function help() {
             alias: 'user',
             demand: false,
             describe: 'name who publish project',
+            type: 'string'
+        })
+        .option('t', {
+            alias: 'tag',
+            demand: false,
+            describe: 'which tag to rollback',
             type: 'string'
         })
         .example('gmfe publish -u user')

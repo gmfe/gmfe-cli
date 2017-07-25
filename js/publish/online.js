@@ -1,18 +1,23 @@
-var sh = require('shelljs');
-var Log = require('./util').Log;
-var readline = require('readline');
-var moment = require('moment');
-var _ = require('underscore');
+const sh = require('shelljs');
+const Log = require('./util').Log;
+const readline = require('readline');
+const moment = require('moment');
+const _ = require('underscore');
 
 function online(u) {
-    Log.info('>>>>>>>>>> 执行发布');
+    Log.info('>>>>>>>>>> 执行上线');
 
-    var tag = 'online_' + moment().format('YYYY_MM_DD_HH_mm') + '_' + u;
+    const tag = 'online_' + moment().format('YYYY_MM_DD_HH_mm') + '_' + u;
 
     Log.step('打版本tag ' + tag);
     sh.exec('git tag ' + tag + '; git push --tags');
 
-    Log.step('执行后置脚本 ./deploy/after_online');
+    sh.exec('mkdir -p backup');
+    const fileName = `backup/${tag}.tar.gz`;
+    Log.step(`备份 ${fileName}`);
+    sh.exec(`tar zcvf ${fileName} build`);
+
+    Log.step('执行后置上线脚本 ./deploy/after_online');
     sh.exec('./deploy/after_online');
 }
 
