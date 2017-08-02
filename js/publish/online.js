@@ -3,6 +3,8 @@ const Log = require('./util').Log;
 const readline = require('readline');
 const moment = require('moment');
 const _ = require('underscore');
+const path = require('path');
+const Util = require('./util');
 
 function online(u) {
     Log.info('>>>>>>>>>> 执行上线');
@@ -17,8 +19,10 @@ function online(u) {
     Log.step(`备份 ${fileName}`);
     sh.exec(`tar zcvf ${fileName} build`);
 
-    Log.step('执行后置上线脚本 ./deploy/after_online');
-    sh.exec('./deploy/after_online');
+    Log.step('执行上线脚本');
+
+    const projectName = Util.getProjectPath().split('/').pop().replace('gm_static_', '');
+    sh.exec(`rsync -aztH --exclude .git --exclude .svn --exclude .swp --exclude node_modules --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
 }
 
 module.exports = online;
