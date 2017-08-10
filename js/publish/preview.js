@@ -1,19 +1,22 @@
-var sh = require('shelljs');
-var Log = require('./util').Log;
+const sh = require('shelljs');
+const Log = require('./util').Log;
 
 function preview() {
     Log.info('>>>>>>>>>> 发布前检测');
 
     Log.step('检测本地代码状态');
-    var diff = sh.exec('git diff', {silent: true});
+    const diff = sh.exec('git diff', {silent: true});
     if (diff.stdout !== '') {
         Log.warn('Dirty！确保你本地代码是干净的');
         return false;
     }
 
-    var branch = sh.exec('git branch', {silent: true});
-    if (branch.stdout.indexOf('* master\n') === -1) {
-        Log.warn('No master！确保你处于master分支');
+    const branch = sh.exec('git branch', {silent: true}),
+        branchNameMatch = branch.stdout.match(/\*\s+(master)\n/) || branch.stdout.match(/\*\s+(online-.+)\n/),
+        branchName = branchNameMatch && branchNameMatch[1];
+
+    if (!branchName) {
+        Log.warn('确保你处于master或online分支');
         return false;
     }
 
@@ -21,9 +24,9 @@ function preview() {
     sh.exec('git pull');
 
     Log.step('比较远端代码');
-    var oDiff = sh.exec('git diff master origin/master', {silent: true});
+    const oDiff = sh.exec(`git diff ${branchName} origin/${branchName}`, {silent: true});
     if (oDiff.stdout !== '') {
-        Log.warn('master不同于origin/master。请检查！');
+        Log.warn(`${branchName}不同于origin/${branchName}。请检查！`);
         return false;
     }
 
