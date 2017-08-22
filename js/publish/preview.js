@@ -1,5 +1,5 @@
 const sh = require('shelljs');
-const Log = require('./util').Log;
+const Log = require('../util').Log;
 
 function preview() {
     Log.info('>>>>>>>>>> 发布前检测');
