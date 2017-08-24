@@ -3,7 +3,7 @@ const yargs = require('yargs');
 function help() {
     return yargs.usage('gmfe publish [options]')
         .locale('en')
-        .command('publish -u <name> [-t <tag>] ', 'publish project')
+        .command('publish -u who] ', 'publish project')
         .command({
             command: 'versioninfo',
             desc: 'show recently version'
