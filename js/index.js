@@ -13,7 +13,7 @@ if (argv._.length === 0) {
 }
 
 if (argv._.includes('publish') && argv.u) {
-    publishInit();
+    publishInit(argv.t, argv.u);
 } else if (argv._.includes('versioninfo')) {
     versionInfo(argv.w);
 } else {

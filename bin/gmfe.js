@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('../js/publish/index');
+require('../js/index');
