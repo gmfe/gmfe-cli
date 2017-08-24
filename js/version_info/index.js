@@ -7,12 +7,13 @@ const colors = require('colors');
 
 const configProject = [
     {name: 'gm_static_station', desc: 'Station'},
-    // {name: 'gm_static_manage', desc: 'MA'},
-    // {name: 'gm_static_bshop', desc: 'BShop'},
-    // {name: 'gm_static_dealer', desc: '配送商导航'},
-    // {name: 'gm_static_storage', desc: '静态存储服务'},
-    // {name: 'gm_static_admin', desc: 'Admin'},
-    // {name: 'gm_official', desc: '官网'},
+    {name: 'gm_static_manage', desc: 'MA'},
+    {name: 'gm_static_bshop', desc: 'BShop'},
+    {name: 'gm_static_dealer', desc: '配送商导航'},
+    {name: 'gm_static_storage', desc: '静态存储服务'},
+    {name: 'gm_static_admin', desc: 'Admin'},
+    {name: 'gm_official', desc: '官网'}
+
     // {name: 'gmrnbshop', desc: 'BShop APP'},
     // {name: 'gmrnmes', desc: 'pad 称重打印'},
     // {name: 'gmrnpa', desc: '采购工具'},
@@ -21,7 +22,7 @@ const configProject = [
 function showVersionInfo(project, desc, w = 1) {
     sh.cd(project);
 
-    const stdout = sh.exec(`git log --tags --merges -n ${w * 20} --decorate=full --pretty="format:>>>>>>>>>>%n-->>hash: %h%n-->>author: %an%n-->>date: %aI%n-->>subject: %s%n-->>body: %b"`, {silent: true}).stdout;
+    const stdout = sh.exec(`git log --merges -n ${w * 20} --decorate=full --pretty="format:>>>>>>>>>>%n-->>hash: %h%n-->>author: %an%n-->>date: %aI%n-->>subject: %s%n-->>body: %b"`, {silent: true}).stdout;
 
     let result = [];
     _.each(stdout.split('>>>>>>>>>>').slice(1), str => {
