@@ -10,7 +10,6 @@ const configProject = [
     {name: 'gm_static_manage', desc: 'MA'},
     {name: 'gm_static_bshop', desc: 'BShop'},
     {name: 'gm_static_dealer', desc: '配送商导航'},
-    {name: 'gm_static_storage', desc: '静态存储服务'},
     {name: 'gm_static_admin', desc: 'Admin'},
     {name: 'gm_official', desc: '官网'}
 
