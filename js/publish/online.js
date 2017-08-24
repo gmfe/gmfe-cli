@@ -1,10 +1,10 @@
 const sh = require('shelljs');
-const Log = require('./util').Log;
+const Log = require('../util').Log;
 const readline = require('readline');
 const moment = require('moment');
-const _ = require('underscore');
+const _ = require('lodash');
 const path = require('path');
-const Util = require('./util');
+const Util = require('../util');
 
 function online(u) {
     Log.info('>>>>>>>>>> 执行上线');

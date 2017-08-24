@@ -1,4 +1,4 @@
-const Log = require('./util').Log;
+const Log = require('../util').Log;
 const readline = require('readline');
 const moment = require('moment');
 

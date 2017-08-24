@@ -1,8 +1,8 @@
 const sh = require('shelljs');
-const Log = require('./util').Log;
+const Log = require('../util').Log;
 const fs = require('fs');
 const path = require('path');
-const Util = require('./util');
+const Util = require('../util');
 
 function rollback(tag) {
     Log.info('>>>>>>>>>> 执行rollback');
