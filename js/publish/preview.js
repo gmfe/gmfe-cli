@@ -1,5 +1,6 @@
 const sh = require('shelljs');
 const Log = require('../util').Log;
+const Util = require('../util');
 
 function preview() {
     Log.info('>>>>>>>>>> 发布前检测');
@@ -11,12 +12,10 @@ function preview() {
         return false;
     }
 
-    const branch = sh.exec('git branch', {silent: true}),
-        branchNameMatch = branch.stdout.match(/\*\s+(master)\n/) || branch.stdout.match(/\*\s+(online-.+)\n/),
-        branchName = branchNameMatch && branchNameMatch[1];
+    const branchName = Util.getBranchName();
 
     if (!branchName) {
-        Log.warn('确保你处于master或online分支');
+        Log.warn('确保你处于master、online或release分支');
         return false;
     }
 

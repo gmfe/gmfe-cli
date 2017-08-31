@@ -6,6 +6,8 @@ function online() {
 
     Log.step('npm run deploy');
     sh.exec('npm run deploy');
+
+    Log.info('打包完成!');
 }
 
 module.exports = online;

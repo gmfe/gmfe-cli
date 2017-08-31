@@ -15,7 +15,7 @@ const Log = {
     error() {
         console.log.call(this, colors.red('[Error] ' + _.values(arguments).join(' ')));
     },
-    step(){
+    step() {
         console.log.call(this, colors.cyan('  [step]' + _.values(arguments).join(' ')));
     }
 };
@@ -33,7 +33,15 @@ const getProjectPath = function () {
     }
 };
 
+const getBranchName = () => {
+    const branch = sh.exec('git branch', {silent: true}),
+        branchNameMatch = branch.stdout.match(/\*\s+(master)\n/) || branch.stdout.match(/\*\s+(online-.+)\n/) || branch.stdout.match(/\*\s+(release-.+)\n/);
+
+    return branchNameMatch && branchNameMatch[1];
+};
+
 module.exports = {
-    Log: Log,
-    getProjectPath: getProjectPath
+    Log,
+    getProjectPath,
+    getBranchName
 };
