@@ -7,7 +7,7 @@ const online = require('./online');
 const rollback = require('./rollback');
 const Log = require('../util').Log;
 
-function init(tag, user) {
+function init(tag, user, branch) {
     // 前往工程的父目录
     const projectPath = Util.getProjectPath();
     if (projectPath === false) {
@@ -26,52 +26,23 @@ function init(tag, user) {
     } else {
         // preview
         // 主要是对当前的工程检查一遍。 确认是Master，且clean。
-        if (preview() === false) {
+        if (preview(branch) === false) {
             process.exit(1);
         }
 
         // build
         confirm('打包').then(() => {
             build();
-            Log.info('打包完成!');
 
-            return confirm('上线').then(() => {
-                online(user);
-                Log.info('上线完成!');
-                Log.info(`
-//
-//                       _oo0oo_
-//                      o8888888o
-//                      88" . "88
-//                      (| -_- |)
-//                      0\\  =  /0
-//                    ___/\`---'\\___
-//                  .' \\\\|     |// '.
-//                 / \\\\|||  :  |||// \\
-//                / _||||| -:- |||||- \\
-//               |   | \\\\\\  -  /// |   |
-//               | \\_|  ''\\---/''  |_/ |
-//               \\  .-\\__  '-'  ___/-. /
-//             ___'. .'  /--.--\\  \`. .'___
-//          ."" '<  \`.___\\_<|>_/___.' >' "".
-//         | | :  \`- \\\`.;\`\\ _ /\`;.\`/ - \` : | |
-//         \\  \\ \`_.   \\_ __\\ /__ _/   .-\` /  /
-//     =====\`-.____\`.___ \\_____/___.-\`___.-'=====
-//                       \`=---='
-//
-//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-//               佛祖保佑         永无BUG
-//
-//             ❤ ❤ ❤ ❤ 棒棒哒，么么哒！❤ ❤ ❤ ❤
-//`);
-            });
+            return confirm('上线');
+        }).then(() => {
+            return online(user)
         }).catch(() => {
             process.exit(1);
         });
     }
 
-// event
+    // event
     process.on('exit', function () {
         console.log('gmfe exit');
     });

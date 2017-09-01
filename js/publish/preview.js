@@ -1,7 +1,8 @@
 const sh = require('shelljs');
 const Log = require('../util').Log;
+const Util = require('../util');
 
-function preview() {
+function preview(grayBranch) {
     Log.info('>>>>>>>>>> 发布前检测');
 
     Log.step('检测本地代码状态');
@@ -11,12 +12,18 @@ function preview() {
         return false;
     }
 
-    const branch = sh.exec('git branch', {silent: true}),
-        branchNameMatch = branch.stdout.match(/\*\s+(master)\n/) || branch.stdout.match(/\*\s+(online-.+)\n/),
-        branchName = branchNameMatch && branchNameMatch[1];
+    if (grayBranch) {
+        sh.exec(`git checkout ${grayBranch}`, {silent: true});
+        sh.exec(`git pull origin ${grayBranch}`, {silent: true});
+    }
 
-    if (!branchName) {
-        Log.warn('确保你处于master或online分支');
+    const currentBranch = Util.getBranchName();
+
+    if (!currentBranch) {
+        Log.warn('确保你处于master、online或release分支');
+        return false;
+    } else if (grayBranch && grayBranch !== currentBranch) {
+        Log.warn(`分支${grayBranch}不存在，请输入准确的灰度分支名`);
         return false;
     }
 
@@ -24,9 +31,9 @@ function preview() {
     sh.exec('git pull');
 
     Log.step('比较远端代码');
-    const oDiff = sh.exec(`git diff ${branchName} origin/${branchName}`, {silent: true});
+    const oDiff = sh.exec(`git diff ${currentBranch} origin/${currentBranch}`, {silent: true});
     if (oDiff.stdout !== '') {
-        Log.warn(`${branchName}不同于origin/${branchName}。请检查！`);
+        Log.warn(`${currentBranch}不同于origin/${currentBranch}。请检查！`);
         return false;
     }
 
