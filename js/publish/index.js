@@ -7,7 +7,7 @@ const online = require('./online');
 const rollback = require('./rollback');
 const Log = require('../util').Log;
 
-function init(tag, user) {
+function init(tag, user, branch) {
     // 前往工程的父目录
     const projectPath = Util.getProjectPath();
     if (projectPath === false) {
@@ -26,7 +26,7 @@ function init(tag, user) {
     } else {
         // preview
         // 主要是对当前的工程检查一遍。 确认是Master，且clean。
-        if (preview() === false) {
+        if (preview(branch) === false) {
             process.exit(1);
         }
 

@@ -19,12 +19,16 @@ function help() {
             demand: false,
             describe: 'which tag to rollback',
             type: 'string'
+        }).option('b', {
+            alias: 'branch',
+            demand: false,
+            describe: 'which branch to gray release'
         }).option('w', {
             alias: 'week',
             demand: false,
             describe: 'how many weeks to show'
         })
-        .example('gmfe publish -u name\ngmfe publish -u -t online_2017_08_21_17_50_name\ngmfe versioninfo')
+        .example('gmfe publish -u name\ngmfe publish -u name -t online_2017_08_21_17_50_name\ngmfe publish -u name -b release-xxx\ngmfe versioninfo')
         .version()
         .argv;
 }
