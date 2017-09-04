@@ -5,6 +5,7 @@ const confirm = require('./confirm');
 const build = require('./build');
 const online = require('./online');
 const rollback = require('./rollback');
+const gray = require('./gray');
 const Log = require('../util').Log;
 
 function init(tag, user, branch) {
@@ -24,9 +25,14 @@ function init(tag, user, branch) {
             process.exit(1);
         });
     } else {
+        // 灰度发布
+        if (branch) {
+            gray(branch);
+        }
+
         // preview
         // 主要是对当前的工程检查一遍。 确认是Master，且clean。
-        if (preview(branch) === false) {
+        if (preview() === false) {
             process.exit(1);
         }
 
@@ -34,7 +40,7 @@ function init(tag, user, branch) {
         confirm('打包').then(() => {
             build();
 
-            return confirm('上线');
+            return confirm(branch ? '灰度上线' : '上线');
         }).then(() => {
             return online(user)
         }).catch(() => {

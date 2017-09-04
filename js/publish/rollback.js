@@ -18,7 +18,7 @@ function rollback(tag) {
     Log.step(`解压 ${fileName}`);
     sh.exec(`tar zxvf ${fileName} -C ./`);
 
-    Log.step('执行上线脚本');
+    Log.step('执行同步脚本');
 
     const projectName = Util.getProjectPath().split('/').pop().replace('gm_static_', '');
     sh.exec(`rsync -aztH --exclude .git --exclude .svn --exclude .swp --exclude node_modules --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);

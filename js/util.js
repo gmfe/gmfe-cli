@@ -40,8 +40,17 @@ const getBranchName = () => {
     return branchNameMatch && branchNameMatch[1];
 };
 
+const getProjectName = () => {
+    const projectPath = getProjectPath();
+
+    if (!projectPath) return null;
+
+    return projectPath.split('/').pop().split('_')[2];
+};
+
 module.exports = {
     Log,
     getProjectPath,
-    getBranchName
+    getBranchName,
+    getProjectName
 };
