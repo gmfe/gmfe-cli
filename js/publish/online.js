@@ -11,8 +11,8 @@ function online() {
 
     Log.step('执行同步脚本');
 
-    sh.exec(`rsync -aztH --exclude .git --exclude .svn --exclude .swp --exclude node_modules --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
-    sh.exec(`rsync -aztH --exclude .git --exclude .svn --exclude .swp --exclude node_modules --rsh=ssh ./build/index.html static.cluster.gm:/data/templates/${projectName}/${branchName}/`); // 同步模板文件
+    sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
+    sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html static.cluster.gm:/data/templates/${projectName}/${branchName}/`); // 同步模板文件
 
     Log.info('上线完成!');
     Log.info(`
