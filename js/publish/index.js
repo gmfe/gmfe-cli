@@ -1,48 +1,48 @@
 const sh = require("shelljs");
-const Util = require('../util');
 const preview = require('./preview');
 const confirm = require('./confirm');
 const build = require('./build');
-const online = require('./online');
+const {online, postOnline} = require('./online');
 const rollback = require('./rollback');
 const gray = require('./gray');
-const Log = require('../util').Log;
+const {getBranchName, getProjectPath, Log} = require('../util');
 
 function init(tag, user, branch) {
     // 前往工程的父目录
-    const projectPath = Util.getProjectPath();
+    const projectPath = getProjectPath();
     if (projectPath === false) {
         Log.error('无法定位git工程');
         process.exit(1);
     }
     sh.cd(projectPath);
 
+    // 灰度发布
+    if (branch) {
+        gray(branch);
+    }
+
+    // preview
+    // 主要是对当前的工程检查一遍
+    if (preview() === false) {
+        process.exit(1);
+    }
+
+    // rollback
     if (tag) {
         confirm(`回滚到${tag}`).then(() => {
             rollback(tag);
-            process.exit(0);
+            online(user);
         }).catch(() => {
             process.exit(1);
         });
     } else {
-        // 灰度发布
-        if (branch) {
-            gray(branch);
-        }
-
-        // preview
-        // 主要是对当前的工程检查一遍。 确认是Master，且clean。
-        if (preview() === false) {
-            process.exit(1);
-        }
-
-        // build
-        confirm('打包').then(() => {
+        confirm(`打包${getBranchName()}分支`).then(() => {
             build();
 
             return confirm(branch ? '灰度上线' : '上线');
         }).then(() => {
-            return online(user)
+            online(user);
+            postOnline(user);
         }).catch(() => {
             process.exit(1);
         });

@@ -7,6 +7,8 @@ function grayCheck(grayBranch) {
     const projectName = getProjectName(),
         grayDir = `.gray_release/gm_static_${projectName}_${grayBranch}`;
 
+    Log.info('>>>>>>>>>> 灰度发布准备');
+
     sh.exec('mkdir -p .gray_release');
 
     if (!fs.existsSync(grayDir)) {
@@ -25,6 +27,8 @@ function grayCheck(grayBranch) {
         Log.warn(`分支${grayBranch}不存在，请输入准确的灰度分支名`);
         process.exit(1);
     }
+
+    Log.info('>>>>>>>>>> 灰度发布准备就绪');
 }
 
 module.exports = grayCheck;
