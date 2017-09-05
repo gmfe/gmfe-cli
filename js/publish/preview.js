@@ -1,8 +1,8 @@
 const sh = require('shelljs');
-const Log = require('../util').Log;
 const Util = require('../util');
+const {Log, getBranchName} = Util;
 
-function preview(grayBranch) {
+function preview() {
     Log.info('>>>>>>>>>> 发布前检测');
 
     Log.step('检测本地代码状态');
@@ -12,18 +12,10 @@ function preview(grayBranch) {
         return false;
     }
 
-    if (grayBranch) {
-        sh.exec(`git checkout ${grayBranch}`, {silent: true});
-        sh.exec(`git pull origin ${grayBranch}`, {silent: true});
-    }
-
-    const currentBranch = Util.getBranchName();
+    const currentBranch = getBranchName();
 
     if (!currentBranch) {
         Log.warn('确保你处于master、online或release分支');
-        return false;
-    } else if (grayBranch && grayBranch !== currentBranch) {
-        Log.warn(`分支${grayBranch}不存在，请输入准确的灰度分支名`);
         return false;
     }
 
