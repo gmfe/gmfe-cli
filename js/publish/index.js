@@ -32,6 +32,7 @@ function init(tag, user, branch) {
         confirm(`回滚到${tag}`).then(() => {
             rollback(tag);
             online(user);
+            postOnline(user);
         }).catch(() => {
             process.exit(1);
         });
@@ -42,7 +43,7 @@ function init(tag, user, branch) {
             return confirm(branch ? '灰度上线' : '上线');
         }).then(() => {
             online(user);
-            postOnline(user);
+            postOnline(user, true);
         }).catch(() => {
             process.exit(1);
         });
