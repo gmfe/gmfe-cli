@@ -4,6 +4,7 @@ function help() {
     return yargs.usage('gmfe publish [options]')
         .locale('en')
         .command('publish', 'publish project')
+        .command('test', 'test project')
         .command({
             command: 'versioninfo',
             desc: 'show recently version'
@@ -22,7 +23,7 @@ function help() {
         }).option('b', {
             alias: 'branch',
             demand: false,
-            describe: 'which branch to gray release'
+            describe: 'which branch to gray or test release'
         }).option('w', {
             alias: 'week',
             demand: false,
