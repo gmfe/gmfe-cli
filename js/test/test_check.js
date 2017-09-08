@@ -28,6 +28,9 @@ function testCheck(testBranch) {
         process.exit(1);
     }
 
+    Log.step('最近5次提交');
+    sh.exec('git log -n 5 --decorate=full');
+
     Log.info('>>>>>>>>>> 测试部署准备就绪');
 }
 

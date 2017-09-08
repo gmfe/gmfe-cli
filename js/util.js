@@ -48,8 +48,8 @@ const getProjectName = () => {
     return projectPath.split('/').pop().split('_')[2];
 };
 
-const remoteTemplatePathCheck = () => {
-    const check = sh.exec(`if ssh static.cluster.gm '[ -d /data/templates/${getProjectName()}/${getBranchName()}/ ]'; then echo "succ"; exit 1; else echo "fail"; fi`, {silent: true});
+const remoteTemplatePathCheck = (branch) => {
+    const check = sh.exec(`if ssh static.cluster.gm '[ -d /data/templates/${getProjectName()}/${branch || getBranchName()}/ ]'; then echo "succ"; exit 1; else echo "fail"; fi`, {silent: true});
 
     return check.stdout === 'succ\n'
 };

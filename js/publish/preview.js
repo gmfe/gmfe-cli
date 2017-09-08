@@ -2,7 +2,7 @@ const sh = require('shelljs');
 const Util = require('../util');
 const {Log, getBranchName, remoteTemplatePathCheck} = Util;
 
-function preview() {
+function preview(grayBranch) {
     Log.info('>>>>>>>>>> 发布前检测');
 
     Log.step('检测本地代码状态');
@@ -19,7 +19,7 @@ function preview() {
         return false;
     }
 
-    if (!remoteTemplatePathCheck()) {
+    if (!remoteTemplatePathCheck(grayBranch)) {
         Log.error('目标模板路径不存在');
         return false;
     }

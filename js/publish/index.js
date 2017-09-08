@@ -18,7 +18,7 @@ function init(tag, user, branch) {
 
     // preview
     // 主要是对当前的工程检查一遍
-    if (preview() === false) {
+    if (preview(branch) === false) {
         process.exit(1);
     }
 

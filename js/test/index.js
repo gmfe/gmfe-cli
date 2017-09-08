@@ -28,8 +28,8 @@ function init(branch) {
 
     const projectName = getProjectName();
 
-    sh.exec(`rsync -aztHv --rsh=ssh ./build/ /data/www/static_resource/${projectName}/`);
-    sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html /data/templates/${projectName}/${branch}/`); // 同步模板文件
+    sh.exec(`rsync -aztHv ./build/ /data/www/static_resource/${projectName}/`);
+    sh.exec(`rsync -aztHv ./build/index.html /data/templates/${projectName}/${branch}/`); // 同步模板文件
 
     Log.info('测试部署完成!');
 
