@@ -13,7 +13,7 @@ function grayCheck(grayBranch) {
 
     if (!fs.existsSync(grayDir)) {
         sh.exec(`mkdir -p ${grayDir}`, {silent: true});
-        sh.exec(`rsync -aztHv --exclude .gray_release --exclude backup . ${grayDir}`, {silent: true});
+        sh.exec(`rsync -aztHv  --exclude .test_release --exclude .gray_release --exclude backup . ${grayDir}`, {silent: true});
     }
 
     sh.cd(`${getProjectPath()}/${grayDir}`);
