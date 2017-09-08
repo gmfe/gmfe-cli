@@ -11,6 +11,12 @@ function online() {
 
     Log.step('执行同步脚本');
 
+    const remoteTemplatePathCheck = sh.exec(`if ssh static.cluster.gm '[ -d /data/templates/${projectName}/${branchName}/ ]'; then echo "succ"; exit 1; else echo "fail"; fi`, {silent: true});
+    if (remoteTemplatePathCheck.stdout === 'fail\n') {
+        Log.error('目标模板路径不存在');
+        process.exit(1);
+    }
+
     sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
     sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html static.cluster.gm:/data/templates/${projectName}/${branchName}/`); // 同步模板文件
 
