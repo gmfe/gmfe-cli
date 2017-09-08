@@ -1,7 +1,7 @@
 const sh = require('shelljs');
 const moment = require('moment');
 const Util = require('../util');
-const {Log, getBranchName, getProjectName} = Util;
+const {Log, getBranchName, getProjectName, remoteTemplatePathCheck} = Util;
 
 function online() {
     Log.info('>>>>>>>>>> 执行上线');
@@ -11,8 +11,7 @@ function online() {
 
     Log.step('执行同步脚本');
 
-    const remoteTemplatePathCheck = sh.exec(`if ssh static.cluster.gm '[ -d /data/templates/${projectName}/${branchName}/ ]'; then echo "succ"; exit 1; else echo "fail"; fi`, {silent: true});
-    if (remoteTemplatePathCheck.stdout === 'fail\n') {
+    if (!remoteTemplatePathCheck()) {
         Log.error('目标模板路径不存在');
         process.exit(1);
     }

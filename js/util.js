@@ -48,9 +48,16 @@ const getProjectName = () => {
     return projectPath.split('/').pop().split('_')[2];
 };
 
+const remoteTemplatePathCheck = () => {
+    const check = sh.exec(`if ssh static.cluster.gm '[ -d /data/templates/${getProjectName()}/${getBranchName()}/ ]'; then echo "succ"; exit 1; else echo "fail"; fi`, {silent: true});
+
+    return check.stdout === 'succ\n'
+};
+
 module.exports = {
     Log,
     getProjectPath,
     getBranchName,
-    getProjectName
+    getProjectName,
+    remoteTemplatePathCheck
 };

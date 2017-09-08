@@ -9,11 +9,11 @@ function grayCheck(grayBranch) {
 
     Log.info('>>>>>>>>>> 灰度发布准备');
 
-    sh.exec('mkdir -p .gray_release');
+    sh.exec('mkdir -p .gray_release', {silent: true});
 
     if (!fs.existsSync(grayDir)) {
-        sh.exec(`mkdir -p ${grayDir}`);
-        sh.exec(`rsync -aztHv --exclude .gray_release --exclude backup . ${grayDir}`);
+        sh.exec(`mkdir -p ${grayDir}`, {silent: true});
+        sh.exec(`rsync -aztHv --exclude .gray_release --exclude backup . ${grayDir}`, {silent: true});
     }
 
     sh.cd(`${getProjectPath()}/${grayDir}`);

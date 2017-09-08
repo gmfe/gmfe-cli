@@ -16,15 +16,15 @@ function init(tag, user, branch) {
     }
     sh.cd(projectPath);
 
-    // 灰度发布
-    if (branch) {
-        gray(branch);
-    }
-
     // preview
     // 主要是对当前的工程检查一遍
     if (preview() === false) {
         process.exit(1);
+    }
+
+    // 灰度发布
+    if (branch) {
+        gray(branch);
     }
 
     // rollback
