@@ -18,8 +18,8 @@ function testCheck(testBranch) {
 
     sh.cd(`${getProjectPath()}/${testDir}`);
 
-    sh.exec('git pull');
     sh.exec(`git checkout ${testBranch}`, {silent: true});
+    sh.exec(`git pull origin ${testBranch}`);
 
     const currentBranch = sh.exec("git branch | sed -n '/\\* /s///p'", {silent: true}).stdout.replace('\n', '');
 
