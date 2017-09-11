@@ -14,7 +14,7 @@ function init(branch) {
 
     // preview
     // 主要是对当前的工程检查一遍
-    if (preview(branch) === false) {
+    if (preview() === false) {
         process.exit(1);
     }
 

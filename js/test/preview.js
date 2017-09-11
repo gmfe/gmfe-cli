@@ -2,7 +2,9 @@ const sh = require('shelljs');
 const Util = require('../util');
 const {Log} = Util;
 
-function preview(branch) {
+function preview() {
+    const branch = sh.exec("git branch | sed -n '/\\* /s///p'").stdout.replace('\n', '');
+
     Log.info('>>>>>>>>>> 测试部署前检测');
 
     Log.step('检测本地代码状态');

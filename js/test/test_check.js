@@ -21,9 +21,9 @@ function testCheck(testBranch) {
     sh.exec('git pull');
     sh.exec(`git checkout ${testBranch}`, {silent: true});
 
-    const currentBranch = sh.exec("git branch | sed -n '/\\* /s///p'").stdout.replace('\n', '');
+    const currentBranch = sh.exec("git branch | sed -n '/\\* /s///p'", {silent: true}).stdout.replace('\n', '');
 
-    if (currentBranch && currentBranch !== testBranch) {
+    if (currentBranch !== testBranch) {
         Log.warn(`分支${testBranch}不存在，请输入准确的分支名`);
         process.exit(1);
     }
