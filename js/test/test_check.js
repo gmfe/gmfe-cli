@@ -1,7 +1,7 @@
 const sh = require('shelljs');
 const fs = require('fs');
 const Util = require('../util');
-const {Log, getBranchName, getProjectName, getProjectPath} = Util;
+const {Log, getProjectName, getProjectPath} = Util;
 
 function testCheck(testBranch) {
     const projectName = getProjectName(),
