@@ -1,9 +1,9 @@
 const sh = require("shelljs");
 const preview = require('./preview');
 const testCheck = require('./test_check');
-const {getProjectPath, getProjectName, Log} = require('../util');
+const { getProjectPath, getProjectName, Log } = require('../util');
 
-function init(branch) {
+function init(branch = "master") {
     // 前往工程的父目录
     const projectPath = getProjectPath();
     if (projectPath === false) {
@@ -19,7 +19,8 @@ function init(branch) {
     }
 
     // 灰度发布
-    testCheck(branch);
+    if (branch !== 'master')
+        testCheck(branch);
 
     Log.info('>>>>>>>>>> 执行打包');
     Log.step('npm run testing');

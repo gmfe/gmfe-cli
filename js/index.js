@@ -15,7 +15,7 @@ if (argv._.length === 0) {
 
 if (argv._.includes('publish') && argv.u) {
     publishInit(argv.t, argv.u, argv.b);
-} else if (argv._.includes('test') && argv.b) {
+} else if (argv._.includes('test')) {
     testInit(argv.b);
 } else if (argv._.includes('versioninfo')) {
     versionInfo(argv.w);
