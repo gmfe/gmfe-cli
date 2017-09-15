@@ -29,7 +29,7 @@ function help() {
             demand: false,
             describe: 'how many weeks to show'
         })
-        .example('gmfe publish -u name\ngmfe publish -u name -t online_2017_08_21_17_50_name\ngmfe publish -u name -b release-xxx\ngmfe versioninfo')
+        .example('gmfe publish -u name\ngmfe publish -u name -t online_2017_08_21_17_50_name\ngmfe publish -u name -b release-xxx\ngmfe test -b release-xxx\ngmfe versioninfo')
         .version()
         .argv;
 }
