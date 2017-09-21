@@ -38,7 +38,7 @@ function init(tag, user, branch) {
         });
     } else {
         confirm(`打包${getBranchName()}分支`).then(() => {
-            build();
+            build(branch);
 
             return confirm(branch ? '灰度上线' : '上线');
         }).then(() => {
