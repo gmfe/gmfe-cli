@@ -24,8 +24,8 @@ function init(dir, filename) {
 
     var suffix = suffixReg.exec(filename);
 
-    if (!fs.existsSync(dir)) {
-        sh.exec('mkdir ' + dirname );
+    if (!fs.existsSync(dirname)) {
+        sh.exec('mkdir ' + dirname);
     }
 
     for(var i=0, len=size_array.length; i<len; i++){
