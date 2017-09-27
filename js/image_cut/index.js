@@ -32,7 +32,7 @@ function init(dir, filename) {
         m_dir = dirname + '/' + size_array[i] + suffix;
 
         sh.exec('cp ' + filename + ' ' + m_dir);
-        sh.exec('sips -Z ' + size_array[i] + ' ' + m_dir);
+        sh.exec('sips -Z ' + size_array[i] + ' ' + m_dir,  { silent: true });
     }
 
     process.on('exit', function () {
