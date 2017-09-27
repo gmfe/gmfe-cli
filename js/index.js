@@ -3,7 +3,7 @@ const help = require('./help');
 const publishInit = require('./publish/index');
 const testInit = require('./test/index');
 const versionInfo = require('./version_info/index');
-const formatImage = require('./format_image/index');
+const imageCut = require('./image_cut/index');
 
 // help 信息
 const argv = help();
@@ -20,8 +20,8 @@ if (argv._.includes('publish') && argv.u) {
     testInit(argv.b);
 } else if (argv._.includes('versioninfo')) {
     versionInfo(argv.w);
-} else if (argv._.includes('format')) {
-    formatImage(argv.d, argv.f);
+} else if (argv._.includes('imagecut')) {
+    imageCut(argv.d, argv._[1]);
 }else {
     sh.exec('gmfe -h');
     process.exit(0);

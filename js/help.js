@@ -9,7 +9,7 @@ function help() {
             command: 'versioninfo',
             desc: 'show recently version'
         })
-        .command('format', 'format image')
+        .command('imagecut', 'image cut')
         .demandCommand()
         .option('u', {
             alias: 'user',
@@ -33,10 +33,6 @@ function help() {
             alias: 'dir',
             demand: false,
             describe: 'where the image will be generated'
-        }).option('f', {
-            alias: 'file',
-            demand: false,
-            describe: 'source image file path'
         })
         .example('' +
             'gmfe publish -u name\n' +
@@ -44,7 +40,7 @@ function help() {
             'gmfe publish -u name -b release-xxx\n' +
             'gmfe test -b release-xxx\n' +
             'gmfe versioninfo\n' +
-            'gmfe format -f ./logo.png -d logo')
+            'gmfe imagecut ./js/logo.jpg -d ./img')
         .version()
         .argv;
 }

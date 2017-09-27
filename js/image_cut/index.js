@@ -1,8 +1,9 @@
 const sh = require('shelljs');
 const fs = require('fs');
 const {Log} = require('../util');
+const path = require('path');
 
-var dirname = process.cwd() + '/';
+var root = process.cwd();
 
 // image size
 var size_array = [
@@ -20,7 +21,8 @@ function init(dir, filename) {
 
     var suffixReg = /\.[^.]+$/, m_dir = '';
 
-    dirname = dir ? dirname + dir : dirname + 'logo';
+    dirname = path.resolve(root,  dir ? dir : './logo');
+
 
     var suffix = suffixReg.exec(filename);
 
