@@ -13,7 +13,7 @@ var size_array = [
 ]
 
 function init(dir, filename) {
-    if(!filename || !fs.existsSync(filename)) {
+    if(!fs.existsSync(filename)) {
         Log.error('无法定位至文件');
         process.exit(1);
     }
