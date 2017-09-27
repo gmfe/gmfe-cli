@@ -9,6 +9,7 @@ function help() {
             command: 'versioninfo',
             desc: 'show recently version'
         })
+        .command('format', 'format image')
         .demandCommand()
         .option('u', {
             alias: 'user',
@@ -28,8 +29,22 @@ function help() {
             alias: 'week',
             demand: false,
             describe: 'how many weeks to show'
+        }).option('d', {
+            alias: 'dir',
+            demand: false,
+            describe: 'where the image will be generated'
+        }).option('f', {
+            alias: 'file',
+            demand: false,
+            describe: 'source image file path'
         })
-        .example('gmfe publish -u name\ngmfe publish -u name -t online_2017_08_21_17_50_name\ngmfe publish -u name -b release-xxx\ngmfe test -b release-xxx\ngmfe versioninfo')
+        .example('' +
+            'gmfe publish -u name\n' +
+            'gmfe publish -u name -t online_2017_08_21_17_50_name\n' +
+            'gmfe publish -u name -b release-xxx\n' +
+            'gmfe test -b release-xxx\n' +
+            'gmfe versioninfo\n' +
+            'gmfe format -f ./logo.png -d logo')
         .version()
         .argv;
 }
