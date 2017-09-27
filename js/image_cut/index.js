@@ -20,11 +20,9 @@ function init(dir, filename) {
     }
 
     var suffixReg = /\.[^.]+$/, m_dir = '';
+    var suffix = suffixReg.exec(filename);
 
     dirname = path.resolve(root,  dir ? dir : './logo');
-
-
-    var suffix = suffixReg.exec(filename);
 
     if (!fs.existsSync(dirname)) {
         sh.exec('mkdir ' + dirname);
