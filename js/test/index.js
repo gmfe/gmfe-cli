@@ -24,7 +24,7 @@ function init(branch = "master") {
 
     Log.info('>>>>>>>>>> 执行打包');
     Log.step('npm run testing');
-    sh.exec('npm run testing');
+    sh.exec(`BRANCH=${branch} npm run testing`);
     Log.info('打包完成!');
 
     const projectName = getProjectName();
