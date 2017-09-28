@@ -9,6 +9,7 @@ function help() {
             command: 'versioninfo',
             desc: 'show recently version'
         })
+        .command('imagecut', 'image cut')
         .demandCommand()
         .option('u', {
             alias: 'user',
@@ -28,8 +29,18 @@ function help() {
             alias: 'week',
             demand: false,
             describe: 'how many weeks to show'
+        }).option('d', {
+            alias: 'dir',
+            demand: false,
+            describe: 'where the image will be generated'
         })
-        .example('gmfe publish -u name\ngmfe publish -u name -t online_2017_08_21_17_50_name\ngmfe publish -u name -b release-xxx\ngmfe test -b release-xxx\ngmfe versioninfo')
+        .example('' +
+            'gmfe publish -u name\n' +
+            'gmfe publish -u name -t online_2017_08_21_17_50_name\n' +
+            'gmfe publish -u name -b release-xxx\n' +
+            'gmfe test -b release-xxx\n' +
+            'gmfe versioninfo\n' +
+            'gmfe imagecut ./js/logo.jpg -d ./img')
         .version()
         .argv;
 }
