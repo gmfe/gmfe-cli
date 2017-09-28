@@ -36,7 +36,7 @@ function init(dir, filename) {
     }
 
     process.on('exit', function () {
-        Log.info('图片格式化完成!');
+        Log.info('图片裁剪完成!');
         console.log('gmfe exit');
     });
 }
