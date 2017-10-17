@@ -1,7 +1,7 @@
 const sh = require('shelljs');
 const moment = require('moment');
 const Util = require('../util');
-const {Log, getBranchName, getProjectName, remoteTemplatePathCheck} = Util;
+const { Log, getBranchName, getProjectName } = Util;
 
 function online() {
     Log.info('>>>>>>>>>> 执行上线');
@@ -10,11 +10,6 @@ function online() {
         projectName = getProjectName();
 
     Log.step('执行同步脚本');
-
-    if (!remoteTemplatePathCheck()) {
-        Log.error('目标模板路径不存在');
-        process.exit(1);
-    }
 
     sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
     sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html static.cluster.gm:/data/templates/${projectName}/${branchName}/`); // 同步模板文件
@@ -34,7 +29,7 @@ function backup(user) {
 
     sh.exec('mkdir -p backup');
     Log.step(`备份 ${fileName}`);
-    sh.exec(`tar zcvf ${fileName} build`, {silent: true});
+    sh.exec(`tar zcvf ${fileName} build`, { silent: true });
     Log.step('备份完成');
 }
 
