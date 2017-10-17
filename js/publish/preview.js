@@ -1,6 +1,6 @@
 const sh = require('shelljs');
 const Util = require('../util');
-const {Log, getBranchName, remoteTemplatePathCheck} = Util;
+const {Log, getBranchName} = Util;
 
 function preview(grayBranch) {
     const currentBranch = getBranchName();
@@ -16,11 +16,6 @@ function preview(grayBranch) {
 
     if (!currentBranch) {
         Log.warn('确保你处于master、online或release分支');
-        return false;
-    }
-
-    if (!remoteTemplatePathCheck(grayBranch || currentBranch)) {
-        Log.error('目标模板路径不存在');
         return false;
     }
 
