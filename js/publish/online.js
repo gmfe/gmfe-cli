@@ -1,7 +1,8 @@
 const sh = require('shelljs');
 const moment = require('moment');
+const http = require('http');
 const Util = require('../util');
-const { Log, getBranchName, getProjectName } = Util;
+const {Log, getBranchName, getProjectName} = Util;
 
 function online() {
     Log.info('>>>>>>>>>> 执行上线');
@@ -29,8 +30,14 @@ function backup(user) {
 
     sh.exec('mkdir -p backup');
     Log.step(`备份 ${fileName}`);
-    sh.exec(`tar zcvf ${fileName} build`, { silent: true });
+    sh.exec(`tar zcvf ${fileName} build`, {silent: true});
     Log.step('备份完成');
+
+    dingtalk(tag);
+}
+
+function dingtalk(tag) {
+    http.get('http://test.guanmai.cn:8083/tag/' + tag);
 }
 
 function postOnline(user, isNeedBackup = false) {
