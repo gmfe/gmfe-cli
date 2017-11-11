@@ -35,6 +35,7 @@ function _init() {
         return false;
     }
 
+    Log.info('start to publish ' + info.name);
     sh.exec('npm publish --registry="https://registry.npmjs.org"; cnpm sync ' + info.name + ';');
 
     Log.info(`如果 cnpm 同步失败（最近经常同步失败），请访问 https://npm.taobao.org/sync/${info.name} 手动触发更新。`);
@@ -44,6 +45,4 @@ const init = () => {
     _init() === false || process.exit(1);
 };
 
-init();
-
-// module.exports = init;
+module.exports = init;
