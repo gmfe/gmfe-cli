@@ -10,6 +10,7 @@ function help() {
             desc: 'show recently version'
         })
         .command('imagecut', 'image cut')
+        .command('npm_publish', 'publish a package to npm and sync to taobao')
         .demandCommand()
         .option('u', {
             alias: 'user',
@@ -40,7 +41,9 @@ function help() {
             'gmfe publish -u name -b release-xxx\n' +
             'gmfe test -b release-xxx\n' +
             'gmfe versioninfo\n' +
-            'gmfe imagecut ./js/logo.jpg -d ./img')
+            'gmfe imagecut ./js/logo.jpg -d ./img\n' +
+            'gmfe npm_publish'
+        )
         .version()
         .argv;
 }
