@@ -33,6 +33,7 @@ const getProjectPath = function () {
     }
 };
 
+// TODO 貌似语义不符
 const getBranchName = () => {
     const branch = sh.exec('git branch', {silent: true}),
         branchNameMatch = branch.stdout.match(/\*\s+(master)\n/) || branch.stdout.match(/\*\s+(online-.+)\n/) || branch.stdout.match(/\*\s+(release-.+)\n/);
@@ -54,10 +55,15 @@ const remoteTemplatePathCheck = (branch) => {
     return check.stdout === 'succ\n'
 };
 
+const getPackageJSON = () => {
+    return JSON.parse(sh.exec('cat package.json', {silent: true}).stdout);
+};
+
 module.exports = {
     Log,
     getProjectPath,
     getBranchName,
     getProjectName,
-    remoteTemplatePathCheck
+    remoteTemplatePathCheck,
+    getPackageJSON
 };

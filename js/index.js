@@ -4,6 +4,7 @@ const publishInit = require('./publish/index');
 const testInit = require('./test/index');
 const versionInfo = require('./version_info/index');
 const imageCut = require('./image_cut/index');
+const npmPublish = require('./npm_publish');
 
 // help 信息
 const argv = help();
@@ -22,7 +23,9 @@ if (argv._.includes('publish') && argv.u) {
     versionInfo(argv.w);
 } else if (argv._.includes('imagecut')) {
     imageCut(argv.d, argv._[1]);
-}else {
+} else if (argv._.includes('npm_publish')) {
+    npmPublish(argv.d, argv._[1]);
+} else {
     sh.exec('gmfe -h');
     process.exit(0);
 }

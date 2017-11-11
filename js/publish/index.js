@@ -1,6 +1,6 @@
 const sh = require("shelljs");
 const preview = require('./preview');
-const confirm = require('./confirm');
+const confirm = require('../common/confirm');
 const build = require('./build');
 const {online, postOnline} = require('./online');
 const rollback = require('./rollback');
