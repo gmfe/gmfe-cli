@@ -37,7 +37,8 @@ function _init(addWhat) {
 
     if (addWhat) {
         if (addWhat === 'major' || addWhat === 'minor' || addWhat === 'patch') {
-            sh.exec(`npm version ${addWhat}; git push origin master:master;`);
+            // 需要移除 package-lock.json 文件才能 npm version。
+            sh.exec(`rm -rf package-lock.json; npm version ${addWhat}; git push origin master:master;`);
         } else {
             Log.warn('-a 参数错误');
             return false;
