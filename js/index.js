@@ -24,7 +24,7 @@ if (argv._.includes('publish') && argv.u) {
 } else if (argv._.includes('imagecut')) {
     imageCut(argv.d, argv._[1]);
 } else if (argv._.includes('npm_publish')) {
-    npmPublish(argv.d, argv._[1]);
+    npmPublish(argv.a);
 } else {
     sh.exec('gmfe -h');
     process.exit(0);

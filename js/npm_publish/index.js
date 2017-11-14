@@ -1,7 +1,7 @@
 const sh = require('shelljs');
 const {Log, getProjectPath, getPackageJSON, getBranchName} = require('../util');
 
-function _init() {
+function _init(addWhat) {
     // 前往工程的父目录
     const projectPath = getProjectPath();
     if (projectPath === false) {
@@ -35,14 +35,23 @@ function _init() {
         return false;
     }
 
+    if (addWhat) {
+        if (addWhat === 'major' || addWhat === 'minor' || addWhat === 'patch') {
+            sh.exec(`npm version ${addWhat}; git push origin master:master;`);
+        } else {
+            Log.warn('-a 参数错误');
+            return false;
+        }
+    }
+
     Log.info(`start to publish ${info.name} ...`);
     sh.exec('npm publish --registry="https://registry.npmjs.org"; cnpm sync ' + info.name + ';');
 
     Log.info(`如果 cnpm 同步失败（最近经常同步失败），请访问 https://npm.taobao.org/sync/${info.name} 手动触发更新。`);
 }
 
-const init = () => {
-    _init() === false || process.exit(1);
+const init = (addWhat) => {
+    _init(addWhat) === false || process.exit(1);
 };
 
 module.exports = init;

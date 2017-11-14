@@ -34,6 +34,10 @@ function help() {
             alias: 'dir',
             demand: false,
             describe: 'where the image will be generated'
+        }).option('a', {
+            alias: 'add',
+            demand: false,
+            describe: 'npm version major or minor or patch'
         })
         .example('' +
             'gmfe publish -u name\n' +
@@ -42,7 +46,8 @@ function help() {
             'gmfe test -b release-xxx\n' +
             'gmfe versioninfo\n' +
             'gmfe imagecut ./js/logo.jpg -d ./img\n' +
-            'gmfe npm_publish'
+            'gmfe npm_publish\n' +
+            'gmfe npm_publish -a patch'
         )
         .version()
         .argv;
