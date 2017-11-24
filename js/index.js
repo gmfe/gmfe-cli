@@ -5,9 +5,28 @@ const testInit = require('./test/index');
 const versionInfo = require('./version_info/index');
 const imageCut = require('./image_cut/index');
 const npmPublish = require('./npm_publish');
+const { logger } = require('./util');
+
+const exec = sh.exec;
+
+sh.exec = function (command, options) {
+    const temp = exec.apply(this, Array.prototype.slice.call(arguments));
+
+    if (!options || !options.silent) {
+        if (temp.stderr) {
+            logger.error(`【${command}】${temp.stdout} ${temp.stderr.replace(/\n$/, '')}`);
+        } else {
+            logger.info(`【${command}】 ${temp.stdout.replace(/\n$/, '')}`);
+        }
+    }
+
+    return temp;
+};
 
 // help 信息
 const argv = help();
+
+logger.debug('gmfe argv:', argv);
 
 // 参数校验
 if (argv._.length === 0) {

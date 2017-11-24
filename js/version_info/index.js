@@ -1,17 +1,17 @@
 const sh = require('shelljs');
 const _ = require('lodash');
 const moment = require('moment');
-const {Log} = require('../util');
+const { logger } = require('../util');
 const fs = require('fs');
 const colors = require('colors');
 
 const configProject = [
-    {name: 'gm_static_station', desc: 'Station'},
-    {name: 'gm_static_manage', desc: 'MA'},
-    {name: 'gm_static_bshop', desc: 'BShop'},
-    {name: 'gm_static_dealer', desc: '配送商导航'},
-    {name: 'gm_static_admin', desc: 'Admin'},
-    {name: 'gm_official', desc: '官网'}
+    { name: 'gm_static_station', desc: 'Station' },
+    { name: 'gm_static_manage', desc: 'MA' },
+    { name: 'gm_static_bshop', desc: 'BShop' },
+    { name: 'gm_static_dealer', desc: '配送商导航' },
+    { name: 'gm_static_admin', desc: 'Admin' },
+    { name: 'gm_official', desc: '官网' }
 
     // {name: 'gmrnbshop', desc: 'BShop APP'},
     // {name: 'gmrnmes', desc: 'pad 称重打印'},
@@ -21,7 +21,7 @@ const configProject = [
 function showVersionInfo(project, desc, w = 1) {
     sh.cd(project);
 
-    const stdout = sh.exec(`git log --merges -n ${w * 20} --decorate=full --pretty="format:>>>>>>>>>>%n-->>hash: %h%n-->>author: %an%n-->>date: %aI%n-->>subject: %s%n-->>body: %b"`, {silent: true}).stdout;
+    const stdout = sh.exec(`git log --merges -n ${w * 20} --decorate=full --pretty="format:>>>>>>>>>>%n-->>hash: %h%n-->>author: %an%n-->>date: %aI%n-->>subject: %s%n-->>body: %b"`, { silent: true }).stdout;
 
     let result = [];
     _.each(stdout.split('>>>>>>>>>>').slice(1), str => {
@@ -56,8 +56,8 @@ body: ${info.body}
 function init(week) {
     const root = '~/.gmfe_version_info';
 
-    Log.info('********************');
-    Log.info('列出工程最近发布记录');
+    logger.info('********************');
+    logger.info('列出工程最近发布记录');
 
     const isPathExist = fs.existsSync(root);
 
@@ -71,10 +71,10 @@ function init(week) {
         sh.cd(root);
         if (!fs.existsSync(p.name)) {
             sh.exec('mkdir -p ' + p.name);
-            sh.exec(`git clone git@code.guanmai.cn:front-end/${p.name}.git`)
+            sh.exec(`git clone git@code.guanmai.cn:front-end/${p.name}.git`);
         }
         sh.cd(p.name);
-        sh.exec('git checkout master; git pull;')
+        sh.exec('git checkout master; git pull;');
     });
 
     _.each(configProject, p => {
@@ -84,7 +84,7 @@ function init(week) {
         console.log('');
         console.log('');
         showVersionInfo(p.name, p.desc, week);
-    })
+    });
 }
 
 module.exports = init;

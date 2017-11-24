@@ -1,13 +1,13 @@
 const sh = require('shelljs');
 const fs = require('fs');
 const Util = require('../util');
-const {Log, getBranchName, getProjectName, getProjectPath} = Util;
+const {logger, getBranchName, getProjectName, getProjectPath} = Util;
 
 function grayCheck(grayBranch) {
     const projectName = getProjectName(),
         grayDir = `.gray_release/gm_static_${projectName}_${grayBranch}`;
 
-    Log.info('>>>>>>>>>> 灰度发布准备');
+    logger.info('>>>>>>>>>> 灰度发布准备');
 
     sh.exec('mkdir -p .gray_release', {silent: true});
 
@@ -24,14 +24,14 @@ function grayCheck(grayBranch) {
     const currentBranch = getBranchName();
 
     if (currentBranch && currentBranch !== grayBranch) {
-        Log.warn(`分支${grayBranch}不存在，请输入准确的灰度分支名`);
+        logger.warn(`分支${grayBranch}不存在，请输入准确的灰度分支名`);
         process.exit(1);
     }
 
-    Log.step('最近5次提交');
+    logger.info('最近5次提交');
     sh.exec('git log -n 5 --decorate=full');
 
-    Log.info('>>>>>>>>>> 灰度发布准备就绪');
+    logger.info('>>>>>>>>>> 灰度发布准备就绪');
 }
 
 module.exports = grayCheck;

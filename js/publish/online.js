@@ -2,20 +2,20 @@ const sh = require('shelljs');
 const moment = require('moment');
 const http = require('http');
 const Util = require('../util');
-const {Log, getBranchName, getProjectName} = Util;
+const { logger, getBranchName, getProjectName } = Util;
 
 function online() {
-    Log.info('>>>>>>>>>> 执行上线');
+    logger.info('>>>>>>>>>> 执行上线');
 
     const branchName = getBranchName(),
         projectName = getProjectName();
 
-    Log.step('执行同步脚本');
+    logger.info('执行同步脚本');
 
     sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
     sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html static.cluster.gm:/data/templates/${projectName}/${branchName}/`); // 同步模板文件
 
-    Log.info('上线完成!');
+    logger.info('上线完成!');
 }
 
 function backup(user) {
@@ -23,15 +23,15 @@ function backup(user) {
         tag = branchName.split('-')[0] + '_' + moment().format('YYYY_MM_DD_HH_mm_ss') + '_' + user,
         fileName = `backup/${tag}.tar.gz`;
 
-    Log.info('>>>>>>>>>> 执行备份');
+    logger.info('>>>>>>>>>> 执行备份');
 
-    Log.step('打版本tag ' + tag);
+    logger.info('打版本tag ' + tag);
     sh.exec('git tag ' + tag + '; git push --tags');
 
     sh.exec('mkdir -p backup');
-    Log.step(`备份 ${fileName}`);
-    sh.exec(`tar zcvf ${fileName} build`, {silent: true});
-    Log.step('备份完成');
+    logger.info(`备份 ${fileName}`);
+    sh.exec(`tar zcvf ${fileName} build`, { silent: true });
+    logger.info('备份完成');
 
     dingtalk(tag);
 }
@@ -43,7 +43,7 @@ function dingtalk(tag) {
 function postOnline(user, isNeedBackup = false) {
     isNeedBackup && backup(user);
 
-    Log.info(`
+    logger.info(`
 //
 //                       _oo0oo_
 //                      o8888888o

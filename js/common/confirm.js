@@ -1,8 +1,8 @@
-const Log = require('../util').Log;
+const logger = require('../util').logger;
 const readline = require('readline');
 
 function confirm(action) {
-    Log.info(`>>>>>>>>>> 确认是否${action}`);
+    logger.info(`>>>>>>>>>> 确认是否${action}`);
 
     const rl = readline.createInterface({
         input: process.stdin,
@@ -13,7 +13,7 @@ function confirm(action) {
         rl.question(`Are you sure to ${action}?(yes|no) `, function (answer) {
             if (answer === 'yes' || answer === 'no') {
                 rl.close();
-                callback(answer)
+                callback(answer);
             } else {
                 question(callback);
             }
