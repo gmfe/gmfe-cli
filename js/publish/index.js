@@ -2,16 +2,16 @@ const sh = require("shelljs");
 const preview = require('./preview');
 const confirm = require('../common/confirm');
 const build = require('./build');
-const {online, postOnline} = require('./online');
+const { online, postOnline } = require('./online');
 const rollback = require('./rollback');
 const gray = require('./gray');
-const {getBranchName, getProjectPath, Log} = require('../util');
+const { getBranchName, getProjectPath, logger } = require('../util');
 
 function init(tag, user, branch) {
     // 前往工程的父目录
     const projectPath = getProjectPath();
     if (projectPath === false) {
-        Log.error('无法定位git工程');
+        logger.error('无法定位git工程');
         process.exit(1);
     }
     sh.cd(projectPath);
@@ -51,7 +51,7 @@ function init(tag, user, branch) {
 
     // event
     process.on('exit', function () {
-        console.log('gmfe exit');
+        logger.info('gmfe exit');
     });
 }
 

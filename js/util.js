@@ -1,27 +1,25 @@
 const sh = require('shelljs');
-const colors = require('colors');
-const _ = require('lodash');
+const log4js = require('log4js');
 
-const Log = {
-    log() {
-        console.log.call(this, _.values(arguments).join(' '));
+log4js.configure({
+    appenders: {
+        everything: {
+            type: 'dateFile', filename: './logs/gmfe.log', maxLogSize: 10458760, pattern: '.yyyy-MM', compress: true,
+            layout: { type: 'coloured' }
+        },
+        console: {
+            type: 'console',
+            layout: { type: 'coloured' }
+        }
     },
-    info() {
-        console.log.call(this, colors.green('[Info] ' + _.values(arguments).join(' ')));
-    },
-    warn() {
-        console.log.call(this, colors.yellow('[Warning] ' + _.values(arguments).join(' ')));
-    },
-    error() {
-        console.log.call(this, colors.red('[Error] ' + _.values(arguments).join(' ')));
-    },
-    step() {
-        console.log.call(this, colors.cyan('  [step]' + _.values(arguments).join(' ')));
-    }
-};
+    categories: { default: { appenders: ['everything', 'console'], level: 'debug' } }
+});
+
+const logger = log4js.getLogger();
+console.log = logger.info.bind(logger);
 
 const getProjectPath = function () {
-    const dir = sh.exec('git rev-parse --git-dir', {silent: true});
+    const dir = sh.exec('git rev-parse --git-dir', { silent: true });
     if (dir.code === 0) {
         if (dir.stdout === '.git\n') {
             return sh.pwd();
@@ -35,7 +33,7 @@ const getProjectPath = function () {
 
 // TODO 貌似语义不符
 const getBranchName = () => {
-    const branch = sh.exec('git branch', {silent: true}),
+    const branch = sh.exec('git branch', { silent: true }),
         branchNameMatch = branch.stdout.match(/\*\s+(master)\n/) || branch.stdout.match(/\*\s+(online-.+)\n/) || branch.stdout.match(/\*\s+(release-.+)\n/);
 
     return branchNameMatch && branchNameMatch[1];
@@ -50,17 +48,17 @@ const getProjectName = () => {
 };
 
 const remoteTemplatePathCheck = (branch) => {
-    const check = sh.exec(`if ssh static.cluster.gm '[ -d /data/templates/${getProjectName()}/${branch || getBranchName()}/ ]'; then echo "succ"; exit 1; else echo "fail"; fi`, {silent: true});
+    const check = sh.exec(`if ssh static.cluster.gm '[ -d /data/templates/${getProjectName()}/${branch || getBranchName()}/ ]'; then echo "succ"; exit 1; else echo "fail"; fi`, { silent: true });
 
-    return check.stdout === 'succ\n'
+    return check.stdout === 'succ\n';
 };
 
 const getPackageJSON = () => {
-    return JSON.parse(sh.exec('cat package.json', {silent: true}).stdout);
+    return JSON.parse(sh.exec('cat package.json', { silent: true }).stdout);
 };
 
 module.exports = {
-    Log,
+    logger,
     getProjectPath,
     getBranchName,
     getProjectName,

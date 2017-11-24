@@ -1,13 +1,14 @@
 const sh = require('shelljs');
-const Log = require('../util').Log;
+const logger = require('../util').logger;
 
 function build(branch = 'master') {
-    Log.info('>>>>>>>>>> 执行打包');
+    logger.info('>>>>>>>>>> 执行打包');
 
-    Log.step('npm run deploy');
-    sh.exec(`BRANCH=${branch} npm run deploy`);
+    logger.info('npm run deploy');
+    const deploy = sh.exec(`BRANCH=${branch} npm run deploy`);
+    logger.info(deploy.stdout);
 
-    Log.info('打包完成!');
+    logger.info('打包完成!');
 }
 
 module.exports = build;
