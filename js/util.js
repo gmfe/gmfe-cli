@@ -1,23 +1,6 @@
 const sh = require('shelljs');
 const log4js = require('log4js');
 
-log4js.configure({
-    appenders: {
-        everything: {
-            type: 'dateFile', filename: './logs/gmfe.log', maxLogSize: 10458760, pattern: '.yyyy-MM', compress: true,
-            layout: { type: 'coloured' }
-        },
-        console: {
-            type: 'console',
-            layout: { type: 'coloured' }
-        }
-    },
-    categories: { default: { appenders: ['everything', 'console'], level: 'debug' } }
-});
-
-const logger = log4js.getLogger();
-console.log = logger.info.bind(logger);
-
 const getProjectPath = function () {
     const dir = sh.exec('git rev-parse --git-dir', { silent: true });
     if (dir.code === 0) {
@@ -30,6 +13,23 @@ const getProjectPath = function () {
         return false;
     }
 };
+
+log4js.configure({
+    appenders: {
+        everything: {
+            type: 'fileSync', filename: `${getProjectPath()}/logs/gmfe.log`, maxLogSize: 10458760, pattern: '.yyyy-MM', compress: true,
+            layout: { type: 'coloured' }
+        },
+        console: {
+            type: 'console',
+            layout: { type: 'coloured' }
+        }
+    },
+    categories: { default: { appenders: ['everything', 'console'], level: 'debug' } }
+});
+
+const logger = log4js.getLogger();
+console.log = logger.info.bind(logger);
 
 // TODO 貌似语义不符
 const getBranchName = () => {
