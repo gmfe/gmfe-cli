@@ -1,4 +1,5 @@
 const sh = require('shelljs');
+var fs = require('fs');
 const log4js = require('log4js');
 
 const getProjectPath = function () {
@@ -13,6 +14,12 @@ const getProjectPath = function () {
         return false;
     }
 };
+
+const logDirectory = `${getProjectPath()}/logs`;
+
+if (!fs.existsSync(logDirectory)) {
+    fs.mkdirSync(logDirectory);
+}
 
 log4js.configure({
     appenders: {
