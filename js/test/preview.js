@@ -3,7 +3,7 @@ const Util = require('../util');
 const { logger } = Util;
 
 function preview() {
-    let branch = sh.exec("git branch | sed -n '/\\* /s///p'").stdout.replace('\n', '');
+    let branch = sh.exec("git branch | sed -n '/\\* /s///p'", { silent: true }).stdout.replace('\n', '');
 
     logger.info('>>>>>>>>>> 测试部署前检测');
 

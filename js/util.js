@@ -23,7 +23,7 @@ if (!fs.existsSync(logDirectory)) {
 
 log4js.configure({
     appenders: {
-        everything: {
+        log2file: {
             type: 'fileSync', filename: `${getProjectPath()}/logs/gmfe.log`, maxLogSize: 10458760, pattern: '.yyyy-MM', compress: true,
             layout: { type: 'coloured' }
         },
@@ -32,11 +32,15 @@ log4js.configure({
             layout: { type: 'coloured' }
         }
     },
-    categories: { default: { appenders: ['everything', 'console'], level: 'debug' } }
+    categories: {
+        default: { appenders: ['log2file', 'console'], level: 'debug' },
+        log2file: { appenders: ['log2file'], level: 'debug' }
+    }
 });
 
-const logger = log4js.getLogger();
+const logger = log4js.getLogger('default');
 console.log = logger.info.bind(logger);
+console.error = logger.error.bind(logger);
 
 // TODO 貌似语义不符
 const getBranchName = () => {
