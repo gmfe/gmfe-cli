@@ -5,16 +5,18 @@ const testInit = require('./test/index');
 const versionInfo = require('./version_info/index');
 const imageCut = require('./image_cut/index');
 const npmPublish = require('./npm_publish');
-const { logger } = require('./util');
+const log4js = require('log4js');
 
+const logger = log4js.getLogger('log2file');
 const exec = sh.exec;
 
 sh.exec = function (command, options) {
     const temp = exec.apply(this, Array.prototype.slice.call(arguments));
 
     if (!options || !options.silent) {
-        if (temp.stderr) {
-            logger.error(`【${command}】${temp.stdout} ${temp.stderr.replace(/\n$/, '')}`);
+        if (temp.stderr && temp.code !== 0) {
+            console.error(`【${command}】执行出错`);
+            logger.error(`${temp.stdout} ${temp.stderr.replace(/\n$/, '')}`);
         } else {
             logger.info(`【${command}】 ${temp.stdout.replace(/\n$/, '')}`);
         }
