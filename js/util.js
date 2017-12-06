@@ -2,7 +2,48 @@ const sh = require('shelljs');
 var fs = require('fs');
 const log4js = require('log4js');
 
-const getProjectPath = function () {
+const log4jsConfig = {
+    appenders: {
+        console: {
+            type: 'console',
+            layout: { type: 'coloured' }
+        }
+    },
+    categories: {
+        default: { appenders: ['console'], level: 'debug' },
+        log2file: { appenders: ['console'], level: 'debug' }
+    }
+};
+
+const projectPath = getProjectPath();
+
+// 只在工程目录下时才记录到日志文件
+if (projectPath) {
+    const logDirectory = `${projectPath}/logs`;
+
+    if (!fs.existsSync(logDirectory)) {
+        fs.mkdirSync(logDirectory);
+    }
+
+    log4jsConfig.appenders.log2file = {
+        type: 'fileSync', filename: `${logDirectory}/gmfe.log`, maxLogSize: 10458760, pattern: '.yyyy-MM', compress: true,
+        layout: { type: 'coloured' }
+    };
+
+    log4jsConfig.categories = {
+        default: { appenders: ['log2file', 'console'], level: 'debug' },
+        log2file: { appenders: ['log2file'], level: 'debug' }
+    };
+}
+
+log4js.configure(log4jsConfig);
+
+const logger = log4js.getLogger('default');
+console.log = logger.info.bind(logger);
+console.error = logger.error.bind(logger);
+
+
+function getProjectPath() {
     const dir = sh.exec('git rev-parse --git-dir', { silent: true });
     if (dir.code === 0) {
         if (dir.stdout === '.git\n') {
@@ -13,34 +54,7 @@ const getProjectPath = function () {
     } else {
         return false;
     }
-};
-
-const logDirectory = `${getProjectPath()}/logs`;
-
-if (!fs.existsSync(logDirectory)) {
-    fs.mkdirSync(logDirectory);
 }
-
-log4js.configure({
-    appenders: {
-        log2file: {
-            type: 'fileSync', filename: `${getProjectPath()}/logs/gmfe.log`, maxLogSize: 10458760, pattern: '.yyyy-MM', compress: true,
-            layout: { type: 'coloured' }
-        },
-        console: {
-            type: 'console',
-            layout: { type: 'coloured' }
-        }
-    },
-    categories: {
-        default: { appenders: ['log2file', 'console'], level: 'debug' },
-        log2file: { appenders: ['log2file'], level: 'debug' }
-    }
-});
-
-const logger = log4js.getLogger('default');
-console.log = logger.info.bind(logger);
-console.error = logger.error.bind(logger);
 
 // TODO 貌似语义不符
 const getBranchName = () => {
