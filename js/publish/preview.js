@@ -15,7 +15,7 @@ function preview(grayBranch) {
     }
 
     if (!currentBranch) {
-        logger.warn('确保你处于master、online或release分支');
+        logger.warn('确保你处于master、online分支');
         return false;
     }
 
