@@ -64,6 +64,10 @@ const getBranchName = () => {
     return branchNameMatch && branchNameMatch[1];
 };
 
+const getLastCommit = () => {
+    return sh.exec('git rev-parse --short HEAD', { silent: true }).stdout.replace('\n', '');
+};
+
 const getProjectName = () => {
     const projectPath = getProjectPath();
 
@@ -88,5 +92,6 @@ module.exports = {
     getBranchName,
     getProjectName,
     remoteTemplatePathCheck,
-    getPackageJSON
+    getPackageJSON,
+    getLastCommit
 };

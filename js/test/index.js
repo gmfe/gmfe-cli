@@ -1,7 +1,7 @@
 const sh = require("shelljs");
 const preview = require('./preview');
 const testCheck = require('./test_check');
-const { getProjectPath, getProjectName, logger } = require('../util');
+const { getProjectPath, getProjectName, logger, getLastCommit } = require('../util');
 
 function init(branch = "master") {
     // 前往工程的父目录
@@ -24,7 +24,7 @@ function init(branch = "master") {
 
     logger.info('>>>>>>>>>> 执行打包');
 
-    sh.exec(`BRANCH=${branch} npm run testing`);
+    sh.exec(`BRANCH=${branch} COMMIT=${getLastCommit()} npm run testing`);
 
     logger.info('打包完成!');
 
