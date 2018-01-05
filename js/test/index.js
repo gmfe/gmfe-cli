@@ -31,7 +31,12 @@ function init(branch = "master") {
     const projectName = getProjectName();
 
     sh.exec(`rsync -aztHv ./build/ /data/www/static_resource/${projectName}/`);
-    sh.exec(`rsync -aztHv ./build/index.html /data/templates/${projectName}/${branch}/`); // 同步模板文件
+
+    if (projectName === 'mes') {
+        sh.exec(`rsync -aztHv ./build/mes.html /data/templates/station/${branch}/`);
+    } else {
+        sh.exec(`rsync -aztHv ./build/index.html /data/templates/${projectName}/${branch}/`);
+    }
 
     logger.info('测试部署完成!');
 

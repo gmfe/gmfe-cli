@@ -13,7 +13,13 @@ function online() {
     logger.info('执行同步脚本');
 
     sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
-    sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html static.cluster.gm:/data/templates/${projectName}/${branchName}/`); // 同步模板文件
+
+    // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
+    if (projectName === 'mes') {
+        sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html static.cluster.gm:/data/templates/station/${branchName}/`);
+    } else {
+        sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html static.cluster.gm:/data/templates/${projectName}/${branchName}/`);
+    }
 
     logger.info('上线完成!');
 }
@@ -43,33 +49,35 @@ function dingtalk(tag) {
 function postOnline(user, isNeedBackup = false) {
     isNeedBackup && backup(user);
 
-    logger.info(`
-//
-//                       _oo0oo_
-//                      o8888888o
-//                      88" . "88
-//                      (| -_- |)
-//                      0\\  =  /0
-//                    ___/\`---'\\___
-//                  .' \\\\|     |// '.
-//                 / \\\\|||  :  |||// \\
-//                / _||||| -:- |||||- \\
-//               |   | \\\\\\  -  /// |   |
-//               | \\_|  ''\\---/''  |_/ |
-//               \\  .-\\__  '-'  ___/-. /
-//             ___'. .'  /--.--\\  \`. .'___
-//          ."" '<  \`.___\\_<|>_/___.' >' "".
-//         | | :  \`- \\\`.;\`\\ _ /\`;.\`/ - \` : | |
-//         \\  \\ \`_.   \\_ __\\ /__ _/   .-\` /  /
-//     =====\`-.____\`.___ \\_____/___.-\`___.-'=====
-//                       \`=---='
-//
-//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-//               佛祖保佑         永无BUG
-//
-//             ❤ ❤ ❤ ❤ 棒棒哒，么么哒！❤ ❤ ❤ ❤
-//`);
+    sh.exec('npm xmas');
+
+    //     logger.info(`
+    // //
+    // //                       _oo0oo_
+    // //                      o8888888o
+    // //                      88" . "88
+    // //                      (| -_- |)
+    // //                      0\\  =  /0
+    // //                    ___/\`---'\\___
+    // //                  .' \\\\|     |// '.
+    // //                 / \\\\|||  :  |||// \\
+    // //                / _||||| -:- |||||- \\
+    // //               |   | \\\\\\  -  /// |   |
+    // //               | \\_|  ''\\---/''  |_/ |
+    // //               \\  .-\\__  '-'  ___/-. /
+    // //             ___'. .'  /--.--\\  \`. .'___
+    // //          ."" '<  \`.___\\_<|>_/___.' >' "".
+    // //         | | :  \`- \\\`.;\`\\ _ /\`;.\`/ - \` : | |
+    // //         \\  \\ \`_.   \\_ __\\ /__ _/   .-\` /  /
+    // //     =====\`-.____\`.___ \\_____/___.-\`___.-'=====
+    // //                       \`=---='
+    // //
+    // //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // //
+    // //               佛祖保佑         永无BUG
+    // //
+    // //             ❤ ❤ ❤ ❤ 棒棒哒，么么哒！❤ ❤ ❤ ❤
+    // //`);
 }
 
 module.exports = {
