@@ -25,7 +25,7 @@ function init(branch = "master") {
 
     logger.info('>>>>>>>>>> 执行打包');
 
-    dingtalk('开始测试部署');
+    dingtalk('begin testing deploy');
 
     sh.exec(`BRANCH=${branch} COMMIT=${getLastCommit()} npm run testing`);
 
@@ -43,7 +43,7 @@ function init(branch = "master") {
 
     logger.info('测试部署完成!');
 
-    dingtalk('测试部署完毕');
+    dingtalk('end testing deploy');
 
     // event
     process.on('exit', function () {
