@@ -1,7 +1,7 @@
 const sh = require("shelljs");
 const preview = require('./preview');
 const testCheck = require('./test_check');
-const {getProjectPath, getProjectName, logger, getLastCommit} = require('../util');
+const { getProjectPath, getProjectName, logger, getLastCommit } = require('../util');
 
 function init(branch = "master") {
     // 前往工程的父目录
@@ -34,8 +34,10 @@ function init(branch = "master") {
 
     if (projectName === 'mes') {
         sh.exec(`rsync -aztHv ./build/mes.html /data/templates/station/${branch}/`);
+        sh.exec(`rsync -aztHv ./build/mes.html devhost.guanmai.cn:/data/templates/station/${branch}/`);
     } else {
         sh.exec(`rsync -aztHv ./build/index.html /data/templates/${projectName}/${branch}/`);
+        sh.exec(`rsync -aztHv ./build/index.html devhost.guanmai.cn:/data/templates/${projectName}/${branch}/`);
     }
 
     logger.info('测试部署完成!');
