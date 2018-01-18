@@ -2,7 +2,7 @@ const sh = require("shelljs");
 const preview = require('./preview');
 const testCheck = require('./test_check');
 const {getProjectPath, getProjectName, logger, getLastCommit} = require('../util');
-import moment from 'moment';
+const moment = require('moment');
 
 function init(branch = "master") {
     // 前往工程的父目录
