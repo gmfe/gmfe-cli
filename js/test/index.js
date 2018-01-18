@@ -25,7 +25,7 @@ function init(branch = "master") {
 
     logger.info('>>>>>>>>>> 执行打包');
 
-    dingtalk('begin testing deploy');
+    dingtalk('开始测试部署');
 
     sh.exec(`BRANCH=${branch} COMMIT=${getLastCommit()} npm run testing`);
 
@@ -43,7 +43,7 @@ function init(branch = "master") {
 
     logger.info('测试部署完成!');
 
-    dingtalk('end testing deploy');
+    dingtalk('接受测试部署');
 
     // event
     process.on('exit', function () {
@@ -53,7 +53,7 @@ function init(branch = "master") {
 
 function dingtalk(msg) {
     const projectName = getProjectName();
-    http.get(`http://test.guanmai.cn:8083/testing/${msg}(${moment().format('YYYY-MM-DD HH:mm:ss')}) ${projectName}`);
+    http.get(`http://test.guanmai.cn:8083/testing/${msg} ${projectName} (${moment().format('YYYY-MM-DD HH:mm:ss')})`);
 }
 
 module.exports = init;
