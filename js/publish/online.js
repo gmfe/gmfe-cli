@@ -43,7 +43,8 @@ function backup(user) {
 }
 
 function dingtalk(tag) {
-    http.get('http://test.guanmai.cn:8083/tag/' + tag);
+    const projectName = getProjectName();
+    http.get('http://test.guanmai.cn:8083/tag/' + tag + '  ' + projectName);
 }
 
 function postOnline(user, isNeedBackup = false) {
