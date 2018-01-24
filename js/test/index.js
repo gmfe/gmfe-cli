@@ -33,8 +33,8 @@ function init(branch = "master") {
     sh.exec(`rsync -aztHv ./build/ /data/www/static_resource/${projectName}/`);
 
     if (projectName === 'mes') {
-        sh.exec(`rsync -aztHv ./build/mes.html dev.guanmai.cn:/data/templates/station/${branch}/`);
-        sh.exec(`rsync -aztHv ./build/mes.html devhost.guanmai.cn:/data/templates/station/${branch}/`);
+        sh.exec(`rsync -aztHv ./build/mes.html dev.guanmai.cn:/data/templates/${projectName}/${branch}/`);
+        sh.exec(`rsync -aztHv ./build/mes.html devhost.guanmai.cn:/data/templates/${projectName}/${branch}/`);
     } else {
         sh.exec(`rsync -aztHv ./build/index.html dev.guanmai.cn:/data/templates/${projectName}/${branch}/`);
         sh.exec(`rsync -aztHv ./build/index.html devhost.guanmai.cn:/data/templates/${projectName}/${branch}/`);

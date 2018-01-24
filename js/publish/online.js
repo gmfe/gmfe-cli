@@ -15,9 +15,9 @@ function online() {
     sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
 
     // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
-    // if (projectName === 'mes') {
-    //     sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:/data/templates/mes/${branchName}/`);
-    // } else {
+    if (projectName === 'mes') {
+        sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:/data/templates/${projectName}/${branchName}/`);
+    } else {
         sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:/data/templates/${projectName}/${branchName}/`);
     // }
 
