@@ -19,7 +19,7 @@ function online() {
         sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:/data/templates/${projectName}/${branchName}/`);
     } else {
         sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:/data/templates/${projectName}/${branchName}/`);
-    // }
+    }
 
     logger.info('上线完成!');
 }
