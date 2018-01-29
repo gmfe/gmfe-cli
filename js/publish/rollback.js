@@ -14,9 +14,9 @@ function rollback(tag) {
         process.exit(1);
     }
 
-    logger.step(`解压 ${fileName}`);
+    logger.info(`解压 ${fileName}`);
     sh.exec(`tar zxvf ${fileName} -C ./`);
-    logger.step(`解压完成`);
+    logger.info(`解压完成`);
 }
 
 module.exports = rollback;
