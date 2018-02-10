@@ -4,6 +4,7 @@ const publishInit = require('./publish/index');
 const testInit = require('./test/index');
 const versionInfo = require('./version_info/index');
 const imageCut = require('./image_cut/index');
+const renameToEN = require('./rename_to_en');
 const npmPublish = require('./npm_publish');
 const log4js = require('log4js');
 
@@ -44,6 +45,8 @@ if (argv._.includes('publish') && argv.u) {
     versionInfo(argv.w);
 } else if (argv._.includes('imagecut')) {
     imageCut(argv.d, argv._[1]);
+} else if (argv._.includes('renametoen')) {
+    renameToEN(argv._[1], argv._[2]);
 } else if (argv._.includes('npm_publish')) {
     npmPublish(argv.a);
 } else {

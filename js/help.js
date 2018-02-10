@@ -10,6 +10,7 @@ function help() {
             desc: 'show recently version'
         })
         .command('imagecut', 'image cut')
+        .command('renametoen', 'rename to en')
         .command('npm_publish', 'publish a package to npm and sync to taobao')
         .demandCommand()
         .option('u', {
@@ -47,7 +48,9 @@ function help() {
             'gmfe versioninfo\n' +
             'gmfe imagecut ./js/logo.jpg -d ./img\n' +
             'gmfe npm_publish\n' +
-            'gmfe npm_publish -a patch'
+            'gmfe npm_publish -a patch' +
+            'gmfe renametoen' +
+            'gmfe renametoen ./images ./rename'
         )
         .version()
         .argv;

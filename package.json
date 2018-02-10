@@ -23,6 +23,7 @@
   "dependencies": {
     "colors": "^1.1.2",
     "gm-jsonconf": "^2.0.0",
+    "gm-pinyin": "^3.0.0",
     "lodash": "^4.17.4",
     "log4js": "^2.3.12",
     "moment": "^2.18.1",
