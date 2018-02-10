@@ -1,6 +1,6 @@
 {
   "name": "gmfe",
-  "version": "1.8.8",
+  "version": "1.9.0",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
