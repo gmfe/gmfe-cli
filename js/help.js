@@ -50,7 +50,8 @@ function help() {
             'gmfe npm_publish\n' +
             'gmfe npm_publish -a patch\n' +
             'gmfe renametoen\n' +
-            'gmfe renametoen ./images ./rename'
+            'gmfe renametoen ./images ./rename\n' +
+            'gmfe renametoen ./name.txt ./rename.txt'
         )
         .version()
         .argv;
