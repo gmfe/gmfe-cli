@@ -48,8 +48,8 @@ function help() {
             'gmfe versioninfo\n' +
             'gmfe imagecut ./js/logo.jpg -d ./img\n' +
             'gmfe npm_publish\n' +
-            'gmfe npm_publish -a patch' +
-            'gmfe renametoen' +
+            'gmfe npm_publish -a patch\n' +
+            'gmfe renametoen\n' +
             'gmfe renametoen ./images ./rename'
         )
         .version()
