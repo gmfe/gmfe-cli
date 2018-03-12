@@ -8,17 +8,21 @@ function online() {
     logger.info('>>>>>>>>>> 执行上线');
 
     const branchName = getBranchName(),
-        projectName = getProjectName();
+        projectName = getProjectName(),
+        distPath = `/data/templates/${projectName}/${branchName}/`;
 
     logger.info('执行同步脚本');
 
     sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
 
+    // 确保distPath目录存在
+    sh.exec(`ssh template.cluster.gm mkdir -p ${distPath};`);
+
     // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
     if (projectName === 'mes') {
-        sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:/data/templates/${projectName}/${branchName}/`);
+        sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:${distPath}`);
     } else {
-        sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:/data/templates/${projectName}/${branchName}/`);
+        sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:${distPath}`);
     }
 
     logger.info('上线完成!');

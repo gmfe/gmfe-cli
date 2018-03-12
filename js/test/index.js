@@ -28,16 +28,21 @@ function init(branch = "master") {
 
     logger.info('打包完成!');
 
-    const projectName = getProjectName();
+    const projectName = getProjectName(),
+        distPath = `/data/templates/${projectName}/${branch}/`;
 
     sh.exec(`rsync -aztHv ./build/ /data/www/static_resource/${projectName}/`);
 
+    // 确保distPath目录存在
+    sh.exec(`mkdir -p ${distPath};`);
+    sh.exec(`ssh devhost.guanmai.cn mkdir -p ${distPath};`);
+
     if (projectName === 'mes') {
-        sh.exec(`rsync -aztHv ./build/mes.html dev.guanmai.cn:/data/templates/${projectName}/${branch}/`);
-        sh.exec(`rsync -aztHv ./build/mes.html devhost.guanmai.cn:/data/templates/${projectName}/${branch}/`);
+        sh.exec(`rsync -aztHv ./build/mes.html dev.guanmai.cn:${distPath}`);
+        sh.exec(`rsync -aztHv ./build/mes.html devhost.guanmai.cn:${distPath}`);
     } else {
-        sh.exec(`rsync -aztHv ./build/index.html dev.guanmai.cn:/data/templates/${projectName}/${branch}/`);
-        sh.exec(`rsync -aztHv ./build/index.html devhost.guanmai.cn:/data/templates/${projectName}/${branch}/`);
+        sh.exec(`rsync -aztHv ./build/index.html dev.guanmai.cn:${distPath}`);
+        sh.exec(`rsync -aztHv ./build/index.html devhost.guanmai.cn:${distPath}`);
     }
 
     logger.info('测试部署完成!');
