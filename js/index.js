@@ -6,6 +6,7 @@ const versionInfo = require('./version_info/index');
 const imageCut = require('./image_cut/index');
 const renameToEN = require('./rename_to_en');
 const npmPublish = require('./npm_publish');
+const iconPublish = require('./icon_publish');
 const log4js = require('log4js');
 
 const logger = log4js.getLogger('log2file');
@@ -49,7 +50,9 @@ if (argv._.includes('publish') && argv.u) {
     renameToEN(argv._[1], argv._[2]);
 } else if (argv._.includes('npm_publish')) {
     npmPublish(argv.a);
-} else {
+} else if(argv._.includes('icon_publish')) {
+    iconPublish(argv.d, argv.m);
+} else{
     sh.exec('gmfe -h');
     process.exit(0);
 }
