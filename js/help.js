@@ -12,6 +12,7 @@ function help() {
         .command('imagecut', 'image cut')
         .command('renametoen', 'rename to en')
         .command('npm_publish', 'publish a package to npm and sync to taobao')
+        .command('icon_publish', 'add icon to gm-xfont and publish gm-xfont to npm')
         .demandCommand()
         .option('u', {
             alias: 'user',
@@ -39,6 +40,10 @@ function help() {
             alias: 'add',
             demand: false,
             describe: 'npm version major or minor or patch'
+        }).option('m', {
+            alias: 'message',
+            demand: false,
+            describe: 'commit message or comment'
         })
         .example('' +
             'gmfe publish -u name\n' +
@@ -49,6 +54,8 @@ function help() {
             'gmfe imagecut ./js/logo.jpg -d ./img\n' +
             'gmfe npm_publish\n' +
             'gmfe npm_publish -a patch\n' +
+            'gmfe icon_publish -d ./icon.zip\n' +
+            'gmfe icon_publish -d ./icon.zip -m add_new_icon\n' +
             'gmfe renametoen\n' +
             'gmfe renametoen ./images ./rename\n' +
             'gmfe renametoen ./name.txt ./rename.txt'
