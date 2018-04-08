@@ -19,6 +19,7 @@ const _init = (filePath, commit = '新增icon') => {
         logger.err('请确认icon压缩包路径');
         process.exit(1);
     }
+    sh.exec('git pull');
     // icon包解压到工程目录,覆盖
     sh.exec('unzip -o -j -d ' + projectPath + ' ' + filePath);
     logger.info('解压完毕');
