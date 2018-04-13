@@ -2,7 +2,7 @@ const sh = require('shelljs');
 const moment = require('moment');
 const http = require('http');
 const Util = require('../util');
-const {logger, getBranchName, getProjectName} = Util;
+const { logger, getBranchName, getProjectName } = Util;
 
 function online() {
     logger.info('>>>>>>>>>> 执行上线');
@@ -21,6 +21,9 @@ function online() {
     // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
     if (projectName === 'mes') {
         sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:${distPath}`);
+    } else if (projectName === 'station' || projectName === 'bshop' || projectName === 'manage') {
+        // station、manage、bshop在不同的机器上
+        sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html ${projectName}.cluster.gm:${distPath}`);
     } else {
         sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:${distPath}`);
     }
@@ -40,7 +43,7 @@ function backup(user) {
 
     sh.exec('mkdir -p backup');
     logger.info(`备份 ${fileName}`);
-    sh.exec(`tar zcvf ${fileName} build`, {silent: true});
+    sh.exec(`tar zcvf ${fileName} build`, { silent: true });
     logger.info('备份完成');
 
     dingtalk(tag);
