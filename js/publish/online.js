@@ -1,63 +1,68 @@
-const sh = require('shelljs');
-const moment = require('moment');
-const http = require('http');
-const Util = require('../util');
-const { logger, getBranchName, getProjectName } = Util;
+const sh = require('../common/shelljs_wrapper')
+const moment = require('moment')
+const http = require('http')
+const Util = require('../util')
+const logger = require('../logger')
+const { getCurrentBranch, getProjectName } = Util
 
-function online() {
-    logger.info('>>>>>>>>>> 执行上线');
+function online () {
+  logger.info('>>>>>>>>>> 执行上线')
 
-    const branchName = getBranchName(),
-        projectName = getProjectName(),
-        distPath = `/data/templates/${projectName}/${branchName}/`;
+  const branchName = getCurrentBranch()
 
-    logger.info('执行同步脚本');
+  const projectName = getProjectName()
 
-    sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`);
+  const distPath = `/data/templates/${projectName}/${branchName}/`
 
-    // 确保distPath目录存在
-    sh.exec(`ssh template.cluster.gm mkdir -p ${distPath};`);
+  logger.info('执行同步脚本')
 
-    // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
-    if (projectName === 'mes') {
-        sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:${distPath}`);
-    } else if (projectName === 'station' || projectName === 'bshop' || projectName === 'manage') {
-        // station、manage、bshop在不同的机器上
-        sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html ${projectName}.cluster.gm:${distPath}`);
-    } else {
-        sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:${distPath}`);
-    }
+  sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`)
 
-    logger.info('上线完成!');
+  // 确保distPath目录存在
+  sh.exec(`ssh template.cluster.gm mkdir -p ${distPath};`)
+
+  // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
+  if (projectName === 'mes') {
+    sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:${distPath}`)
+  } else if (projectName === 'station' || projectName === 'bshop' || projectName === 'manage') {
+    // station、manage、bshop在不同的机器上
+    sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html ${projectName}.cluster.gm:${distPath}`)
+  } else {
+    sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:${distPath}`)
+  }
+
+  logger.info('上线完成!')
 }
 
-function backup(user) {
-    const branchName = getBranchName(),
-        tag = branchName.split('-')[0] + '_' + moment().format('YYYY_MM_DD_HH_mm_ss') + '_' + user,
-        fileName = `backup/${tag}.tar.gz`;
+function backup (user) {
+  const branchName = getCurrentBranch()
 
-    logger.info('>>>>>>>>>> 执行备份');
+  const tag = branchName.split('-')[0] + '_' + moment().format('YYYY_MM_DD_HH_mm_ss') + '_' + user
 
-    logger.info('打版本tag ' + tag);
-    sh.exec('git tag ' + tag + '; git push --tags');
+  const fileName = `backup/${tag}.tar.gz`
 
-    sh.exec('mkdir -p backup');
-    logger.info(`备份 ${fileName}`);
-    sh.exec(`tar zcvf ${fileName} build`, { silent: true });
-    logger.info('备份完成');
+  logger.info('>>>>>>>>>> 执行备份')
 
-    dingtalk(tag);
+  logger.info('打版本tag ' + tag)
+  sh.exec('git tag ' + tag + '; git push --tags')
+
+  sh.exec('mkdir -p backup')
+  logger.info(`备份 ${fileName}`)
+  sh.exec(`tar zcvf ${fileName} build`, { silent: true })
+  logger.info('备份完成')
+
+  dingtalk(tag)
 }
 
-function dingtalk(tag) {
-    const projectName = getProjectName();
-    http.get('http://gate.guanmai.cn:8083/tag/' + tag + '  ' + projectName);
+function dingtalk (tag) {
+  const projectName = getProjectName()
+  http.get('http://gate.guanmai.cn:8083/tag/' + tag + '  ' + projectName)
 }
 
-function postOnline(user, isNeedBackup = false) {
-    isNeedBackup && backup(user);
+function postOnline (user, isNeedBackup = false) {
+  isNeedBackup && backup(user)
 
-    logger.info(`
+  logger.info(`
     //
     //                       _oo0oo_
     //                      o8888888o
@@ -83,10 +88,10 @@ function postOnline(user, isNeedBackup = false) {
     //               佛祖保佑         永无BUG
     //
     //             ❤ ❤ ❤ ❤ 棒棒哒，么么哒！❤ ❤ ❤ ❤
-    //`);
+    //`)
 }
 
 module.exports = {
-    online,
-    postOnline
-};
+  online,
+  postOnline
+}

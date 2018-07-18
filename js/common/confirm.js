@@ -1,33 +1,20 @@
-const logger = require('../util').logger;
-const readline = require('readline');
+const inquirer = require('inquirer')
 
-function confirm(action) {
-    logger.info(`>>>>>>>>>> 确认是否${action}`);
-
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-
-    const question = function (callback) {
-        rl.question(`Are you sure to ${action}?(yes|no) `, function (answer) {
-            if (answer === 'yes' || answer === 'no') {
-                rl.close();
-                callback(answer);
-            } else {
-                question(callback);
-            }
-        });
-    };
-    return new Promise(function (resolve, reject) {
-        question(function (answer) {
-            if (answer === 'yes') {
-                resolve();
-            } else {
-                reject();
-            }
-        });
-    });
+async function confirm (action) {
+  let result = await inquirer.prompt({
+    type: 'input',
+    name: action,
+    message: `确认是否${action}(yes/no)`,
+    validate (input) {
+      if (input !== 'yes' && input !== 'no') {
+        return 'please input yes or no'
+      }
+      return true
+    }
+  })
+  if (result[action] === 'no') {
+    process.exit(0)
+  }
 }
 
-module.exports = confirm;
+module.exports = confirm
