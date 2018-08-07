@@ -1,6 +1,6 @@
 const sh = require('../common/shelljs_wrapper')
 const preview = require('./preview')
-const testCheck = require('./test_check')
+const prepareTest = require('./prepare_test')
 const { getProjectPath, getProjectName, getLastCommit } = require('../util')
 const logger = require('../logger')
 
@@ -15,7 +15,7 @@ function init (branch = 'master') {
   logger.info('>>>>>>>>>> 测试部署准备')
   // 测试发布 进入.test_release 拉最新代码
   if (branch !== 'master') {
-    testCheck(branch)
+    prepareTest(branch)
   }
 
   logger.info('最近5次提交')

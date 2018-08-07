@@ -29,7 +29,7 @@ let extra = {
   error (msg) {
     return base.error.call(logger, colors.red(msg))
   },
-  fatal (msg) {
+  fatalAndExit (msg) {
     logger.error(msg)
     process.exit(1)
   }

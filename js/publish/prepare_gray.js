@@ -2,15 +2,15 @@ const sh = require('../common/shelljs_wrapper')
 const fs = require('fs')
 const Util = require('../util')
 const logger = require('../logger')
-const { getProjectName, getProjectPath } = Util
+const { getProjectName, getProjectPath, getGrayDir } = Util
 
-function grayCheck (grayBranch) {
+function prepareGray (grayBranch) {
   if (!grayBranch.startsWith('release-')) {
-    logger.fatal(`分支${grayBranch}不正确，请输入以“release-“开头的的灰度分支名`)
+    logger.fatalAndExit(`分支${grayBranch}不正确，请输入以“release-“开头的的灰度分支名`)
   }
 
   const projectName = getProjectName()
-  const grayDir = `.gray_release/gm_static_${projectName}_${grayBranch}`
+  const grayDir = getGrayDir(projectName, grayBranch)
 
   logger.info('>>>>>>>>>> 灰度发布准备')
   sh.exec('mkdir -p .gray_release', { silent: true })
@@ -25,4 +25,4 @@ function grayCheck (grayBranch) {
   sh.exec(`git pull origin ${grayBranch}`)
 }
 
-module.exports = grayCheck
+module.exports = prepareGray

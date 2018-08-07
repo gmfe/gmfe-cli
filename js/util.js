@@ -9,7 +9,7 @@ function getProjectPath () {
     }
     return dir.stdout.replace(/\/.git|\n/g, '')
   } catch (e) {
-    logger.fatal('无法定位git工程')
+    logger.fatalAndExit('无法定位git工程')
   }
 }
 
@@ -22,7 +22,7 @@ const verifyBranch = (branch) => {
   try {
     sh.exec(`git rev-parse --verify origin/${branch}`, { silent: true })
   } catch (e) {
-    logger.fatal(`分支${branch}不存在，请输入准确的分支名`)
+    logger.fatalAndExit(`分支${branch}不存在，请输入准确的分支名`)
   }
 }
 
@@ -46,6 +46,10 @@ const getPackageJSON = () => {
   return JSON.parse(sh.exec('cat package.json', { silent: true }).stdout)
 }
 
+const getGrayDir = (projectName, grayBranch) => {
+  return `.gray_release/gm_static_${projectName}_${grayBranch}`
+}
+
 module.exports = {
   verifyBranch,
   getCurrentBranch,
@@ -53,5 +57,6 @@ module.exports = {
   getProjectName,
   remoteTemplatePathCheck,
   getPackageJSON,
-  getLastCommit
+  getLastCommit,
+  getGrayDir
 }

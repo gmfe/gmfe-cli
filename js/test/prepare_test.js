@@ -3,7 +3,7 @@ const fs = require('fs')
 const Util = require('../util')
 const { getProjectName, getProjectPath } = Util
 
-function testCheck (testBranch) {
+function prepareTest (testBranch) {
   const projectName = getProjectName()
 
   const testDir = `.test_release/gm_static_${projectName}_${testBranch}`
@@ -20,4 +20,4 @@ function testCheck (testBranch) {
   sh.exec(`git pull origin ${testBranch}`)
 }
 
-module.exports = testCheck
+module.exports = prepareTest
