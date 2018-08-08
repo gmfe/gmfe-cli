@@ -1,40 +1,15 @@
-const sh = require('shelljs');
-const Util = require('../util');
-const { logger, getBranchName } = Util;
+const sh = require('../common/shelljs_wrapper')
+const commonPreview = require('../common/preview')
+const logger = require('../logger')
+const GATE_PROJECT_PATH = '/data/gmfe_static'
 
-function preview(grayBranch) {
-    const currentBranch = getBranchName();
+function preview (branch) {
+  logger.info('>>>>>>>>>> 发布前检测')
 
-    logger.info('>>>>>>>>>> 发布前检测');
-
-    logger.info('检测本地代码状态');
-    const diff = sh.exec('git diff', { silent: true });
-    if (diff.stdout !== '') {
-        logger.warn('Dirty！确保你本地代码是干净的');
-        return false;
-    }
-
-    if (!currentBranch) {
-        logger.warn('确保你处于master、online分支');
-        return false;
-    }
-
-    logger.info('拉远端代码');
-    sh.exec('git pull');
-
-    logger.info('比较远端代码');
-    const oDiff = sh.exec(`git diff ${currentBranch} origin/${currentBranch}`, { silent: true });
-    if (oDiff.stdout !== '') {
-        logger.warn(`${currentBranch}不同于origin/${currentBranch}。请检查！`);
-        return false;
-    }
-
-    if (!grayBranch) {
-        logger.info('最近5次提交');
-        sh.exec('git log -n 5 --decorate=full');
-    }
-
-    return true;
+  if (!sh.pwd().startsWith(GATE_PROJECT_PATH)) {
+    logger.fatalAndExit(`确保处于gate机器 ${GATE_PROJECT_PATH}`)
+  }
+  commonPreview(branch)
 }
 
-module.exports = preview;
+module.exports = preview
