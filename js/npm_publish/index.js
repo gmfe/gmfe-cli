@@ -1,6 +1,6 @@
 const sh = require('../common/shelljs_wrapper')
 const { getProjectPath, getPackageJSON, getCurrentBranch } = require('../util')
-const { logger } = require('../logger')
+const logger = require('../logger')
 
 function _init (addWhat) {
   // 前往工程的父目录
