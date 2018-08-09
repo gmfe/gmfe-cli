@@ -1,6 +1,6 @@
 const sh = require('../common/shelljs_wrapper')
 const fs = require('fs')
-const { logger } = require('../util')
+const logger = require('../logger')
 const path = require('path')
 
 const root = process.cwd()
