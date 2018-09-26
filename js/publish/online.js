@@ -24,8 +24,8 @@ function online () {
   // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
   if (projectName === 'mes') {
     sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:${distPath}`)
-  } else if (projectName === 'station' || projectName === 'bshop' || projectName === 'manage') {
-    // station、manage、bshop在不同的机器上
+  } else if (projectName === 'station' || projectName === 'bshop' || projectName === 'manage' || projectName === 'yunguanjia') {
+    // station、manage、bshop、yunguanjia在不同的机器上
     sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html ${projectName}.cluster.gm:${distPath}`)
   } else {
     sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:${distPath}`)
