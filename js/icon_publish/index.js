@@ -9,11 +9,11 @@ const _init = (filePath, commit = '新增icon') => {
 
   const packageJSON = getPackageJSON()
   if (packageJSON.name !== 'gm-xfont') {
-    logger.fatal('当前工程不是gm-xfont')
+    logger.fatalAndExit('当前工程不是gm-xfont')
   }
 
   if (!fs.existsSync(filePath)) {
-    logger.fatal('请确认icon压缩包路径')
+    logger.fatalAndExit('请确认icon压缩包路径')
   }
   sh.exec('git pull')
   // icon包解压到工程目录,覆盖
@@ -23,7 +23,7 @@ const _init = (filePath, commit = '新增icon') => {
   // master
   const currentBranch = getCurrentBranch()
   if (currentBranch !== 'master') {
-    logger.fatal('确保你处于master分支')
+    logger.fatalAndExit('确保你处于master分支')
   }
 
   logger.info('正在推送代码到origin...')

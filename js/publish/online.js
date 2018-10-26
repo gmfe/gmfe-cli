@@ -3,9 +3,46 @@ const moment = require('moment')
 const http = require('http')
 const Util = require('../util')
 const logger = require('../logger')
+const _ = require('lodash')
 const { getCurrentBranch, getProjectName } = Util
+const confirm = require('../common/confirm')
 
-function online () {
+// 项目名称 到 后端 gmdeploy 的模板名称映射 参考:
+// https://doc.guanmai.cn/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E5%85%A8%E6%96%B0%E5%8F%91%E5%B8%83%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8-2018-10-18/
+// 如果有新增直接添加即可
+const names = `station_branch_frontend_more，station_branch_frontend_driver，station_branch_frontend_cds，station_branch_frontend_mes`
+const nameList = names.split(/[,，]/g)
+const indexNames = {
+  bshop: 'bshop_branch_frontend_index',
+  manage: 'manage_branch_frontend_index',
+  station: 'station_branch_frontend_index'
+}
+
+function getBackEndTplName (projectName) {
+  let tplName = indexNames[projectName] || _.find(nameList, name => name.includes(projectName))
+  return tplName
+}
+async function syncTemplate (branchName, backendTplName) {
+  // 后端未发版本，是纯前端修改，需要手动同步 gate 的模板到后端所在机器
+  let shouldSyncTemplate = !(await confirm(
+    '本次发布是否跟后端相关?(Yes:后端需要发版本，由后端来同步模板. No:前端来同步模板)',
+    false
+  ))
+  if (shouldSyncTemplate) {
+    logger.info(
+      '同步模板到后端机器...如果未成功可尝试手动执行以下 gmdeploy 命令'
+    )
+    sh.exec(`gmdeploy scp -p ${backendTplName} -b ${branchName}`,{ignoreError: true})
+  }
+}
+function startRsyncTpl (distPath) {
+  return (domain, tpl = 'index') => {
+    sh.exec(`ssh ${domain} mkdir -p ${distPath};`)
+    sh.exec(`rsync -aztHv --rsh=ssh ./build/${tpl}.html ${domain}:${distPath}`)
+  }
+}
+
+async function online () {
   logger.info('>>>>>>>>>> 执行上线')
 
   const branchName = getCurrentBranch()
@@ -15,20 +52,30 @@ function online () {
   const distPath = `/data/templates/${projectName}/${branchName}/`
 
   logger.info('执行同步脚本')
+  sh.exec(
+    `rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`
+  )
 
-  sh.exec(`rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`)
+  // 同步模板 开始
+  let rsync = startRsyncTpl(distPath)
+  // mes 模板不同
+  let tplName = projectName === 'mes' ? 'mes' : 'index'
 
-  // 确保distPath目录存在
-  sh.exec(`ssh template.cluster.gm mkdir -p ${distPath};`)
+  // 模板统一先放 gate 机器
+  rsync('gate.guanmai.cn', tplName)
 
-  // 特殊逻辑，mes的模板推送到/data/templates/station/${branchName}/
-  if (projectName === 'mes') {
-    sh.exec(`rsync -aztHv --rsh=ssh ./build/mes.html template.cluster.gm:${distPath}`)
-  } else if (projectName === 'station' || projectName === 'bshop' || projectName === 'manage' || projectName === 'yunguanjia') {
-    // station、manage、bshop、yunguanjia在不同的机器上
-    sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html ${projectName}.cluster.gm:${distPath}`)
+  // 同步到各个项目所在的后端机器
+  let backendTplName = getBackEndTplName(projectName)
+  if (backendTplName) {
+    // 走 gmdeploy 同步
+    await syncTemplate(branchName, backendTplName)
   } else {
-    sh.exec(`rsync -aztHv --rsh=ssh ./build/index.html template.cluster.gm:${distPath}`)
+    // gmdeploy 暂不支持，用旧的同步
+    if (projectName === 'yunguanjia') {
+      rsync(`${projectName}.cluster.gm`)
+    } else {
+      rsync(`template.cluster.gm`)
+    }
   }
 
   logger.info('上线完成!')
@@ -37,7 +84,12 @@ function online () {
 function backup (user) {
   const branchName = getCurrentBranch()
 
-  const tag = branchName.split('-')[0] + '_' + moment().format('YYYY_MM_DD_HH_mm_ss') + '_' + user
+  const tag =
+    branchName.split('-')[0] +
+    '_' +
+    moment().format('YYYY_MM_DD_HH_mm_ss') +
+    '_' +
+    user
 
   const fileName = `backup/${tag}.tar.gz`
 
