@@ -17,7 +17,7 @@ async function init (tag, user, branch = 'master') {
   // 去对应目录解压backup中的备份
   if (tag) {
     await rollback(tag, branch)
-    online(user)
+    await online(user)
     postOnline(user)
     return
   }
@@ -37,7 +37,7 @@ async function init (tag, user, branch = 'master') {
   await confirm(`打包${branch}分支`)
   build(branch)
   await confirm(branch !== 'master' ? '灰度上线' : '上线')
-  online(user)
+  await online(user)
   postOnline(user, true)
 
   process.on('exit', function () {

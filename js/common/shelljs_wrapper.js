@@ -18,14 +18,12 @@ let extra = {
     if (execResult.code !== 0) {
       const msg = execResult.stderr
       logger.error(`【${command}】执行出错 \n${msg}`)
-      throw new Error('')
+      if (!options.ignoreError) {
+        throw new Error('')
+      }
     }
     return execResult
   }
 }
 
-module.exports = Object.assign(
-  {},
-  sh,
-  extra
-)
+module.exports = Object.assign({}, sh, extra)
