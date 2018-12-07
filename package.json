@@ -21,6 +21,7 @@
     "gmfe": "./bin/gmfe.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "colors": "^1.2.5",
     "gm-jsonconf": "^2.0.0",
     "gm-pinyin": "^3.0.0",
