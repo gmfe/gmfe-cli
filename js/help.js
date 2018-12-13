@@ -13,6 +13,7 @@ function help () {
     .command('renametoen', 'rename to en')
     .command('npm_publish', 'publish a package to npm and sync to taobao')
     .command('icon_publish', 'add icon to gm-xfont and publish gm-xfont to npm')
+    .command('clean', 'clean release directory')
     .demandCommand()
     .option('u', {
       alias: 'user',
@@ -58,7 +59,9 @@ function help () {
             'gmfe icon_publish -d ./icon.zip -m add_new_icon\n' +
             'gmfe renametoen\n' +
             'gmfe renametoen ./images ./rename\n' +
-            'gmfe renametoen ./name.txt ./rename.txt'
+            'gmfe renametoen ./name.txt ./rename.txt' +
+            'gmfe clean' +
+            'gmfe clean -t test -f 3_month'
     )
     .version()
     .argv

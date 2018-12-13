@@ -7,6 +7,7 @@ const imageCut = require('./image_cut/index')
 const renameToEN = require('./rename_to_en')
 const npmPublish = require('./npm_publish')
 const iconPublish = require('./icon_publish')
+const clean = require('./clean')
 const logger = require('./logger')
 
 // help 信息
@@ -34,6 +35,8 @@ if (argv._.includes('publish') && argv.u) {
   npmPublish(argv.a)
 } else if (argv._.includes('icon_publish')) {
   iconPublish(argv.d, argv.m)
+} else if (argv._.includes('clean')) {
+  clean(argv.t, argv.f)
 } else {
   sh.exec('gmfe -h')
   process.exit(0)
