@@ -21,7 +21,7 @@ function getBackEndTplName (projectName) {
   let tplName = indexNames[projectName] || _.find(nameList, name => name.includes(projectName))
   return tplName
 }
-async function syncTemplate (projectName, branchName, showConfirm = true) {
+async function syncTemplate (projectName, branchName, showConfirm = false) {
   let backendTplName = getBackEndTplName(projectName)
   if (backendTplName) {
     // 后端未发版本，是纯前端修改，需要手动同步 gate 的模板到后端所在机器
@@ -34,7 +34,7 @@ async function syncTemplate (projectName, branchName, showConfirm = true) {
       ))
     }
     if (shouldSyncTemplate) {
-      logger.info('同步模板到后端机器...如果未成功可尝试手动执行以下 gmdeploy 命令...过渡期间失败可不用管')
+      logger.info('同步模板到后端机器...如果未成功可尝试手动执行以下 gmdeploy 命令...')
       sh.exec(`gmdeploy scp -p ${backendTplName} -b ${branchName}`, {ignoreError: true})
     }
     return true
@@ -73,15 +73,15 @@ async function online () {
   rsync('gate.guanmai.cn')
 
   // 旧同步
-  oldSyncTemplate(projectName, rsync)
-  // 新同步
-  syncTemplate(projectName, branchName, false)
+  // oldSyncTemplate(projectName, rsync)
+  // // 新同步
+  // syncTemplate(projectName, branchName, false)
 
   // 全部使用新同步后 用如下代码
-  // let couldSync = await syncTemplate(projectName, branchName)
-  // if (!couldSync) {
-  //   oldSyncTemplate(projectName, rsync)
-  // }
+  let couldSync = await syncTemplate(projectName, branchName)
+  if (!couldSync) {
+    oldSyncTemplate(projectName, rsync)
+  }
 
   logger.info('上线完成!')
 }
