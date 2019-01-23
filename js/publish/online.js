@@ -42,6 +42,9 @@ async function syncTemplate (projectName, branchName, showConfirm = false) {
   return false
 }
 function oldSyncTemplate (projectName, rsync) {
+  if(projectName === 'admin') {
+    return
+  }
   let names = ['station', 'bshop', 'manage', 'yunguanjia']
   let domain = names.includes(projectName) ? `${projectName}.cluster.gm` : 'template.cluster.gm'
   rsync(domain)
@@ -79,6 +82,7 @@ async function online () {
 
   // 全部使用新同步后 用如下代码
   let couldSync = await syncTemplate(projectName, branchName)
+  // 逐步废弃旧的
   if (!couldSync) {
     oldSyncTemplate(projectName, rsync)
   }
