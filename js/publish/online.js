@@ -92,13 +92,8 @@ async function online () {
 
 function backup (user) {
   const branch = getCurrentBranch()
-
-  const tag =
-    branch.split('-')[0] +
-    '_' +
-    moment().format('YYYY_MM_DD_HH_mm_ss') +
-    '_' +
-    user
+  let time = moment().format('YYYY_MM_DD_HH_mm')
+  const tag = [branch, time, user].join('_')
 
   const fileName = `backup/${tag}.tar.gz`
 
