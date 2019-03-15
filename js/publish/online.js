@@ -42,7 +42,7 @@ async function syncTemplate (projectName, branchName, showConfirm = false) {
   return false
 }
 function oldSyncTemplate (projectName, rsync) {
-  if(projectName === 'admin') {
+  if(projectName === 'admin' || projectName === 'upms') {
     return
   }
   let names = ['station', 'bshop', 'manage', 'yunguanjia']
