@@ -4,7 +4,7 @@ const confirm = require('../common/confirm')
 const build = require('./build')
 const { online, postOnline } = require('./online')
 const rollback = require('./rollback')
-const prepareGray = require('./prepare_gray')
+const {prepareGray} = require('./prepare')
 const { getProjectPath } = require('../util')
 const logger = require('../logger')
 
@@ -22,11 +22,15 @@ async function init (tag, user, branch = 'master') {
     return
   }
 
-  // 主要是对当前的工程检查一遍
+  // 简单校验下
   preview(branch)
 
-  // 灰度准备
-  if (branch !== 'master') {
+  if (branch === 'master') {
+    // master 已经fetch过了
+    sh.exec(`git checkout master`)
+    sh.exec(`git reset origin/master --hard`)
+  } else {
+    // 灰度
     prepareGray(branch)
   }
 

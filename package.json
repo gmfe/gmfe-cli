@@ -7,6 +7,17 @@
     "start": "node ./bin/gmfe.js",
     "publishpatch": "sh deploy/publish.sh"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./js/**/*.js": [
+      "eslint --cache --fix",
+      "git add"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmfe/gmfe.git"
@@ -44,6 +55,8 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-react": "^7.10.0",
-    "eslint-plugin-standard": "^3.1.0"
+    "eslint-plugin-standard": "^3.1.0",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.0"
   }
 }

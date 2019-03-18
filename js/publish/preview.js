@@ -1,7 +1,7 @@
 const sh = require('../common/shelljs_wrapper')
-const commonPreview = require('../common/preview')
 const logger = require('../logger')
 const GATE_PROJECT_PATH = '/data/gmfe_static'
+const commonPreview = require('../common/preview')
 
 function preview (branch) {
   logger.info('>>>>>>>>>> 发布前检测')

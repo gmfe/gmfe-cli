@@ -14,7 +14,10 @@ function init (branch = 'master') {
 
   logger.info('>>>>>>>>>> 测试部署准备')
   // 测试发布 进入.test_release 拉最新代码
-  if (branch !== 'master') {
+  if (branch === 'master') {
+    sh.exec(`git checkout master`)
+    sh.exec(`git reset origin/master --hard`)
+  } else {
     prepareTest(branch)
   }
 

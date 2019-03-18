@@ -54,6 +54,16 @@ const getGrayDir = (projectName, grayBranch) => {
   return `.gray_release/gm_static_${projectName}_${grayBranch}`
 }
 
+const prefix = 'git@code.guanmai.cn:front-end/'
+const getCodeUrl = () => {
+  return prefix + 'gm_static_' + getProjectName()
+}
+const checkoutBranch = (branch) => {
+  sh.exec(`git fetch origin ${branch}`)
+  sh.exec(`git checkout ${branch}`)
+  sh.exec(`git reset origin/${branch} --hard`)
+}
+
 module.exports = {
   verifyBranch,
   getCurrentBranch,
@@ -63,5 +73,7 @@ module.exports = {
   getPackageJSON,
   getLastCommit,
   getGrayDir,
-  getLastMessage
+  getLastMessage,
+  getCodeUrl,
+  checkoutBranch
 }
