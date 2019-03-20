@@ -7,7 +7,7 @@ const { getCurrentBranch, getProjectName, getLastMessage, getLastCommit } = Util
 const confirm = require('../common/confirm')
 
 // 项目名称 到 后端 gmdeploy 的模板名称映射 参考:
-// https://doc.guanmai.cn/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E5%85%A8%E6%96%B0%E5%8F%91%E5%B8%83%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8-2018-10-18/
+// https://doc.guanmai.cn/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/%E5%85%A8%E6%96%B0%E5%8F%91%E5%B8%83%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8-2018-10-18/
 // 如果有新增直接添加即可
 const names = `station_branch_frontend_more，station_branch_frontend_driver，station_branch_frontend_cds，station_branch_frontend_mes`
 const nameList = names.split(/[,，]/g)
@@ -42,7 +42,7 @@ async function syncTemplate (projectName, branchName, showConfirm = false) {
   return false
 }
 function oldSyncTemplate (projectName, rsync) {
-  if(projectName === 'admin' || projectName === 'upms') {
+  if (projectName === 'admin' || projectName === 'upms') {
     return
   }
   let names = ['station', 'bshop', 'manage', 'yunguanjia']
@@ -75,12 +75,6 @@ async function online () {
   // 模板统一要放 gate 机器
   rsync('gate.guanmai.cn')
 
-  // 旧同步
-  // oldSyncTemplate(projectName, rsync)
-  // // 新同步
-  // syncTemplate(projectName, branchName, false)
-
-  // 全部使用新同步后 用如下代码
   let couldSync = await syncTemplate(projectName, branchName)
   // 逐步废弃旧的
   if (!couldSync) {

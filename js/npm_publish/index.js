@@ -27,7 +27,7 @@ function _init (addWhat) {
     return false
   }
 
-  if (!sh.exec('npm whoami', { silent: true }).stdout.startsWith('gmfe')) {
+  if (!sh.exec('npm whoami --registry="https://registry.npmjs.org"', { silent: true }).stdout.startsWith('gmfe')) {
     logger.info('npm account is not gmfe')
     return false
   }
@@ -43,7 +43,7 @@ function _init (addWhat) {
   }
 
   logger.info(`start to publish ${info.name} ...`)
-  sh.exec('npm publish --registry="https://registry.npmjs.org"; cnpm sync ' + info.name + ';')
+  sh.exec('npm publish --registry="https://registry.npmjs.org" && npx cnpm sync ' + info.name + ';')
 
   logger.info(`如果 cnpm 同步失败（最近经常同步失败），请访问 https://npm.taobao.org/sync/${info.name} 手动触发更新。`)
 }

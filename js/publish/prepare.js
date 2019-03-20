@@ -2,7 +2,7 @@ const sh = require('../common/shelljs_wrapper')
 const fs = require('fs')
 const Util = require('../util')
 const logger = require('../logger')
-const { getProjectName, getProjectPath, getGrayDir } = Util
+const { getProjectName, getProjectPath, getGrayDir, getCodeUrl, checkoutBranch } = Util
 
 function prepareGray (grayBranch) {
   if (!grayBranch.startsWith('release-')) {
@@ -13,16 +13,21 @@ function prepareGray (grayBranch) {
   const grayDir = getGrayDir(projectName, grayBranch)
 
   logger.info('>>>>>>>>>> 灰度发布准备')
-  sh.exec('mkdir -p .gray_release', { silent: true })
-
   if (!fs.existsSync(grayDir)) {
+    // 首次发布
     sh.exec(`mkdir -p ${grayDir}`, { silent: true })
-    sh.exec(`rsync -aztHv  --exclude .test_release --exclude .gray_release --exclude backup . ${grayDir}`, { silent: true })
-  }
+    // 不使用rsync原因：
+    // 1. rsync 在很多小文件场景下 似乎会变慢
+    // 2. master 下的.git目录会比git clone下来的要大
+    // sh.exec(`rsync -aztHv  ./.git ${grayDir}`, { silent: true })
 
+    const url = getCodeUrl()
+    sh.exec(`git clone ${url} ${grayDir}`)
+  }
   sh.cd(`${getProjectPath()}/${grayDir}`)
-  sh.exec(`git checkout ${grayBranch}`, { silent: true })
-  sh.exec(`git pull origin ${grayBranch}`)
+  checkoutBranch(grayBranch)
 }
 
-module.exports = prepareGray
+module.exports = {
+  prepareGray
+}
