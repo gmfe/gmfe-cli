@@ -1,12 +1,13 @@
 const sh = require('../common/shelljs_wrapper')
-const preview = require('./preview')
 const confirm = require('../common/confirm')
 const build = require('./build')
 const { online, postOnline } = require('./online')
 const rollback = require('./rollback')
 const {prepareGray} = require('./prepare')
-const { getProjectPath } = require('../util')
+const { getProjectPath, checkoutBranch } = require('../util')
 const logger = require('../logger')
+const fileLock = require('../common/file_lock')
+const path = require('path')
 
 async function init (tag, user, branch = 'master') {
   // 前往工程的父目录
@@ -22,13 +23,10 @@ async function init (tag, user, branch = 'master') {
     return
   }
 
-  // 简单校验下
-  preview(branch)
-
   if (branch === 'master') {
-    // master 已经fetch过了
-    sh.exec(`git checkout master`)
-    sh.exec(`git reset origin/master --hard`)
+    fileLock.init(path.resolve('.'), user)
+    fileLock.lock()
+    checkoutBranch('master')
   } else {
     // 灰度
     prepareGray(branch)

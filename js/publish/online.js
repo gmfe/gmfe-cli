@@ -107,20 +107,26 @@ function backup (user) {
   dingtalk(tag, user)
 }
 
+let start = moment()
 function dingtalk (tag, user) {
   const axios = require('axios')
   const project = getProjectName()
   const branch = getCurrentBranch()
   const message = getLastMessage()
   const commit = getLastCommit()
+  let end = moment()
+  let time = Math.round(moment.duration(end.diff(start)).asMinutes())
   let params = {
     tag,
     project,
     user,
     message,
     commit,
-    branch
+    branch,
+    time
   }
+
+  logger.info('本次发布时长:', time + ' minutes')
   axios.post('http://trace.guanmai.cn/api/webhook/gmfe', params).catch((e) => {
     logger.error('发送钉钉失败', e.message)
   })
