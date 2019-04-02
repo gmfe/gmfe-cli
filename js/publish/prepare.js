@@ -16,11 +16,6 @@ function prepareGray (grayBranch) {
   if (!fs.existsSync(grayDir)) {
     // 首次发布
     sh.exec(`mkdir -p ${grayDir}`, { silent: true })
-    // 不使用rsync原因：
-    // 1. rsync 在很多小文件场景下 似乎会变慢
-    // 2. master 下的.git目录会比git clone下来的要大
-    // sh.exec(`rsync -aztHv  ./.git ${grayDir}`, { silent: true })
-
     const url = getCodeUrl()
     sh.exec(`git clone ${url} ${grayDir}`)
   }

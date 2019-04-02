@@ -37,7 +37,11 @@ const getLastMessage = () => {
 const getProjectName = () => {
   const projectPath = getProjectPath()
 
-  return projectPath.split('/').pop().split('_')[2]
+  let projectName = projectPath.split('/').pop().split('_')[2]
+  if (!projectName) {
+    logger.fatalAndExit('获取项目名称失败，请确认所在路径正确！')
+  }
+  return projectName
 }
 
 const remoteTemplatePathCheck = (branch) => {
