@@ -14,7 +14,8 @@ const nameList = names.split(/[,，]/g)
 const indexNames = {
   bshop: 'bshop_branch_frontend_index',
   manage: 'manage_branch_frontend_index',
-  station: 'station_branch_frontend_index'
+  station: 'station_branch_frontend_index',
+  upms: ['station_branch_frontend_upms', 'manage_branch_frontend_upms']
 }
 
 function getBackEndTplName (projectName) {
@@ -35,14 +36,20 @@ async function syncTemplate (projectName, branchName, showConfirm = false) {
     }
     if (shouldSyncTemplate) {
       logger.info('同步模板到后端机器...如果未成功可尝试手动执行以下 gmdeploy 命令...')
-      sh.exec(`gmdeploy scp -p ${backendTplName} -b ${branchName}`, {ignoreError: true})
+      if (Array.isArray(backendTplName)) {
+        backendTplName.forEach((name) => {
+          sh.exec(`gmdeploy scp -p ${name} -b ${branchName}`, {ignoreError: true})
+        })
+      } else {
+        sh.exec(`gmdeploy scp -p ${backendTplName} -b ${branchName}`, {ignoreError: true})
+      }
     }
     return true
   }
   return false
 }
 function oldSyncTemplate (projectName, rsync) {
-  if (projectName === 'admin' || projectName === 'upms') {
+  if (projectName === 'admin') {
     return
   }
   let names = ['station', 'bshop', 'manage', 'yunguanjia']
