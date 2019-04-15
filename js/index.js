@@ -10,6 +10,7 @@ const iconPublish = require('./icon_publish')
 const svgPublish = require('./svg_publish')
 const clean = require('./clean')
 const logger = require('./logger')
+const check = require('./check')
 
 // help 信息
 const argv = help()
@@ -40,6 +41,8 @@ if (argv._.includes('publish') && argv.u) {
   svgPublish(argv.d, argv.m)
 } else if (argv._.includes('clean')) {
   clean(argv.t, argv.f)
+} else if (argv._.includes('check')) {
+  check()
 } else {
   sh.exec('gmfe -h')
   process.exit(0)
