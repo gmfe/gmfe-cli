@@ -5,19 +5,6 @@ const versionMap = {
   npm: '6.9.0'
 }
 
-console.log(`
-检测环境
-- shell zsh
-- node@${versionMap.node}
-- npm@${versionMap.npm}
-- rnpm and taobao
-- git config rebase
-
-建议
-- cdn
-- brew
-`)
-
 async function checkBase () {
   console.log('zsh?(非bash)')
   let zsh = await shp.exec('echo $SHELL')
@@ -86,6 +73,19 @@ async function checkOther () {
 }
 
 async function check () {
+  console.log(`
+检测环境
+- shell zsh
+- node@${versionMap.node}
+- npm@${versionMap.npm}
+- rnpm and taobao
+- git config rebase
+
+建议
+- cdn
+- brew
+`)
+
   try {
     await checkBase()
     await checkNode()

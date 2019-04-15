@@ -15,6 +15,7 @@ function help () {
     .command('icon_publish', 'add icon to gm-xfont and publish gm-xfont to npm')
     .command('svg_publish', 'add svg to gm-svg and publish gm-svg to npm')
     .command('clean', 'clean release directory')
+    .command('check', 'check some')
     .demandCommand()
     .option('u', {
       alias: 'user',
@@ -48,22 +49,23 @@ function help () {
       describe: 'commit message or comment'
     })
     .example('' +
-            'gmfe publish -u name\n' +
-            'gmfe publish -u name -t online_2017_08_21_17_50_name\n' +
-            'gmfe publish -u name -b release-xxx\n' +
-            'gmfe test -b release-xxx\n' +
-            'gmfe versioninfo\n' +
-            'gmfe imagecut ./js/logo.jpg -d ./img\n' +
-            'gmfe npm_publish\n' +
-            'gmfe npm_publish -a patch\n' +
-            'gmfe icon_publish -d ./icon.zip\n' +
-            'gmfe icon_publish -d ./icon.zip -m add_new_icon\n' +
-            'gmfe svg_publish -d ./svgs.zip\n' +
-            'gmfe renametoen\n' +
-            'gmfe renametoen ./images ./rename\n' +
-            'gmfe renametoen ./name.txt ./rename.txt' +
-            'gmfe clean' +
-            'gmfe clean -t test -f 3_month'
+      'gmfe publish -u name\n' +
+      'gmfe publish -u name -t online_2017_08_21_17_50_name\n' +
+      'gmfe publish -u name -b release-xxx\n' +
+      'gmfe test -b release-xxx\n' +
+      'gmfe versioninfo\n' +
+      'gmfe imagecut ./js/logo.jpg -d ./img\n' +
+      'gmfe npm_publish\n' +
+      'gmfe npm_publish -a patch\n' +
+      'gmfe icon_publish -d ./icon.zip\n' +
+      'gmfe icon_publish -d ./icon.zip -m add_new_icon\n' +
+      'gmfe svg_publish -d ./svgs.zip\n' +
+      'gmfe renametoen\n' +
+      'gmfe renametoen ./images ./rename\n' +
+      'gmfe renametoen ./name.txt ./rename.txt\n' +
+      'gmfe clean\n' +
+      'gmfe clean -t test -f 3_month\n' +
+      'gmfe check'
     )
     .version()
     .argv
