@@ -14,7 +14,7 @@ const nameList = names.split(/[,，]/g)
 const indexNames = {
   bshop: 'bshop_branch_frontend_index',
   manage: 'manage_branch_frontend_index',
-  station: 'station_branch_frontend_index',
+  station: ['station_branch_frontend_index', 'templates_branch_frontend_index'],
   upms: ['station_branch_frontend_upms', 'manage_branch_frontend_upms'],
   driver: ['station_branch_frontend_driver', 'sorting_branch_frontend_index']
 
