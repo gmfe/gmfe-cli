@@ -9,13 +9,15 @@ const confirm = require('../common/confirm')
 // 项目名称 到 后端 gmdeploy 的模板名称映射 参考:
 // https://doc.guanmai.cn/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/%E5%85%A8%E6%96%B0%E5%8F%91%E5%B8%83%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8-2018-10-18/
 // 如果有新增直接添加即可
-const names = `station_branch_frontend_more，station_branch_frontend_driver，station_branch_frontend_cds，station_branch_frontend_mes`
+const names = `station_branch_frontend_more，station_branch_frontend_cds，station_branch_frontend_mes`
 const nameList = names.split(/[,，]/g)
 const indexNames = {
   bshop: 'bshop_branch_frontend_index',
   manage: 'manage_branch_frontend_index',
   station: 'station_branch_frontend_index',
-  upms: ['station_branch_frontend_upms', 'manage_branch_frontend_upms']
+  upms: ['station_branch_frontend_upms', 'manage_branch_frontend_upms'],
+  driver: ['station_branch_frontend_driver', 'sorting_branch_frontend_index']
+
 }
 
 function getBackEndTplName (projectName) {

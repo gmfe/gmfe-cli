@@ -16,9 +16,9 @@ class FileLock {
   }
   warningAndExit (msg) {
     if (!msg) {
-      msg = fs.readFileSync(this.lockPath)
+      msg = String(fs.readFileSync(this.lockPath)) + `(手动解除文件锁：rm -rf ${this.lockPath})`
     }
-    logger.fatalAndExit(String(msg))
+    logger.fatalAndExit(msg)
   }
   writeLock () {
     const time = moment().format('YYYY-MM-DD HH:mm:ss')
