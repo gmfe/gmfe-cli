@@ -50,14 +50,7 @@ async function syncTemplate (projectName, branchName, showConfirm = false) {
   }
   return false
 }
-function oldSyncTemplate (projectName, rsync) {
-  if (projectName === 'admin') {
-    return
-  }
-  let names = ['station', 'bshop', 'manage', 'yunguanjia']
-  let domain = names.includes(projectName) ? `${projectName}.cluster.gm` : 'template.cluster.gm'
-  rsync(domain)
-}
+
 function startRsyncTpl (distPath, tplName) {
   return (domain) => {
     sh.exec(`ssh ${domain} mkdir -p ${distPath};`)
@@ -84,11 +77,7 @@ async function online () {
   // 模板统一要放 gate 机器
   rsync('gate.guanmai.cn')
 
-  let couldSync = await syncTemplate(projectName, branchName)
-  // 逐步废弃旧的
-  if (!couldSync) {
-    oldSyncTemplate(projectName, rsync)
-  }
+  await syncTemplate(projectName, branchName)
 
   logger.info('上线完成!')
 }
