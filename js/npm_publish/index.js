@@ -43,9 +43,12 @@ function _init (addWhat) {
   }
 
   logger.info(`start to publish ${info.name} ...`)
-  sh.exec('npm publish --registry="https://registry.npmjs.org" && npx cnpm sync ' + info.name + ';')
+  sh.exec('npm publish --registry="https://registry.npmjs.org"')
 
-  logger.info(`如果 cnpm 同步失败（最近经常同步失败），请访问 https://npm.taobao.org/sync/${info.name} 手动触发更新。`)
+  setTimeout(() => {
+    sh.exec('npx cnpm sync ' + info.name)
+    logger.info(`如果 cnpm 同步失败（最近经常同步失败），请访问 https://npm.taobao.org/sync/${info.name} 手动触发更新。`)
+  }, 2000)
 }
 
 const init = (addWhat) => {
