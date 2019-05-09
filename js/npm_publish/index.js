@@ -2,7 +2,7 @@ const sh = require('../common/shelljs_wrapper')
 const { getProjectPath, getPackageJSON, getCurrentBranch } = require('../util')
 const logger = require('../logger')
 
-function _init (addWhat) {
+function init (addWhat) {
   // 前往工程的父目录
   const projectPath = getProjectPath()
   sh.cd(projectPath)
@@ -49,10 +49,10 @@ function _init (addWhat) {
     sh.exec('npx cnpm sync ' + info.name)
     logger.info(`如果 cnpm 同步失败（最近经常同步失败），请访问 https://npm.taobao.org/sync/${info.name} 手动触发更新。`)
   }, 2000)
-}
 
-const init = (addWhat) => {
-  _init(addWhat) === false || process.exit(1)
+  process.on('exit', function () {
+    logger.info('gmfe exit')
+  })
 }
 
 module.exports = init
