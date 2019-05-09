@@ -13,7 +13,6 @@ function init (addWhat) {
     logger.warn('Dirty！确保你本地代码是干净的')
     return false
   }
-
   // master
   const currentBranch = getCurrentBranch()
   if (currentBranch !== 'master') {
