@@ -75,7 +75,7 @@ async function online () {
   let rsync = startRsyncTpl(distPath, tplName)
 
   // 模板统一要放 gate 机器
-  rsync('gate.guanmai.cn')
+  rsync('10.104.49.96')
 
   await syncTemplate(projectName, branchName)
 
