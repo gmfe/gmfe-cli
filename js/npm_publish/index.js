@@ -42,12 +42,7 @@ function init (addWhat) {
   }
 
   logger.info(`start to publish ${info.name} ...`)
-  sh.exec('npm publish --registry="https://registry.npmjs.org"')
-
-  setTimeout(() => {
-    sh.exec('npx cnpm sync ' + info.name)
-    logger.info(`如果 cnpm 同步失败（最近经常同步失败），请访问 https://npm.taobao.org/sync/${info.name} 手动触发更新。`)
-  }, 2000)
+  sh.exec('npm publish')
 
   process.on('exit', function () {
     logger.info('gmfe exit')
