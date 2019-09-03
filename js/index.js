@@ -40,7 +40,7 @@ if (argv._.includes('publish') && argv.u) {
 } else if (argv._.includes('svg_publish')) {
   svgPublish(argv.d, argv.m)
 } else if (argv._.includes('clean')) {
-  clean(argv.t, argv.f)
+  clean(argv.t, argv.f, argv.i)
 } else if (argv._.includes('check')) {
   check()
 } else {

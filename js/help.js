@@ -64,7 +64,7 @@ function help () {
       'gmfe renametoen ./images ./rename\n' +
       'gmfe renametoen ./name.txt ./rename.txt\n' +
       'gmfe clean\n' +
-      'gmfe clean -t test -f 3_month\n' +
+      'gmfe clean -t test -f 3_month -i\n' +
       'gmfe check'
     )
     .version()
