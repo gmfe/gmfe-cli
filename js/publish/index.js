@@ -1,50 +1,70 @@
-const sh = require('../common/shelljs_wrapper')
-const confirm = require('../common/confirm')
-const build = require('./build')
-const { online, postOnline } = require('./online')
-const rollback = require('./rollback')
-const {prepareGray} = require('./prepare')
-const { getProjectPath, checkoutBranch } = require('../util')
+const tmp = require('tmp')
 const logger = require('../logger')
-const fileLock = require('../common/file_lock')
-const path = require('path')
-
-async function init (tag, user, branch = 'master') {
-  // 前往工程的父目录
-  const projectPath = getProjectPath()
-  sh.cd(projectPath)
-
-  // 回滚master或灰度分支
-  // 去对应目录解压backup中的备份
-  if (tag) {
-    await rollback(tag, branch)
-    await online(user)
-    postOnline(user)
-    return
-  }
-
-  if (branch === 'master') {
-    fileLock.init(path.resolve('.'), user)
-    fileLock.lock()
-    checkoutBranch('master')
+const fs = require('fs-extra')
+const sh = require('../common/shelljs_wrapper')
+const { push } = require('../common/shelljs_wrapper').ErrorHandler
+const CodingService = require('./coding_service')
+const online = require('./online')
+const { dingCIError } = require('./ding')
+const resolveVersion = ({ tag: version, branch }) => {
+  // 默认发 master latest
+  // 有 branch 发 latest
+  // 没有就直接发 version
+  if (!version && !branch) {
+    return {
+      branch: 'master',
+      hash: 'latest',
+      version: 'master-latest'
+    }
+  } else if (branch) {
+    return {
+      branch,
+      hash: 'latest',
+      version: `${branch}-latest`
+    }
   } else {
-    // 灰度
-    prepareGray(branch)
+    // branch_hash
+    const splitIndex = version.lastIndexOf('-')
+    const branch = version.slice(0, splitIndex)
+    const hash = version.slice(splitIndex + 1)
+    return {
+      branch,
+      version,
+      hash
+    }
   }
-
-  logger.info('最近5次提交')
-  sh.exec('git log -n 5 --decorate=full')
-  logger.info(`>>>>>>>>>> ${branch}发布准备就绪`)
-
-  await confirm(`打包${branch}分支`)
-  build(branch)
-  await confirm(branch !== 'master' ? '灰度上线' : '上线')
-  await online(user)
-  postOnline(user, true)
-
-  process.on('exit', function () {
-    logger.info('gmfe exit')
-  })
 }
 
-module.exports = init
+const publish = async args => {
+  const { user, projectName } = args
+  const { branch, version, hash } = resolveVersion(args)
+  const isCI = user === 'coding_ci'
+  const ctx = {
+    isCI,
+    user,
+    version,
+    projectName,
+    branch,
+    hash
+  }
+  logger.info(
+    `[${user}]开始发布项目[${projectName}] Branch: ${branch} Version: ${version}`
+  )
+  if (isCI) {
+    // ci 出错通知dingding
+    push((cmd, errMsg) => {
+      dingCIError(ctx, cmd)
+    })
+  }
+
+  const codingService = CodingService.create(ctx)
+  const tarPath = codingService.getBuildTarPath()
+
+  const tmpDir = tmp.tmpNameSync()
+  fs.ensureDirSync(tmpDir)
+  sh.exec(`tar zxvf ${tarPath} -C ${tmpDir}`)
+  sh.cd(tmpDir)
+  await online(ctx)
+  fs.removeSync(tmpDir)
+}
+module.exports = publish

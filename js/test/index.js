@@ -4,7 +4,7 @@ const prepareTest = require('./prepare_test')
 const { getProjectPath, getProjectName, getLastCommit } = require('../util')
 const logger = require('../logger')
 
-function init (branch = 'master') {
+function init(branch = 'master') {
   // 前往工程的父目录
   const projectPath = getProjectPath()
   sh.cd(projectPath)
@@ -51,7 +51,7 @@ function init (branch = 'master') {
   logger.info('测试部署完成!')
 
   // event
-  process.on('exit', function () {
+  process.on('exit', function() {
     logger.info('gmfe exit')
   })
 }

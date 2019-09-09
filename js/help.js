@@ -11,20 +11,26 @@ function help() {
     .demandCommand()
     .option('u', {
       alias: 'user',
-      demand: false,
+      demand: true,
       describe: 'name who publish project',
+      type: 'string'
+    })
+    .option('p', {
+      alias: 'projectName',
+      demand: true,
+      describe: 'specify project',
       type: 'string'
     })
     .option('t', {
       alias: 'tag',
       demand: false,
-      describe: 'which tag to rollback',
+      describe: 'specify a build version to publish',
       type: 'string'
     })
     .option('b', {
       alias: 'branch',
       demand: false,
-      describe: 'which branch to gray or test release'
+      describe: 'which branch to gray(can not use with -t)'
     })
     .option('a', {
       alias: 'add',
@@ -34,8 +40,7 @@ function help() {
     .example(
       '' +
         'gmfe publish -u name\n' +
-        'gmfe publish -u name -t online_2017_08_21_17_50_name\n' +
-        'gmfe publish -u name -b release-xxx\n' +
+        'gmfe publish -p station -u name -v master_332fae23\n' +
         'gmfe test -b release-xxx\n' +
         'gmfe npm_publish\n' +
         'gmfe npm_publish -a patch\n' +
