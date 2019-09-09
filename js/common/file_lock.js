@@ -1,4 +1,3 @@
-
 // 防止并行发同一个目录下的版本
 
 const fs = require('fs')
@@ -7,23 +6,32 @@ const moment = require('moment')
 const path = require('path')
 
 class FileLock {
-  constructor () {
+  constructor() {
     this.isLocked = false
   }
-  init (releaseDir, user) {
+
+  init(releaseDir, user) {
     this.lockPath = path.join(releaseDir, 'release.lock')
     this.user = user
   }
-  warningAndExit (msg) {
+
+  warningAndExit(msg) {
     if (!msg) {
-      msg = String(fs.readFileSync(this.lockPath)) + `(手动解除文件锁：rm -rf ${this.lockPath})`
+      msg =
+        String(fs.readFileSync(this.lockPath)) +
+        `(手动解除文件锁：rm -rf ${this.lockPath})`
     }
     logger.fatalAndExit(msg)
   }
-  writeLock () {
+
+  writeLock() {
     const time = moment().format('YYYY-MM-DD HH:mm:ss')
     try {
-      fs.writeFileSync(this.lockPath, `[${this.user}]正在发布该版本(${time})，请稍后再试`, { flag: 'wx' })
+      fs.writeFileSync(
+        this.lockPath,
+        `[${this.user}]正在发布该版本(${time})，请稍后再试`,
+        { flag: 'wx' }
+      )
       this.isLocked = true
       logger.info('添加文件锁', this.lockPath)
     } catch (e) {
@@ -35,10 +43,15 @@ class FileLock {
       }
     }
   }
-  check () {
-    let stats = fs.statSync(this.lockPath)
+
+  check() {
+    const stats = fs.statSync(this.lockPath)
     // 占用超过时间 (1h)
-    if (moment(stats.ctime).add(1, 'h').isBefore(moment())) {
+    if (
+      moment(stats.ctime)
+        .add(1, 'h')
+        .isBefore(moment())
+    ) {
       try {
         fs.unlinkSync(this.lockPath)
       } catch (e) {
@@ -53,14 +66,16 @@ class FileLock {
       this.warningAndExit()
     }
   }
-  lock () {
+
+  lock() {
     if (fs.existsSync(this.lockPath)) {
       this.check()
     } else {
       this.writeLock()
     }
   }
-  unLock () {
+
+  unLock() {
     if (this.isLocked) {
       logger.info('解除文件锁', fileLock.lockPath)
       try {
@@ -75,7 +90,7 @@ const fileLock = new FileLock()
 
 const onExit = require('signal-exit')
 
-onExit(function () {
+onExit(function() {
   fileLock.unLock()
 })
 
