@@ -1,8 +1,8 @@
 const sh = require('shelljs')
 const logger = require('../logger')
 
-let extra = {
-  cd (destPath) {
+const extra = {
+  cd(destPath) {
     logger.info('切换目录', destPath)
     const execResult = sh.cd(destPath)
     if (execResult.code !== 0) {
@@ -12,7 +12,7 @@ let extra = {
     }
     return execResult
   },
-  exec (command, options = {}) {
+  exec(command, options = {}) {
     logger.info('执行命令', command)
     const execResult = sh.exec(command, options)
     if (execResult.code !== 0) {
