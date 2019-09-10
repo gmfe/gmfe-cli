@@ -50,12 +50,12 @@ const publish = async args => {
   logger.info(
     `[${user}]开始发布项目[${projectName}] Branch: ${branch} Version: ${version}`
   )
-  if (isCI) {
-    // ci 出错通知dingding
-    push((cmd, errMsg) => {
-      dingCIError(ctx, cmd)
-    })
-  }
+  // if (isCI) {
+  // ci 出错通知dingding
+  push((cmd, errMsg) => {
+    dingCIError(ctx, cmd)
+  })
+  // }
 
   const codingService = CodingService.create(ctx)
   const tarPath = codingService.getBuildTarPath()

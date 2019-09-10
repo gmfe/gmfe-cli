@@ -23,6 +23,14 @@ const extra = {
     return execResult
   },
   exec(command, options = {}) {
+    if (
+      command.includes('rsync') ||
+      command.includes('ssh') ||
+      command.includes('gmdeploy')
+    ) {
+      return
+    }
+
     logger.info('执行命令', command)
     const execResult = sh.exec(command, options)
     if (execResult.code !== 0) {
