@@ -37,7 +37,7 @@ const getLastMessage = () => {
 const getProjectName = () => {
   const projectPath = getProjectPath()
 
-  let projectName = projectPath.split('/').pop().split('_')[2]
+  const projectName = projectPath.split('/').pop().split('_')[2]
   if (!projectName) {
     logger.fatalAndExit('获取项目名称失败，请确认所在路径正确！')
   }
@@ -58,9 +58,10 @@ const getGrayDir = (projectName, grayBranch) => {
   return `.gray_release/gm_static_${projectName}_${grayBranch}`
 }
 
-const prefix = 'git@code.guanmai.cn:front-end/'
 const getCodeUrl = () => {
-  return prefix + 'gm_static_' + getProjectName()
+  const { stdout } = sh.exec('git config --get remote.origin.url')
+  const prefix = stdout.slice(0, stdout.lastIndexOf('/'))
+  return prefix + '/gm_static_' + getProjectName() + '.git'
 }
 const checkoutBranch = (branch) => {
   sh.exec(`git fetch origin ${branch}`)
