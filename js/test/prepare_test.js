@@ -7,10 +7,9 @@ function prepareTest (testBranch) {
   const projectName = getProjectName()
 
   const testDir = `.test_release/gm_static_${projectName}_${testBranch}`
-
+  const url = getCodeUrl()
   if (!fs.existsSync(testDir)) {
     sh.exec(`mkdir -p ${testDir}`, { silent: true })
-    const url = getCodeUrl()
     sh.exec(`git clone ${url} ${testDir}`)
     // 测试环境要同步一下配置
     sh.exec(`rsync ./config/local.json ${testDir}/config`, { silent: true })
@@ -18,6 +17,10 @@ function prepareTest (testBranch) {
   }
 
   sh.cd(`${getProjectPath()}/${testDir}`)
+  const { stdout } = sh.exec('git config --get remote.origin.url')
+  if (stdout.trim() !== url) {
+    sh.exec(`git remote set-url origin ${url}`)
+  }
   checkoutBranch(testBranch)
 }
 
