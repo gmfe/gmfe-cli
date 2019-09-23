@@ -15,8 +15,8 @@ function init (branch = 'master') {
   logger.info('>>>>>>>>>> 测试部署准备')
   // 测试发布 进入.test_release 拉最新代码
   if (branch === 'master') {
-    sh.exec(`git checkout master`)
-    sh.exec(`git reset origin/master --hard`)
+    sh.exec('git checkout master')
+    sh.exec('git reset origin/master --hard')
   } else {
     prepareTest(branch)
   }
@@ -27,7 +27,7 @@ function init (branch = 'master') {
 
   logger.info('>>>>>>>>>> 执行打包')
 
-  sh.exec(`BRANCH=${branch} COMMIT=${getLastCommit()} npm run testing`)
+  sh.exec(`GIT_BRANCH=${branch} GIT_COMMIT=${getLastCommit()} BRANCH=${branch} COMMIT=${getLastCommit()} npm run testing`)
 
   logger.info('打包完成!')
 
