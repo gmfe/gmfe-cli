@@ -1,11 +1,9 @@
 const tmp = require('tmp')
-const logger = require('../logger')
 const fs = require('fs-extra')
 const sh = require('../common/shelljs_wrapper')
-const { push } = require('../common/shelljs_wrapper').ErrorHandler
 const CodingService = require('./coding_service')
-const online = require('./online')
-const { dingCIError } = require('./ding')
+const { postOnline, ding, rsyncTpl, syncTemplate } = require('./util')
+
 const resolveArgs = args => {
   // 默认 master latest
   const branch = args.branch || 'master'
@@ -29,7 +27,6 @@ const resolveArgs = args => {
 
 const publish = async args => {
   const { user } = args
-
   const { branch, version, hash, projectName } = resolveArgs(args)
   const isCI = user === 'coding_ci'
   const ctx = {
@@ -40,24 +37,37 @@ const publish = async args => {
     branch,
     hash
   }
-  logger.info(
-    `[${user}]开始发布项目[${projectName}] Branch: ${branch} Version: ${version}`
-  )
-  if (isCI) {
-    // ci 出错通知dingding
-    push((cmd, errMsg) => {
-      dingCIError(ctx, cmd)
-    })
-  }
 
+  // 拉取版本
   const codingService = CodingService.create(ctx)
   const tarPath = codingService.getBuildTarPath()
 
+  // 解压
   const tmpDir = tmp.tmpNameSync()
   fs.ensureDirSync(tmpDir)
   sh.exec(`tar zxvf ${tarPath} -C ${tmpDir}`)
+
+  // 前往目录
   sh.cd(tmpDir)
-  await online(ctx)
+
+  // 同步静态资源
+  sh.exec(
+    `rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`
+  )
+
+  // 同步模板
+  // mes 模板不同
+  const tplName = projectName === 'mes' ? 'mes' : 'index'
+  rsyncTpl(projectName, branch, tplName)
+  // 同步模板到机器
+  await syncTemplate(projectName, branch)
+
+  // 移除临时目录
   fs.removeSync(tmpDir)
+
+  // 通知
+  ding(user, projectName, branch, version)
+  postOnline()
 }
+
 module.exports = publish
