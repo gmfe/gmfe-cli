@@ -12,6 +12,7 @@ const extra = {
   cd(destPath) {
     logger.info('切换目录', '' + destPath)
     const execResult = sh.cd(destPath)
+    logger.info(execResult.stdout)
     if (execResult.code !== 0) {
       const msg = execResult.stderr
       handlers.forEach(func => {
@@ -24,7 +25,11 @@ const extra = {
   },
   exec(command, options = {}) {
     logger.info('执行命令', command)
-    const execResult = sh.exec(command, options)
+    const execResult = sh.exec(command, {
+      ...options,
+      silent: true
+    })
+    logger.info(execResult.stdout)
     if (execResult.code !== 0) {
       const msg = execResult.stderr
       logger.error(`【${command}】执行出错 \n${msg}`)

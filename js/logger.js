@@ -8,7 +8,7 @@ try {
   fs.ensureDirSync(logDir)
 } catch (err) {
   console.warn(err)
-  logDir = '~/logs/fe/gmfe'
+  logDir = './logs/'
   fs.ensureDirSync(logDir)
 }
 log4js.configure({
@@ -18,11 +18,12 @@ log4js.configure({
       filename: path.join(logDir, 'gmfe.log'),
       maxLogSize: 100 * 1024 * 1024,
       backups: 2
-    }
+    },
+    console: { type: 'console' }
   },
   categories: {
     default: {
-      appenders: ['normal'],
+      appenders: ['normal', 'console'],
       level: 'info'
     }
   }
