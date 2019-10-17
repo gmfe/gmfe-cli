@@ -60,7 +60,7 @@ const publish = async args => {
   const tplName = projectName === 'mes' ? 'mes' : 'index'
   rsyncTpl(projectName, branch, tplName)
   // 同步模板到机器
-  await syncTemplate(projectName, branch)
+  syncTemplate(projectName, branch)
 
   // 移除临时目录
   fs.removeSync(tmpDir)

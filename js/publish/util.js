@@ -58,14 +58,10 @@ function rsyncTpl(projectName, branch, tplName) {
   )
 }
 
-async function syncTemplate(projectName, branchName) {
-  let backendTplName = getBackEndTplName(projectName)
-  if (backendTplName) {
+function syncTemplate(projectName, branchName) {
+  const backendTplName = getBackEndTplName(projectName)
+  if (!backendTplName) {
     return false
-  }
-
-  if (!Array.isArray(backendTplName)) {
-    backendTplName = [backendTplName]
   }
 
   backendTplName.forEach(name => {
