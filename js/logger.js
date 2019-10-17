@@ -1,9 +1,16 @@
 const log4js = require('log4js')
 const path = require('path')
 const fs = require('fs-extra')
-const logDir = '/data/logs/fe/gmfe'
 
-fs.ensureDirSync(logDir)
+let logDir = '/data/logs/fe/gmfe'
+
+try {
+  fs.ensureDirSync(logDir)
+} catch (err) {
+  console.warn(err)
+  logDir = '~/logs/fe/gmfe'
+  fs.ensureDirSync(logDir)
+}
 log4js.configure({
   appenders: {
     normal: {
@@ -11,11 +18,13 @@ log4js.configure({
       filename: path.join(logDir, 'gmfe.log'),
       maxLogSize: 100 * 1024 * 1024,
       backups: 2
-    },
-    console: { type: 'console' }
+    }
   },
   categories: {
-    default: { appenders: ['normal', 'console'], level: 'info' }
+    default: {
+      appenders: ['normal'],
+      level: 'info'
+    }
   }
 })
 const logger = log4js.getLogger('default')
