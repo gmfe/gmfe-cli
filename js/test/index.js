@@ -8,11 +8,11 @@ function init(branch = 'master') {
   sh.cd(projectPath)
 
   // 测试部署准备
-  sh.exec('git fetch')
   if (branch !== 'master') {
     // 非 master 可能需要准备好
     prepareTest(branch)
   }
+  sh.exec('git fetch')
   sh.exec(`git checkout ${branch}`)
   sh.exec(`git reset origin/${branch} --hard`)
 
@@ -24,7 +24,7 @@ function init(branch = 'master') {
   // 同步静态代码
   sh.exec(`rsync -aztHv ./build/ /data/www/static_resource/${projectName}/`)
 
-  // 同步模板
+  // cd
   const distPath = `/data/templates/${projectName}/${branch}/`
   if (projectName === 'mes') {
     sh.exec(`rsync -aztHv ./build/mes.html dev.guanmai.cn:${distPath}`)
