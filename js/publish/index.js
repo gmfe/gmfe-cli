@@ -52,7 +52,7 @@ const publish = async args => {
 
   // 同步静态资源
   sh.exec(
-    `rsync -aztHv --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`
+    `rsync -aztHv --exclude "*.js.map" --rsh=ssh ./build/ static.cluster.gm:/data/www/static_resource/${projectName}/`
   )
 
   // 同步模板
