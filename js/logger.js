@@ -1,16 +1,17 @@
 const log4js = require('log4js')
 const path = require('path')
 const fs = require('fs-extra')
+const os = require('os')
 
 let logDir = '/data/logs/fe/gmfe'
 
 try {
   fs.ensureDirSync(logDir)
 } catch (err) {
-  console.warn(err)
-  logDir = './logs/'
+  logDir = os.homedir() + '/logs/'
   fs.ensureDirSync(logDir)
 }
+
 log4js.configure({
   appenders: {
     normal: {
