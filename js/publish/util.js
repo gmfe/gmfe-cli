@@ -13,6 +13,7 @@ function getBackEndTplName(projectName) {
       'station_branch_frontend_index',
       'templates_branch_frontend_index'
     ],
+    stationv2: ['templates_branch_frontend_index_v2'],
     upms: ['station_branch_frontend_upms', 'manage_branch_frontend_upms'],
     driver: ['station_branch_frontend_driver', 'sorting_branch_frontend_index'],
     pa: ['stock_branch_frontend_pa'],
