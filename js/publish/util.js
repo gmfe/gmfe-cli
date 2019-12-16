@@ -19,7 +19,8 @@ function getBackEndTplName(projectName) {
     pa: ['stock_branch_frontend_pa'],
     more: ['station_branch_frontend_more'],
     cds: ['station_branch_frontend_cds'],
-    mes: ['station_branch_frontend_mes']
+    mes: ['station_branch_frontend_mes'],
+    box: ['sorting_branch_frontend_box']
   }
   return pNames[projectName]
 }
