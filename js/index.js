@@ -2,7 +2,6 @@ const sh = require('shelljs')
 const logger = require('./logger')
 
 const help = require('./help')
-const publishInit = require('./publish/index')
 const testInit = require('./test/index')
 const npmPublish = require('./npm_publish')
 
@@ -17,9 +16,7 @@ if (argv._.length === 0) {
   process.exit(0)
 }
 
-if (argv._.includes('publish') && argv.u) {
-  publishInit(argv)
-} else if (argv._.includes('test')) {
+if (argv._.includes('test')) {
   testInit(argv.b)
 } else if (argv._.includes('npm_publish')) {
   npmPublish(argv.a)
