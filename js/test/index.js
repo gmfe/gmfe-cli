@@ -15,7 +15,7 @@ function init(branch = 'master') {
   sh.exec('git fetch')
   sh.exec(`git checkout ${branch}`)
   sh.exec(`git reset origin/${branch} --hard`)
-
+  sh.exec('yarn')
   // 执行打包
   sh.exec(
     `GIT_BRANCH=${branch} GIT_COMMIT=${getLastCommit()} yarn run build:test`
