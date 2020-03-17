@@ -17,7 +17,9 @@ function init(branch = 'master') {
   sh.exec(`git reset origin/${branch} --hard`)
 
   // 执行打包
-  sh.exec(`GIT_BRANCH=${branch} GIT_COMMIT=${getLastCommit()} npm run testing`)
+  sh.exec(
+    `GIT_BRANCH=${branch} GIT_COMMIT=${getLastCommit()} yarn run build:test`
+  )
 
   const projectName = getProjectName()
 
