@@ -13,7 +13,7 @@ function prepareTest(testBranch) {
     sh.exec(`mkdir -p ${testDir}`, { silent: true })
     sh.exec(`git clone ${url} ${testDir}`)
     // 测试环境要同步一下配置
-    sh.exec(`rsync ./config/local.json ${testDir}/config`, { silent: true })
+    sh.exec(`rsync ./config ${testDir}/config`, { silent: true })
   }
 
   sh.cd(`${getProjectPath()}/${testDir}`)
