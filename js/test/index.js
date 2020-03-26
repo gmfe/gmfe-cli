@@ -28,7 +28,7 @@ function init(branch = 'master') {
 
   // cd
   const distPath = `/data/templates/${projectName}/${branch}/`
-  if (projectName === 'mes') {
+  if (projectName === 'mes' || projectName === 'mesv2') {
     sh.exec(`rsync -aztHv ./build/mes.html dev.guanmai.cn:${distPath}`)
     sh.exec(`rsync -aztHv ./build/mes.html devhost.guanmai.cn:${distPath}`)
   } else {
