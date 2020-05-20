@@ -29,10 +29,7 @@ const getLastCommit = () => {
 const getProjectName = () => {
   const projectPath = getProjectPath()
 
-  const projectName = projectPath
-    .split('/')
-    .pop()
-    .split('_')[2]
+  const projectName = projectPath.split('/')[3].split('_')[2]
   if (!projectName) {
     logger.fatalAndExit('获取项目名称失败，请确认所在路径正确！')
   }
