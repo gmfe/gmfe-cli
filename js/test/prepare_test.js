@@ -6,7 +6,10 @@ const { getProjectName, getProjectPath, getOrigin } = Util
 function prepareTest(testBranch) {
   const projectName = getProjectName()
 
-  const testDir = `.test_release/gm_static_${projectName}_${testBranch}`
+  const testDir = `.test_release/gm_static_${projectName}_${testBranch.replace(
+    '/',
+    '_'
+  )}`
   const url = getOrigin()
 
   if (!fs.existsSync(testDir)) {
